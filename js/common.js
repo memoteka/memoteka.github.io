@@ -97,23 +97,23 @@ function initVideoPlayers() {
 // ========== ТВОИ ФАЙЛЫ (полный список) ==========
 const memesLibrary = {
   photos: [
-    { name: '1.jpg', file: '/cdn/assets/photos/1.jpg' },
-    { name: '2.webp', file: '/cdn/assets/photos/2.webp' },
-    { name: '3.png', file: '/cdn/assets/photos/3.png' },
+    { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
+    { name: 'Кошак', file: '/cdn/assets/photos/2.webp' },
+    { name: 'Мем', file: '/cdn/assets/photos/3.png' },
     { name: 'Котик', file: '/cdn/assets/photos/cat.jpg' },
     { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' }
   ],
   videos: [
-    { name: 'Демо видео', file: '/cdn/assets/videos/demo.mp4' },
-    { name: 'Природа', file: '/cdn/assets/videos/nature.webm' }
+    { name: 'Реакция обида, боль и разочарование', file: '/cdn/assets/videos/demo.mp4' },
+    { name: 'Ну, типа, ура!', file: '/cdn/assets/videos/nature.webm' }
   ],
   gifs: [
-    { name: 'Смешная гифка', file: '/cdn/assets/gifs/funny.gif' },
-    { name: 'Реакция', file: '/cdn/assets/gifs/reaction.gif' }
+    { name: 'Негр', file: '/cdn/assets/gifs/funny.gif' },
+    { name: 'Сигма', file: '/cdn/assets/gifs/reaction.gif' }
   ],
   audios: [
-    { name: 'Бит', file: '/cdn/assets/audios/beat.mp3' },
-    { name: 'Голос', file: '/cdn/assets/audios/voice.ogg' }
+    { name: 'С писюном, блядь, поиграй!', file: '/cdn/assets/audios/beat.mp3' },
+    { name: 'Какие-то арабы или чё ваще, хз, короче', file: '/cdn/assets/audios/voice.ogg' }
   ]
 };
 
