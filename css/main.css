@@ -252,10 +252,11 @@ select {
   backdrop-filter: blur(4px);
   white-space: nowrap;
 }
+.dropdown-item svg,
 .dropdown-trigger svg {
   width: 1.2rem;
-  height: auto;
-  border-radius: 2px;
+  height: 1.2rem;
+  vertical-align: middle;
 }
 .dropdown-arrow {
   position: absolute;
