@@ -1,4 +1,4 @@
-// ТЕМА (как была)
+// ========== ТЕМА ==========
 function setTheme(theme) {
   if (theme === 'system') {
     const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -16,52 +16,154 @@ if (themeSelect) {
   themeSelect.addEventListener('change', (e) => setTheme(e.target.value));
 }
 
-// ЛАЙТБОКС (универсальный: картинка, видео или аудио)
+// ========== ЛАЙТБОКС С КАСТОМНЫМ ПЛЕЕРОМ ==========
 const lightbox = document.createElement('div');
 lightbox.id = 'lightbox';
 lightbox.className = 'lightbox';
-lightbox.innerHTML = `
-  <button class="close-lightbox">&times;</button>
-  <img class="lightbox-content" alt="">
-  <video class="lightbox-content" controls></video>
-  <audio class="lightbox-content" controls></audio>
-`;
 document.body.appendChild(lightbox);
-const lightboxImg = lightbox.querySelector('img');
-const lightboxVideo = lightbox.querySelector('video');
-const lightboxAudio = lightbox.querySelector('audio');
-const closeBtn = lightbox.querySelector('.close-lightbox');
+
+const closeBtn = document.createElement('button');
+closeBtn.className = 'close-lightbox';
+closeBtn.innerHTML = '&times;';
+lightbox.appendChild(closeBtn);
+
+let currentMedia = null;
+let currentType = null;
 
 function openLightbox(url, type) {
   lightbox.classList.add('active');
-  // Скрыть все элементы
-  lightboxImg.style.display = 'none';
-  lightboxVideo.style.display = 'none';
-  lightboxAudio.style.display = 'none';
-  
-  if (type === 'video') {
-    lightboxVideo.style.display = 'block';
-    lightboxVideo.src = url;
-    lightboxVideo.play();
-  } else if (type === 'audio') {
-    lightboxAudio.style.display = 'block';
-    lightboxAudio.src = url;
-    lightboxAudio.play();
-  } else { // photo или gif
-    lightboxImg.style.display = 'block';
-    lightboxImg.src = url;
+  while (lightbox.firstChild !== closeBtn) {
+    lightbox.removeChild(lightbox.firstChild);
+  }
+  currentType = type;
+
+  if (type === 'video' || type === 'audio') {
+    const container = document.createElement('div');
+    container.className = 'lightbox-player-container';
+    if (type === 'audio') container.classList.add('audio-only');
+
+    const media = document.createElement(type === 'video' ? 'video' : 'audio');
+    media.className = 'lightbox-media';
+    media.src = url;
+    if (type === 'video') media.setAttribute('playsinline', '');
+    media.preload = 'metadata';
+
+    const controls = document.createElement('div');
+    controls.className = 'lightbox-controls';
+
+    const playBtn = document.createElement('button');
+    playBtn.innerHTML = '▶';
+    const muteBtn = document.createElement('button');
+    muteBtn.innerHTML = '🔊';
+    const progressBar = document.createElement('div');
+    progressBar.className = 'lightbox-progress';
+    const progressFilled = document.createElement('div');
+    progressFilled.className = 'lightbox-progress-filled';
+    progressBar.appendChild(progressFilled);
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'lightbox-time';
+    timeSpan.textContent = '0:00 / 0:00';
+
+    const volumeContainer = document.createElement('div');
+    volumeContainer.className = 'lightbox-volume';
+    const volumeSlider = document.createElement('input');
+    volumeSlider.type = 'range';
+    volumeSlider.min = 0;
+    volumeSlider.max = 1;
+    volumeSlider.step = 0.01;
+    volumeSlider.value = 1;
+    volumeSlider.className = 'lightbox-volume-slider';
+    volumeContainer.appendChild(volumeSlider);
+
+    controls.append(playBtn, muteBtn, progressBar, timeSpan, volumeContainer);
+    container.append(media, controls);
+    lightbox.appendChild(container);
+
+    let isDragging = false;
+
+    media.addEventListener('loadedmetadata', () => {
+      timeSpan.textContent = `0:00 / ${formatTime(media.duration)}`;
+    });
+    media.addEventListener('timeupdate', () => {
+      if (!isDragging) {
+        const percent = (media.currentTime / media.duration) * 100;
+        progressFilled.style.width = `${percent}%`;
+        timeSpan.textContent = `${formatTime(media.currentTime)} / ${formatTime(media.duration)}`;
+      }
+    });
+    playBtn.addEventListener('click', () => {
+      if (media.paused) {
+        media.play();
+        playBtn.innerHTML = '⏸';
+      } else {
+        media.pause();
+        playBtn.innerHTML = '▶';
+      }
+    });
+    media.addEventListener('play', () => playBtn.innerHTML = '⏸');
+    media.addEventListener('pause', () => playBtn.innerHTML = '▶');
+    muteBtn.addEventListener('click', () => {
+      media.muted = !media.muted;
+      muteBtn.innerHTML = media.muted ? '🔇' : '🔊';
+    });
+    volumeSlider.addEventListener('input', (e) => {
+      media.volume = e.target.value;
+      if (media.volume === 0) {
+        media.muted = true;
+        muteBtn.innerHTML = '🔇';
+      } else {
+        media.muted = false;
+        muteBtn.innerHTML = '🔊';
+      }
+    });
+    progressBar.addEventListener('click', (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      let pos = (e.clientX - rect.left) / rect.width;
+      pos = Math.min(Math.max(pos, 0), 1);
+      media.currentTime = pos * media.duration;
+    });
+    progressBar.addEventListener('mousedown', () => isDragging = true);
+    document.addEventListener('mouseup', () => isDragging = false);
+    progressBar.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const rect = progressBar.getBoundingClientRect();
+        let pos = (e.clientX - rect.left) / rect.width;
+        pos = Math.min(Math.max(pos, 0), 1);
+        media.currentTime = pos * media.duration;
+      }
+    });
+    media.play().catch(e => console.log('autoplay error', e));
+    currentMedia = media;
+  } else {
+    const img = document.createElement('img');
+    img.className = 'lightbox-content';
+    img.src = url;
+    lightbox.appendChild(img);
+    currentMedia = null;
   }
 }
+
+function formatTime(sec) {
+  if (isNaN(sec)) return '0:00';
+  const minutes = Math.floor(sec / 60);
+  const seconds = Math.floor(sec % 60);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
 closeBtn.onclick = () => {
   lightbox.classList.remove('active');
-  lightboxVideo.pause();
-  lightboxVideo.src = '';
-  lightboxAudio.pause();
-  lightboxAudio.src = '';
-  lightboxImg.src = '';
+  if (currentMedia) {
+    currentMedia.pause();
+    currentMedia.src = '';
+  }
+  while (lightbox.firstChild !== closeBtn) {
+    lightbox.removeChild(lightbox.firstChild);
+  }
+  currentMedia = null;
 };
 lightbox.onclick = (e) => { if (e.target === lightbox) closeBtn.click(); };
 
+// ========== ГАЛЕРЕЯ И ПЛЕЕР ДЛЯ КАРТОЧЕК ==========
 function bindMemeClicks() {
   document.querySelectorAll('.meme-card').forEach(card => {
     card.addEventListener('click', (e) => {
@@ -73,7 +175,7 @@ function bindMemeClicks() {
   });
 }
 
-// КАСТОМНЫЙ ВИДЕОПЛЕЕР (остаётся)
+// Кастомный плеер для видео в карточках (при наведении)
 function initVideoPlayers() {
   document.querySelectorAll('.video-wrapper').forEach(wrapper => {
     const video = wrapper.querySelector('video');
@@ -94,7 +196,7 @@ function initVideoPlayers() {
   });
 }
 
-// ========== ТВОИ ФАЙЛЫ (полный список) ==========
+// ========== ТВОИ ФАЙЛЫ (как есть) ==========
 const memesLibrary = {
   photos: [
     { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
@@ -102,7 +204,7 @@ const memesLibrary = {
     { name: 'Мем', file: '/cdn/assets/photos/3.png' },
     { name: 'Котик', file: '/cdn/assets/photos/cat.jpg' },
     { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' },
-	{ name: 'Пердёж', file: '/cdn/assets/photos/fart.jpg' }
+    { name: 'Пердёж', file: '/cdn/assets/photos/fart.jpg' }
   ],
   videos: [
     { name: 'Реакция обида, боль и разочарование', file: '/cdn/assets/videos/demo.mp4' },
@@ -133,12 +235,10 @@ function renderMemes(containerId) {
     card.className = 'meme-card';
     card.dataset.url = meme.file;
     card.dataset.type = meme.type;
-    
     let preview = '';
     if (meme.type === 'video') {
       preview = `<div class="video-wrapper"><video class="meme-preview" src="${meme.file}" muted preload="metadata"></video></div>`;
     } else if (meme.type === 'audio') {
-      // Для аудио показываем иконку и название
       preview = `<div class="meme-preview" style="background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎵</div>`;
     } else {
       preview = `<img class="meme-preview" src="${meme.file}" alt="${meme.name}" loading="lazy">`;
@@ -153,7 +253,7 @@ function renderMemes(containerId) {
     container.appendChild(card);
   });
   bindMemeClicks();
-  initVideoPlayers(); // для видео-превью внутри карточек
+  initVideoPlayers();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
