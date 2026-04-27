@@ -1,14 +1,14 @@
 {
-  "name": "Мемотека",
-  "short_name": "Мемотека",
-  "description": "Хранилище мемов, фото, видео и аудио с современным дизайном",
-  "start_url": "/ru/",
+  "name": "Memoteka",
+  "short_name": "Memoteka",
+  "description": "Meme, photo, video and audio vault with modern design",
+  "start_url": "/en/",
   "scope": "/",
   "display": "standalone",
   "theme_color": "#3b82f6",
   "background_color": "#1e293b",
   "orientation": "any",
-  "lang": "ru",
+  "lang": "en",
   "dir": "ltr",
   "icons": [
     {
@@ -104,26 +104,26 @@
   ],
   "screenshots": [
     {
-      "src": "/cdn/screenshots/desktop.jpg",
+      "src": "/cdn/screenshots/desktop-en.jpg",
       "sizes": "1920x1080",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Десктопная версия Мемотеки"
+      "label": "Memoteka desktop version"
     },
     {
-      "src": "/cdn/screenshots/mobile.jpg",
+      "src": "/cdn/screenshots/mobile-en.jpg",
       "sizes": "1080x1920",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Мобильная версия Мемотеки"
+      "label": "Memoteka mobile version"
     }
   ],
   "shortcuts": [
     {
-      "name": "Главная",
-      "short_name": "Главная",
-      "description": "На главную страницу",
-      "url": "/ru/",
+      "name": "Home",
+      "short_name": "Home",
+      "description": "Go to homepage",
+      "url": "/en/",
       "icons": [
         {
           "src": "/cdn/favicon/android-chrome-96x96.png",
@@ -132,10 +132,10 @@
       ]
     },
     {
-      "name": "Мемы",
-      "short_name": "Мемы",
-      "description": "Галерея мемов",
-      "url": "/ru/memes/",
+      "name": "Memes",
+      "short_name": "Memes",
+      "description": "Meme gallery",
+      "url": "/en/memes/",
       "icons": [
         {
           "src": "/cdn/favicon/android-chrome-96x96.png",
