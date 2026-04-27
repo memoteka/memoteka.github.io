@@ -101,7 +101,7 @@ const memesLibrary = {
     { name: 'Кошак', file: '/cdn/assets/photos/2.webp' },
     { name: 'Мем', file: '/cdn/assets/photos/3.png' },
     { name: 'Котик', file: '/cdn/assets/photos/cat.jpg' },
-    { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' }
+    { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' },
 	{ name: 'Пердёж', file: '/cdn/assets/photos/fart.jpg' }
   ],
   videos: [
