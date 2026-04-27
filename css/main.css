@@ -232,3 +232,77 @@ select {
   background: #111;
   border-radius: 30px;
 }
+
+/* Кастомный выпадающий список для языка */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.dropdown-trigger {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  padding: 0.4rem 1.5rem 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+}
+.dropdown-trigger svg {
+  width: 1.2rem;
+  height: auto;
+  border-radius: 2px;
+}
+.dropdown-arrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 0.4rem 0;
+  min-width: 120px;
+  z-index: 200;
+  display: none;
+  box-shadow: var(--shadow);
+}
+.dropdown-menu.show {
+  display: block;
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  transition: background 0.2s;
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+.dropdown-item:hover {
+  background: var(--accent);
+  color: white;
+}
+.dropdown-item svg {
+  width: 1.2rem;
+  height: auto;
+  border-radius: 2px;
+}
+/* Адаптив */
+@media (max-width: 768px) {
+  .dropdown-trigger { padding: 0.3rem 1.2rem 0.3rem 0.6rem; }
+  .dropdown-trigger svg { width: 1rem; }
+}
