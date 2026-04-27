@@ -1,3 +1,5 @@
+console.log('theme-switcher loaded');
+console.log('themeDropdown found:', document.querySelector('.theme-dropdown'));
 // Кастомный выпадающий список для переключения языка
 document.addEventListener('DOMContentLoaded', function() {
   // Найти все элементы .custom-dropdown (один на странице, но можно несколько)

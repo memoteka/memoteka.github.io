@@ -1,3 +1,5 @@
+console.log('theme-switcher loaded');
+console.log('themeDropdown found:', document.querySelector('.theme-dropdown'));
 // Кастомный выпадающий список для темы
 document.addEventListener('DOMContentLoaded', function() {
   const themeDropdown = document.querySelector('.theme-dropdown');
