@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>О проекте — Мемотека</title>
+  <meta name="description" content="Мемотека – современное хранилище мемов, фото, видео и аудио. Сделано с любовью к веб-технологиям.">
+  <meta property="og:title" content="Мемотека — О проекте">
+  <meta property="og:description" content="Открой для себя удобный способ хранения и просмотра медиа.">
+  <meta property="og:image" content="/cdn/favicon/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/x-icon" href="/cdn/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/cdn/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/cdn/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/cdn/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/cdn/favicon/site.webmanifest">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+<nav class="glass-nav">
+  <a href="/ru/" class="logo">Мемотека</a>
+  <div class="nav-links">
+    <a href="/ru/about/">О проекте</a>
+    <a href="/ru/memes/">Мемы</a>
+    <div class="select-group">
+      <select id="theme-switch"><option value="system">🌓 Системная</option><option value="light">☀️ Светлая</option><option value="dark">🌙 Тёмная</option></select>
+      <select id="lang-switch"><option value="ru" selected>🇷🇺 Русский</option><option value="en">🇬🇧 English</option></select>
+    </div>
+  </div>
+</nav>
+<main class="container">
+  <h1>О Мемотеке</h1>
+  <p><strong>Мемотека</strong> — это личный архив мемов, фотографий, видео, гифок и аудио. Проект создан для тех, кто хочет красиво и удобно хранить свои медиа.</p>
+  <h2>Что умеет сайт?</h2>
+  <ul>
+    <li>🎨 Современный дизайн: стеклянная навигация, плавные анимации, блюр, градиенты.</li>
+    <li>🌗 Адаптивная тема: светлая, тёмная или по системе — выбирай выпадающим меню.</li>
+    <li>🌍 Два языка: русский и английский — переключаются мгновенно.</li>
+    <li>🖼️ Галерея мемов: фото, видео, гифки, аудио — всё в виде карточек.</li>
+    <li>🔍 Лайтбокс: клик по карточке — и контент открывается на весь экран (с кастомным видеоплеером).</li>
+    <li>🎮 Кастомный плеер для видео: кнопки play/mute, появляются при наведении.</li>
+    <li>📱 Полная адаптивность: от телефонов до широких мониторов.</li>
+  </ul>
+  <p>Все файлы хранятся в папке <code>/cdn/assets/</code>. Ты можешь добавить свои, просто перечислив их в массиве в <code>/js/common.js</code>.</p>
+  <p><a href="/ru/memes/">Перейти в галерею мемов →</a></p>
+</main>
+<script src="/js/common.js"></script>
+<script src="/js/lang-switcher.js"></script>
+</body>
+</html>

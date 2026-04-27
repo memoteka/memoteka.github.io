@@ -1,0 +1,6 @@
+/* Дополнительная адаптивность для мелких устройств */
+@media (max-width: 480px) {
+  .logo { font-size: 1.4rem; }
+  select { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
+  .meme-title { font-size: 0.9rem; }
+}

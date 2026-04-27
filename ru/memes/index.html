@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мемы — Мемотека</title>
+  <meta name="description" content="Все твои мемы, фото, видео, гифки и аудио в одной галерее. Кликай для увеличения.">
+  <meta property="og:title" content="Мемотека — Галерея">
+  <meta property="og:image" content="/cdn/favicon/og-image.jpg">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="icon" href="/cdn/favicon/favicon.ico">
+</head>
+<body>
+<nav class="glass-nav">
+  <a href="/ru/" class="logo">Мемотека</a>
+  <div class="nav-links">
+    <a href="/ru/about/">О проекте</a>
+    <a href="/ru/memes/">Мемы</a>
+    <div class="select-group">
+      <select id="theme-switch"><option value="system">🌓 Системная</option><option value="light">☀️ Светлая</option><option value="dark">🌙 Тёмная</option></select>
+      <select id="lang-switch"><option value="ru" selected>🇷🇺 Русский</option><option value="en">🇬🇧 English</option></select>
+    </div>
+  </div>
+</nav>
+<main class="container">
+  <h1>Галерея мемов</h1>
+  <p>Кликай по любой карточке — фото, видео, гифка или аудио откроются во весь экран. Для видео есть кастомные кнопки (появится при наведении).</p>
+  <div id="memesContainer" class="memes-grid"></div>
+</main>
+<script src="/js/common.js"></script>
+<script src="/js/lang-switcher.js"></script>
+</body>
+</html>

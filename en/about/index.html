@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Memoteka</title>
+  <meta name="description" content="Memoteka – modern media vault for memes, photos, videos, gifs and audio. Made with love for web tech.">
+  <meta property="og:title" content="Memoteka — About">
+  <meta property="og:description" content="Discover a convenient way to store and view media.">
+  <meta property="og:image" content="/cdn/favicon/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/x-icon" href="/cdn/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/cdn/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/cdn/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/cdn/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/cdn/favicon/site.webmanifest">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+<nav class="glass-nav">
+  <a href="/en/" class="logo">Memoteka</a>
+  <div class="nav-links">
+    <a href="/en/about/">About</a>
+    <a href="/en/memes/">Memes</a>
+    <div class="select-group">
+      <select id="theme-switch"><option value="system">🌓 System</option><option value="light">☀️ Light</option><option value="dark">🌙 Dark</option></select>
+      <select id="lang-switch"><option value="ru">🇷🇺 Русский</option><option value="en" selected>🇬🇧 English</option></select>
+    </div>
+  </div>
+</nav>
+<main class="container">
+  <h1>About Memoteka</h1>
+  <p><strong>Memoteka</strong> is your personal archive of memes, photos, videos, gifs and audio. Built for those who want a beautiful and convenient way to store their media.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>🎨 Modern design: glassmorphism navigation, smooth animations, blur, gradients.</li>
+    <li>🌗 Adaptive theme: light, dark or system — choose from dropdown.</li>
+    <li>🌍 Two languages: Russian and English – instant switching.</li>
+    <li>🖼️ Meme gallery: photos, videos, gifs, audio – all as cards.</li>
+    <li>🔍 Lightbox: click on a card – content opens fullscreen (with custom video player).</li>
+    <li>🎮 Custom video player: play/mute buttons appear on hover.</li>
+    <li>📱 Fully responsive: from phones to wide monitors.</li>
+  </ul>
+  <p>All files are stored in <code>/cdn/assets/</code>. You can add your own by editing the array in <code>/js/common.js</code>.</p>
+  <p><a href="/en/memes/">Go to the meme gallery →</a></p>
+</main>
+<script src="/js/common.js"></script>
+<script src="/js/lang-switcher.js"></script>
+</body>
+</html>
