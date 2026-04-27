@@ -104,14 +104,14 @@
   ],
   "screenshots": [
     {
-      "src": "/cdn/manifest/screenshots/desktop-en.jpg",
+      "src": "/cdn/manifest/screenshots/desktop-en.png",
       "sizes": "1920x1080",
       "type": "image/jpeg",
       "form_factor": "wide",
       "label": "Memoteka desktop version"
     },
     {
-      "src": "/cdn/manifest/screenshots/mobile-en.jpg",
+      "src": "/cdn/manifest/screenshots/mobile-en.png",
       "sizes": "1080x1920",
       "type": "image/jpeg",
       "form_factor": "narrow",
