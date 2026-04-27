@@ -1,16 +1,16 @@
-console.log('theme-switcher loaded');
-console.log('themeDropdown found:', document.querySelector('.theme-dropdown'));
 // Кастомный выпадающий список для темы
 document.addEventListener('DOMContentLoaded', function() {
   const themeDropdown = document.querySelector('.theme-dropdown');
+  console.log('theme-switcher: found', themeDropdown);
   if (!themeDropdown) return;
 
   const trigger = themeDropdown.querySelector('.dropdown-trigger');
   const menu = themeDropdown.querySelector('.dropdown-menu');
   const items = themeDropdown.querySelectorAll('.dropdown-item');
   const currentTheme = localStorage.getItem('memotekaTheme') || 'system';
+  console.log('currentTheme', currentTheme);
 
-  // Функция обновления иконки в триггере
+  // Функция обновления иконки в триггере (улучшена)
   const setTriggerIcon = (theme) => {
     let svg = '';
     if (theme === 'light') {
@@ -21,7 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
       svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg>`;
     }
     const span = trigger.querySelector('span:first-child');
-    if (span) span.innerHTML = svg;
+    if (span) {
+      span.innerHTML = svg;
+      console.log('icon updated for theme', theme);
+    } else {
+      console.error('span not found in trigger');
+    }
   };
 
   setTriggerIcon(currentTheme);
@@ -29,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Открыть/закрыть
   trigger.addEventListener('click', (e) => {
     e.stopPropagation();
+    console.log('theme trigger clicked');
     menu.classList.toggle('show');
   });
 
@@ -37,9 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
     item.addEventListener('click', (e) => {
       e.stopPropagation();
       const theme = item.getAttribute('data-theme');
-      if (theme) {
-        setTheme(theme); // функция из common.js
+      console.log('theme selected', theme);
+      if (theme && typeof setTheme === 'function') {
+        setTheme(theme);
         setTriggerIcon(theme);
+      } else {
+        console.error('setTheme not found or theme missing');
       }
       menu.classList.remove('show');
     });
@@ -47,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Закрытие по клику вне
   document.addEventListener('click', (e) => {
-    if (!themeDropdown.contains(e.target)) menu.classList.remove('show');
+    if (!themeDropdown.contains(e.target)) {
+      if (menu.classList.contains('show')) menu.classList.remove('show');
+    }
   });
 });

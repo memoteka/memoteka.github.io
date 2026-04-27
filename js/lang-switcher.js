@@ -1,9 +1,7 @@
-console.log('theme-switcher loaded');
-console.log('themeDropdown found:', document.querySelector('.theme-dropdown'));
-// Кастомный выпадающий список для переключения языка
+// Кастомный выпадающий список для переключения языка (игнорируем theme-dropdown)
 document.addEventListener('DOMContentLoaded', function() {
-  // Найти все элементы .custom-dropdown (один на странице, но можно несколько)
-  const dropdowns = document.querySelectorAll('.custom-dropdown');
+  const dropdowns = document.querySelectorAll('.custom-dropdown:not(.theme-dropdown)');
+  console.log('lang-switcher found dropdowns:', dropdowns.length);
   if (!dropdowns.length) return;
 
   dropdowns.forEach(dropdown => {
@@ -12,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const items = dropdown.querySelectorAll('.dropdown-item');
     const currentLang = document.documentElement.lang === 'ru' ? 'ru' : 'en';
 
-    // Установить текущий флаг в триггере
     const setTriggerFlag = (lang) => {
       const flagSvg = lang === 'ru' 
         ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13"><path fill="#fff" d="M0 0h9v3H0z"/><path fill="#d52b1e" d="M0 3h9v3H0z"/><path fill="#0039a6" d="M0 2h9v2H0z"/></svg>'
@@ -22,20 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     setTriggerFlag(currentLang);
 
-    // Открыть/закрыть меню
     trigger.addEventListener('click', (e) => {
       e.stopPropagation();
       menu.classList.toggle('show');
     });
 
-    // Клик по пункту меню
     items.forEach(item => {
       item.addEventListener('click', (e) => {
         e.stopPropagation();
         const lang = item.getAttribute('data-lang');
         if (lang && lang !== currentLang) {
           localStorage.setItem('memotekaLang', lang);
-          // Перенаправление на соответствующий раздел
           let path = window.location.pathname;
           if (path.startsWith('/ru/')) path = path.replace('/ru/', `/${lang}/`);
           else if (path.startsWith('/en/')) path = path.replace('/en/', `/${lang}/`);
@@ -47,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Закрыть при клике вне
     document.addEventListener('click', (e) => {
       if (!dropdown.contains(e.target)) menu.classList.remove('show');
     });
