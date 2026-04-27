@@ -32,6 +32,7 @@ let currentType = null;
 
 function openLightbox(url, type) {
   lightbox.classList.add('active');
+  document.body.classList.add('lightbox-open');
   while (lightbox.firstChild !== closeBtn) {
     lightbox.removeChild(lightbox.firstChild);
   }
@@ -152,6 +153,7 @@ function formatTime(sec) {
 
 closeBtn.onclick = () => {
   lightbox.classList.remove('active');
+  document.body.classList.remove('lightbox-open');
   if (currentMedia) {
     currentMedia.pause();
     currentMedia.src = '';
