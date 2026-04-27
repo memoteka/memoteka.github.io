@@ -323,22 +323,17 @@ select {
   color: #ffffff;
 }
 
-/* Тултипы для дропдаунов */
-.custom-dropdown {
-  position: relative;
-}
-
+/* Тултипы для дропдаунов (появляются снизу) */
 .custom-dropdown .dropdown-trigger {
   position: relative;
 }
 
-/* Стиль тултипа (появляется при наведении на .dropdown-trigger) */
 .custom-dropdown .dropdown-trigger::before {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 100%; /* над триггером */
+  top: 100%;                    /* Снизу от триггера */
   left: 50%;
-  transform: translateX(-50%) translateY(8px);
+  transform: translateX(-50%) translateY(-8px);
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
   color: white;
@@ -356,26 +351,30 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* При наведении на триггер показываем тултип */
 .custom-dropdown .dropdown-trigger:hover::before {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* Темная тема — чуть светлее фон */
+/* Скрываем тултип, когда меню открыто */
+.custom-dropdown:has(.dropdown-menu.show) .dropdown-trigger::before {
+  display: none;
+}
+
+/* Тёмная тема — тултип светлый */
 [data-theme="dark"] .custom-dropdown .dropdown-trigger::before {
   background: rgba(255, 255, 255, 0.85);
   color: #1f2937;
   border-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Светлая тема — как было, но можно немного светлее */
+/* Светлая тема — тултип тёмный (как обычно) */
 [data-theme="light"] .custom-dropdown .dropdown-trigger::before {
   background: rgba(0, 0, 0, 0.8);
   color: white;
 }
 
-/* Адаптив: на мобилках убираем тултипы, чтобы не мешали */
+/* На мобилках тултипы не нужны */
 @media (max-width: 768px) {
   .custom-dropdown .dropdown-trigger::before {
     display: none;
