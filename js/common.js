@@ -94,27 +94,27 @@ function initVideoPlayers() {
   });
 }
 
-// ========== ТВОИ ФАЙЛЫ (двуязычные названия) ==========
+// ========== ТВОИ ФАЙЛЫ (полный список) ==========
 const memesLibrary = {
   photos: [
-    { nameRu: 'Простоквашино', nameEn: 'Prostokvashino', file: '/cdn/assets/photos/1.jpg' },
-    { nameRu: 'Кошак', nameEn: 'Big Cat', file: '/cdn/assets/photos/2.webp' },
-    { nameRu: 'Мем', nameEn: 'Meme', file: '/cdn/assets/photos/3.png' },
-    { nameRu: 'Котик', nameEn: 'Kitty', file: '/cdn/assets/photos/cat.jpg' },
-    { nameRu: 'Закат', nameEn: 'Sunset', file: '/cdn/assets/photos/sunset.jpg' }
-	{ nameRu: 'Пердёж', nameEn: 'Fart', file: '/cdn/assets/photos/fart.jpg' }
+    { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
+    { name: 'Кошак', file: '/cdn/assets/photos/2.webp' },
+    { name: 'Мем', file: '/cdn/assets/photos/3.png' },
+    { name: 'Котик', file: '/cdn/assets/photos/cat.jpg' },
+    { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' }
+	{ name: 'Пердёж', file: '/cdn/assets/photos/fart.jpg' }
   ],
   videos: [
-    { nameRu: 'Реакция обида, боль и разочарование', nameEn: 'Reaction: pain, grief and disappointment', file: '/cdn/assets/videos/demo.mp4' },
-    { nameRu: 'Ну, типа, ура!', nameEn: 'Well, kind of, hooray!', file: '/cdn/assets/videos/nature.webm' }
+    { name: 'Реакция обида, боль и разочарование', file: '/cdn/assets/videos/demo.mp4' },
+    { name: 'Ну, типа, ура!', file: '/cdn/assets/videos/nature.webm' }
   ],
   gifs: [
-    { nameRu: 'Негр', nameEn: 'Black guy', file: '/cdn/assets/gifs/funny.gif' },
-    { nameRu: 'Сигма', nameEn: 'Sigma', file: '/cdn/assets/gifs/reaction.gif' }
+    { name: 'Негр', file: '/cdn/assets/gifs/funny.gif' },
+    { name: 'Сигма', file: '/cdn/assets/gifs/reaction.gif' }
   ],
   audios: [
-    { nameRu: 'С писюном, блядь, поиграй!', nameEn: 'Play with the dick, fuck!', file: '/cdn/assets/audios/beat.mp3' },
-    { nameRu: 'Какие-то арабы или чё ваще, хз, короче', nameEn: 'Some Arabs or whatever, I dunno', file: '/cdn/assets/audios/voice.ogg' }
+    { name: 'С писюном, блядь, поиграй!', file: '/cdn/assets/audios/beat.mp3' },
+    { name: 'Какие-то арабы или чё ваще, хз, короче', file: '/cdn/assets/audios/voice.ogg' }
   ]
 };
 
@@ -122,47 +122,38 @@ function renderMemes(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = '';
-  
-  // Определяем текущий язык страницы
-  const lang = document.documentElement.lang === 'en' ? 'en' : 'ru';
-  
   const all = [
     ...memesLibrary.photos.map(m => ({ ...m, type: 'photo' })),
     ...memesLibrary.videos.map(m => ({ ...m, type: 'video' })),
     ...memesLibrary.gifs.map(m => ({ ...m, type: 'gif' })),
     ...memesLibrary.audios.map(m => ({ ...m, type: 'audio' }))
   ];
-  
   all.forEach(meme => {
     const card = document.createElement('div');
     card.className = 'meme-card';
     card.dataset.url = meme.file;
     card.dataset.type = meme.type;
     
-    // Выбираем название в зависимости от языка
-    const displayName = lang === 'en' ? meme.nameEn : meme.nameRu;
-    
     let preview = '';
     if (meme.type === 'video') {
       preview = `<div class="video-wrapper"><video class="meme-preview" src="${meme.file}" muted preload="metadata"></video></div>`;
     } else if (meme.type === 'audio') {
+      // Для аудио показываем иконку и название
       preview = `<div class="meme-preview" style="background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎵</div>`;
     } else {
-      preview = `<img class="meme-preview" src="${meme.file}" alt="${displayName}" loading="lazy">`;
+      preview = `<img class="meme-preview" src="${meme.file}" alt="${meme.name}" loading="lazy">`;
     }
-    
     card.innerHTML = `
       ${preview}
       <div class="meme-info">
-        <div class="meme-title">${displayName}</div>
+        <div class="meme-title">${meme.name}</div>
         <div class="meme-type">${meme.type}</div>
       </div>
     `;
     container.appendChild(card);
   });
-  
   bindMemeClicks();
-  initVideoPlayers();
+  initVideoPlayers(); // для видео-превью внутри карточек
 }
 
 document.addEventListener('DOMContentLoaded', () => {
