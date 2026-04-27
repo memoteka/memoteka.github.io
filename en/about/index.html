@@ -62,15 +62,15 @@
 </head>
 <body>
 <nav class="glass-nav">
-  <a href="/ru/" class="logo">Мемотека</a>
+  <a href="/en/" class="logo">Memoteka</a>
   <div class="nav-links">
-    <a href="/ru/about/">О проекте</a>
-    <a href="/ru/memes/">Мемы</a>
+    <a href="/en/about/">About</a>
+    <a href="/en/memes/">Memes</a>
     <div class="select-group">
       
-      <!-- КАСТОМНЫЙ ДРОПДАУН ТЕМЫ (рус) -->
+      <!-- CUSTOM THEME DROPDOWN (English) -->
       <div class="custom-dropdown theme-dropdown">
-        <div class="dropdown-trigger" data-tooltip="Тема">
+        <div class="dropdown-trigger" data-tooltip="Theme">
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -89,7 +89,7 @@
               <line x1="12" y1="17" x2="12" y2="21"></line>
               <circle cx="12" cy="7" r="2"></circle>
             </svg>
-            Системная
+            System
           </div>
           <div class="dropdown-item" data-theme="light">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -103,25 +103,31 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-            Светлая
+            Light
           </div>
           <div class="dropdown-item" data-theme="dark">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
-            Тёмная
+            Dark
           </div>
         </div>
       </div>
 
-      <!-- КАСТОМНЫЙ ДРОПДАУН ЯЗЫКА (рус) -->
+      <!-- CUSTOM LANGUAGE DROPDOWN (English) -->
       <div class="custom-dropdown">
-        <div class="dropdown-trigger" data-tooltip="Язык">
+        <div class="dropdown-trigger" data-tooltip="Language">
           <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13">
-              <path fill="#fff" d="M0 0h9v3H0z"/>
-              <path fill="#d52b1e" d="M0 3h9v3H0z"/>
-              <path fill="#0039a6" d="M0 2h9v2H0z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10">
+              <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+              <clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+              <g clip-path="url(#s)">
+                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+              </g>
             </svg>
           </span>
           <span class="dropdown-arrow">▼</span>
@@ -133,7 +139,7 @@
               <path fill="#d52b1e" d="M0 3h9v3H0z"/>
               <path fill="#0039a6" d="M0 2h9v2H0z"/>
             </svg>
-            Русский
+            Russian
           </div>
           <div class="dropdown-item" data-lang="en">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10">
