@@ -153,6 +153,7 @@ select {
   color: var(--text-secondary);
   text-transform: uppercase;
 }
+/* Лайтбокс – фон на весь экран, без прокрутки */
 .lightbox {
   display: none;
   position: fixed;
@@ -160,32 +161,147 @@ select {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(20px);
   z-index: 1000;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  overflow: hidden; /* убираем прокрутку самого лайтбокса */
 }
-.lightbox.active { display: flex; }
-.lightbox-content {
-  max-width: 90vw;
-  max-height: 80vh;
-  object-fit: contain;
+.lightbox.active {
+  display: flex;
 }
-.lightbox video {
-  max-width: 90vw;
-  max-height: 80vh;
-}
+
+/* Кнопка закрытия – всегда сверху справа */
 .close-lightbox {
-  position: absolute;
+  position: fixed;
   top: 20px;
-  right: 40px;
-  font-size: 3rem;
+  right: 30px;
+  font-size: 2.5rem;
   color: white;
   cursor: pointer;
   background: none;
   border: none;
+  z-index: 1001;
+  transition: transform 0.2s;
+}
+.close-lightbox:hover {
+  transform: scale(1.1);
+}
+
+/* Контейнер плеера – идеальное центрирование */
+.lightbox-player-container {
+  position: relative;
+  width: auto;
+  max-width: 90vw;
+  max-height: 85vh;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Для видео – чтобы не вылезало */
+.lightbox-media {
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Для аудио – более узкий контейнер, компактно */
+.lightbox-player-container.audio-only {
+  max-width: 500px;
+  width: 90vw;
+  padding: 20px;
+  background: #111;
+}
+
+/* Панель управления всегда внизу контейнера */
+.lightbox-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Остальные стили для кнопок, прогресс-бара и времени */
+.lightbox-controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.lightbox-controls button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.lightbox-progress {
+  flex: 1;
+  min-width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.lightbox-progress-filled {
+  width: 0%;
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 2px;
+}
+.lightbox-time {
+  font-size: 0.8rem;
+  color: white;
+  font-family: monospace;
+}
+.lightbox-volume {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lightbox-volume-slider {
+  width: 70px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  height: 4px;
+  appearance: none;
+}
+.lightbox-volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Изображения (фото/гиф) */
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 .video-wrapper {
   position: relative;
