@@ -307,3 +307,26 @@ select {
   .dropdown-trigger { padding: 0.3rem 1.2rem 0.3rem 0.6rem; }
   .dropdown-trigger svg { width: 1rem; }
 }
+
+/* Улучшаем контраст в дропдауне для светлой темы */
+[data-theme="light"] .dropdown-menu {
+  background: rgba(255, 255, 255, 0.98); /* Почти непрозрачный белый */
+  backdrop-filter: blur(16px);
+}
+
+[data-theme="light"] .dropdown-item {
+  color: #000000; /* Чёрный текст вместо серого */
+}
+
+[data-theme="light"] .dropdown-item svg {
+  stroke: #000000; /* Иконки тоже чёрные */
+  fill: none;
+}
+
+/* А для тёмной темы (на всякий случай) тоже можно усилить, но там и так норм */
+[data-theme="dark"] .dropdown-item {
+  color: #ffffff;
+}
+[data-theme="dark"] .dropdown-item svg {
+  stroke: #ffffff;
+}
