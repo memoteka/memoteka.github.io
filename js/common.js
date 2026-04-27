@@ -94,27 +94,105 @@ function initVideoPlayers() {
   });
 }
 
-// ========== ТВОИ ФАЙЛЫ (полный список) ==========
+// ========== МУЛЬТИЯЗЫЧНЫЙ СПИСОК ФАЙЛОВ ==========
 const memesLibrary = {
-  photos: [
-    { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
-    { name: 'Кошак', file: '/cdn/assets/photos/2.webp' },
-    { name: 'Мем', file: '/cdn/assets/photos/3.png' },
-    { name: 'Котик', file: '/cdn/assets/photos/cat.jpg' },
-    { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' }
-  ],
-  videos: [
-    { name: 'Реакция обида, боль и разочарование', file: '/cdn/assets/videos/demo.mp4' },
-    { name: 'Ну, типа, ура!', file: '/cdn/assets/videos/nature.webm' }
-  ],
-  gifs: [
-    { name: 'Негр', file: '/cdn/assets/gifs/funny.gif' },
-    { name: 'Сигма', file: '/cdn/assets/gifs/reaction.gif' }
-  ],
-  audios: [
-    { name: 'С писюном, блядь, поиграй!', file: '/cdn/assets/audios/beat.mp3' },
-    { name: 'Какие-то арабы или чё ваще, хз, короче', file: '/cdn/assets/audios/voice.ogg' }
-  ]
+  ru: {
+    photos: [
+      { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
+      { name: 'Кошак', file: '/cdn/assets/photos/2.webp' },
+      { name: 'Мем', file: '/cdn/assets/photos/3.png' },
+      { name: 'Котик', file: '/cdn/assets/photos/cat.jpg' },
+      { name: 'Закат', file: '/cdn/assets/photos/sunset.jpg' }
+    ],
+    videos: [
+      { name: 'Реакция обида, боль и разочарование', file: '/cdn/assets/videos/demo.mp4' },
+      { name: 'Ну, типа, ура!', file: '/cdn/assets/videos/nature.webm' }
+    ],
+    gifs: [
+      { name: 'Негр', file: '/cdn/assets/gifs/funny.gif' },
+      { name: 'Сигма', file: '/cdn/assets/gifs/reaction.gif' }
+    ],
+    audios: [
+      { name: 'С писюном, блядь, поиграй!', file: '/cdn/assets/audios/beat.mp3' },
+      { name: 'Какие-то арабы или чё ваще, хз, короче', file: '/cdn/assets/audios/voice.ogg' }
+    ]
+  },
+  en: {
+    photos: [
+      { name: 'Prostokvashino', file: '/cdn/assets/photos/1.jpg' },
+      { name: 'Cat', file: '/cdn/assets/photos/2.webp' },
+      { name: 'Meme', file: '/cdn/assets/photos/3.png' },
+      { name: 'Kitty', file: '/cdn/assets/photos/cat.jpg' },
+      { name: 'Sunset', file: '/cdn/assets/photos/sunset.jpg' }
+    ],
+    videos: [
+      { name: 'Resentment, pain and disappointment', file: '/cdn/assets/videos/demo.mp4' },
+      { name: 'Well, kinda, hooray!', file: '/cdn/assets/videos/nature.webm' }
+    ],
+    gifs: [
+      { name: 'Black guy', file: '/cdn/assets/gifs/funny.gif' },
+      { name: 'Sigma', file: '/cdn/assets/gifs/reaction.gif' }
+    ],
+    audios: [
+      { name: 'Play with the dick, fuck!', file: '/cdn/assets/audios/beat.mp3' },
+      { name: 'Some Arabs or whatever, I dunno, anyway', file: '/cdn/assets/audios/voice.ogg' }
+    ]
+  }
+};
+
+function renderMemes(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  
+  // Определяем текущий язык
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'ru';
+  const data = memesLibrary[lang];
+  
+  const all = [
+    ...data.photos.map(m => ({ ...m, type: 'photo' })),
+    ...data.videos.map(m => ({ ...m, type: 'video' })),
+    ...data.gifs.map(m => ({ ...m, type: 'gif' })),
+    ...data.audios.map(m => ({ ...m, type: 'audio' }))
+  ];
+  
+  container.innerHTML = '';
+  all.forEach(meme => {
+    const card = document.createElement('div');
+    card.className = 'meme-card';
+    card.dataset.url = meme.file;
+    card.dataset.type = meme.type;
+    
+    let preview = '';
+    if (meme.type === 'video') {
+      preview = `<div class="video-wrapper"><video class="meme-preview" src="${meme.file}" muted preload="metadata"></video></div>`;
+    } else if (meme.type === 'audio') {
+      preview = `<div class="meme-preview" style="background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎵</div>`;
+    } else {
+      preview = `<img class="meme-preview" src="${meme.file}" alt="${meme.name}" loading="lazy">`;
+    }
+    card.innerHTML = `
+      ${preview}
+      <div class="meme-info">
+        <div class="meme-title">${escapeHtml(meme.name)}</div>
+        <div class="meme-type">${meme.type}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  bindMemeClicks();
+  initVideoPlayers();
+}
+
+// Простая функция для экранирования HTML (чтобы не ломало при кавычках и т.п.)
+function escapeHtml(str) {
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+    return c;
+  });
 };
 
 function renderMemes(containerId) {
