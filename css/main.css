@@ -30,18 +30,18 @@ body {
   --scrollbar-thumb: #94a3b8;
 }
 [data-theme="dark"] {
-  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  --surface: rgba(30,41,59,0.85);
-  --surface-glass: rgba(30,41,59,0.5);
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+  --surface: rgba(0, 0, 0, 0.85);
+  --surface-glass: rgba(0, 0, 0, 0.5);
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --accent: #60a5fa;
   --accent-hover: #3b82f6;
-  --card-bg: rgba(30,41,59,0.7);
-  --border: rgba(255,255,255,0.1);
-  --shadow: 0 20px 35px -10px rgba(0,0,0,0.4);
-  --scrollbar-track: #334155;
-  --scrollbar-thumb: #64748b;
+  --card-bg: rgba(0, 0, 0, 0.7);
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.8);
+  --scrollbar-track: #1a1a1a;
+  --scrollbar-thumb: #444;
 }
 [data-theme="light"] {
   --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
