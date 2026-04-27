@@ -310,23 +310,30 @@ select {
 
 /* Улучшаем контраст в дропдауне для светлой темы */
 [data-theme="light"] .dropdown-menu {
-  background: rgba(255, 255, 255, 0.98); /* Почти непрозрачный белый */
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(16px);
 }
 
 [data-theme="light"] .dropdown-item {
-  color: #000000; /* Чёрный текст вместо серого */
+  color: #000000;
 }
 
-[data-theme="light"] .dropdown-item svg {
-  stroke: #000000; /* Иконки тоже чёрные */
+/* Применяем стили ТОЛЬКО к иконкам тем (у них есть атрибут data-theme у родителя или класс) */
+[data-theme="light"] .dropdown-item[data-theme] svg,
+[data-theme="light"] .dropdown-item[data-theme] svg * {
+  stroke: #000000;
   fill: none;
 }
 
-/* А для тёмной темы (на всякий случай) тоже можно усилить, но там и так норм */
-[data-theme="dark"] .dropdown-item {
-  color: #ffffff;
-}
-[data-theme="dark"] .dropdown-item svg {
+/* Для тёмной темы тоже только для иконок тем */
+[data-theme="dark"] .dropdown-item[data-theme] svg,
+[data-theme="dark"] .dropdown-item[data-theme] svg * {
   stroke: #ffffff;
+  fill: none;
+}
+
+/* Флаги (без атрибута data-theme) остаются без изменений */
+[data-theme="light"] .dropdown-item:not([data-theme]) svg {
+  stroke: none;
+  fill: initial;
 }
