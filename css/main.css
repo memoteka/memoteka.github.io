@@ -501,8 +501,8 @@ select {
   fill: none;
 }
 
-/* Инвертируем иконки в тёмной теме, чтобы они стали светлыми */
-[data-theme="dark"] img[src*="/cdn/icons/"] {
+/* Инвертируем иконки в тёмной теме, но не трогаем логотип и фавиконки */
+[data-theme="dark"] img[src*="/cdn/icons/"]:not(.logo-icon) {
   filter: brightness(0) invert(1);
 }
 
@@ -511,5 +511,4 @@ select {
   height: 1.8rem;
   vertical-align: middle;
   margin-right: 0.5rem;
-  display: inline-block;
 }
