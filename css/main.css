@@ -610,3 +610,8 @@ select {
 .yandex { background: #F53A1B; }
 .da { background: #FF6600; }
 .donatepay { background: #2E8B57; }
+
+.btn-donate, .alt-btn {
+  user-select: none;
+  -webkit-user-select: none;
+}
