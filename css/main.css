@@ -501,35 +501,14 @@ select {
   fill: none;
 }
 
-/* Инвертируем иконки в тёмной теме, но не трогаем логотип и фавиконки */
-[data-theme="dark"] img[src*="/cdn/icons/"]:not(.logo-icon) {
+/* Инвертируем иконки в тёмной теме, чтобы они стали светлыми */
+[data-theme="dark"] img[src*="/cdn/icons/"] {
   filter: brightness(0) invert(1);
 }
 
-/* Полное отключение эффектов для логотипа */
-.logo {
-  transition: none !important;
-  transform: none !important;
-  -webkit-tap-highlight-color: transparent;
-  text-decoration: none !important;
-  outline: none !important;
-  cursor: pointer; /* курсор всё равно должен быть pointer, чтобы клик был понятен */
-}
-
-.logo:hover,
-.logo:focus,
-.logo:active {
-  background: linear-gradient(45deg, var(--accent), #a855f7) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-  transform: none !important;
-  text-decoration: none !important;
-  outline: none !important;
-}
-
 .logo-icon {
-  transition: none !important;
-  transform: none !important;
-  filter: none !important; /* чтобы фильтр для иконок в тёмной теме не срабатывал */
+  width: 1.8rem;
+  height: 1.8rem;
+  vertical-align: middle;
+  margin-right: 0.5rem;
 }
