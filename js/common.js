@@ -16,7 +16,7 @@ if (themeSelect) {
   themeSelect.addEventListener('change', (e) => setTheme(e.target.value));
 }
 
-// ========== ЛАЙТБОКС С КАСТОМНЫМ ПЛЕЕРОМ (рабочая версия) ==========
+// ========== ЛАЙТБОКС С КАСТОМНЫМ ПЛЕЕРОМ (ИСПРАВЛЕННЫЙ) ==========
 const lightbox = document.createElement('div');
 lightbox.id = 'lightbox';
 lightbox.className = 'lightbox';
@@ -27,33 +27,48 @@ closeBtn.className = 'close-lightbox';
 closeBtn.innerHTML = '&times;';
 lightbox.appendChild(closeBtn);
 
-let currentPlayer = null; // для очистки
+let currentMedia = null; // текущий элемент video/audio
 
-function openLightbox(url, type) {
-  // Закрываем предыдущий плеер, если есть
-  if (currentPlayer) {
-    if (currentPlayer.pause) currentPlayer.pause();
-    currentPlayer = null;
-  }
-  // Очищаем содержимое лайтбокса, оставляя только кнопку закрытия
+// Функция полной очистки лайтбокса (кроме кнопки закрытия)
+function clearLightbox() {
+  // Удаляем все дочерние узлы, кроме closeBtn
   while (lightbox.firstChild !== closeBtn) {
     lightbox.removeChild(lightbox.firstChild);
   }
+  // Останавливаем и очищаем текущий медиа-элемент
+  if (currentMedia) {
+    currentMedia.pause();
+    currentMedia.src = '';
+    currentMedia = null;
+  }
+}
 
+function formatTime(sec) {
+  if (isNaN(sec)) return '0:00';
+  const minutes = Math.floor(sec / 60);
+  const seconds = Math.floor(sec % 60);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+function openLightbox(url, type) {
+  // Полностью чистим лайтбокс перед открытием
+  clearLightbox();
   lightbox.classList.add('active');
 
   if (type === 'video' || type === 'audio') {
-    // Создаём контейнер плеера
+    // Контейнер плеера
     const container = document.createElement('div');
     container.className = 'lightbox-player-container';
     if (type === 'audio') container.classList.add('audio-only');
 
+    // Медиаэлемент
     const media = document.createElement(type === 'video' ? 'video' : 'audio');
     media.className = 'lightbox-media';
     media.src = url;
     if (type === 'video') media.setAttribute('playsinline', '');
     media.preload = 'metadata';
 
+    // Панель управления
     const controls = document.createElement('div');
     controls.className = 'lightbox-controls';
 
@@ -138,42 +153,29 @@ function openLightbox(url, type) {
         media.currentTime = pos * media.duration;
       }
     });
-    media.play().catch(e => console.log('autoplay prevented', e));
-    currentPlayer = media;
+
+    currentMedia = media;
+    media.play().catch(e => console.log('autoplay error', e));
   } else {
     // Фото или GIF
     const img = document.createElement('img');
     img.className = 'lightbox-content';
     img.src = url;
     lightbox.appendChild(img);
-    currentPlayer = null;
+    currentMedia = null;
   }
 }
 
-function formatTime(sec) {
-  if (isNaN(sec)) return '0:00';
-  const minutes = Math.floor(sec / 60);
-  const seconds = Math.floor(sec % 60);
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
-
+// Закрытие по клику на крестик или на фон
 closeBtn.onclick = () => {
   lightbox.classList.remove('active');
-  if (currentPlayer) {
-    currentPlayer.pause();
-    currentPlayer.src = '';
-    currentPlayer = null;
-  }
-  // Очистка всех элементов, кроме кнопки закрытия
-  while (lightbox.firstChild !== closeBtn) {
-    lightbox.removeChild(lightbox.firstChild);
-  }
+  clearLightbox();
 };
 lightbox.onclick = (e) => {
   if (e.target === lightbox) closeBtn.click();
 };
 
-// ========== ГАЛЕРЕЯ И ПЛЕЕР ДЛЯ КАРТОЧЕК ==========
+// ========== ГАЛЕРЕЯ И КАСТОМНЫЙ ПЛЕЕР ДЛЯ КАРТОЧЕК ==========
 function bindMemeClicks() {
   document.querySelectorAll('.meme-card').forEach(card => {
     card.addEventListener('click', (e) => {
@@ -205,7 +207,7 @@ function initVideoPlayers() {
   });
 }
 
-// ========== ТВОИ ФАЙЛЫ ==========
+// ========== ТВОИ ФАЙЛЫ (полностью сохранены) ==========
 const memesLibrary = {
   photos: [
     { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
