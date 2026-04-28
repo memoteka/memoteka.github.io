@@ -244,7 +244,7 @@ function renderMemes(containerId) {
     if (meme.type === 'video') {
       preview = `<div class="video-wrapper"><video class="meme-preview" src="${meme.file}" muted preload="metadata"></video></div>`;
     } else if (meme.type === 'audio') {
-      preview = `<div class="meme-preview" style="background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎵</div>`;
+      preview = `<div class="meme-preview" style="background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 3rem;"><img src="/cdn/icons/audio.svg"></div>`;
     } else {
       preview = `<img class="meme-preview" src="${meme.file}" alt="${meme.name}" loading="lazy">`;
     }

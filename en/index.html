@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Memoteka — largest meme, GIF, video & audio vault</title>
+  <title>Memoteka — the largest meme, GIF, video & audio vault</title>
   <meta name="description" content="Memoteka – thousands of memes, custom player, dark theme, instant lightbox. Add your own files and enjoy.">
   <meta property="og:title" content="Memoteka">
-  <meta property="og:description" content="Huge collection of memes with awesome design">
+  <meta property="og:description" content="The largest meme collection with awesome design">
   <meta property="og:image" content="/cdn/favicon/og-image.jpg">
   <meta property="og:url" content="https://memoteka.github.io/en/">
   <meta name="twitter:card" content="summary_large_image">
@@ -55,7 +55,7 @@
   <section class="hero">
     <div class="container hero-content">
       <h1>Welcome to <span class="gradient-text">Memoteka</span></h1>
-      <p class="hero-subtitle">Thousands of memes, GIFs, videos & audio. Custom player, lightbox, dark theme, and full freedom. Add your own files and share them.</p>
+      <p class="hero-subtitle">Thousands of memes, GIFs, videos & audio. Custom player, lightbox, dark theme, full freedom. Add your own files and share.</p>
       <div class="hero-buttons">
         <a href="/en/memes/" class="btn btn-primary">Enter the gallery</a>
         <a href="/en/about/" class="btn btn-secondary">How it works</a>
@@ -65,7 +65,7 @@
 
   <section class="random-meme">
     <div class="container">
-      <h2 class="section-title">🎲 Meme of the day</h2>
+      <h2 class="section-title"><img src="/cdn/icons/meme.svg" alt="Random meme" class="section-icon"> Meme of the day</h2>
       <div id="randomMemeCard" class="random-meme-card">
         <div class="random-meme-preview">Loading...</div>
         <div class="random-meme-title"></div>
@@ -85,7 +85,7 @@
 
   <section class="trending">
     <div class="container">
-      <h2 class="section-title">🔥 Trending memes</h2>
+      <h2 class="section-title"><img src="/cdn/icons/star.svg" alt="Trending" class="section-icon"> Trending memes</h2>
       <div class="trending-slider" id="trendingSlider">
         <div class="slider-track" id="sliderTrack"></div>
         <button class="slider-btn prev" id="sliderPrev">‹</button>
@@ -96,14 +96,14 @@
 
   <section class="recent">
     <div class="container">
-      <h2 class="section-title">🆕 Freshly added</h2>
+      <h2 class="section-title"><img src="/cdn/icons/heart.svg" alt="Fresh" class="section-icon"> Freshly added</h2>
       <div class="recent-grid" id="recentGrid"></div>
     </div>
   </section>
 
   <section class="top-categories">
     <div class="container">
-      <h2 class="section-title">🏆 Top categories</h2>
+      <h2 class="section-title"><img src="/cdn/icons/star.svg" alt="Top categories" class="section-icon"> Top categories</h2>
       <div class="categories-grid">
         <div class="category-card"><img src="/cdn/icons/meme.svg" alt="Memes"><span>Memes</span><div class="category-count" id="cat-memes">0</div></div>
         <div class="category-card"><img src="/cdn/icons/video.svg" alt="Videos"><span>Videos</span><div class="category-count" id="cat-videos">0</div></div>
@@ -115,45 +115,45 @@
 
   <section class="features">
     <div class="container">
-      <h2 class="section-title">Why Memoteka?</h2>
+      <h2 class="section-title"><img src="/cdn/icons/bolt.svg" alt="Features" class="section-icon"> Why Memoteka?</h2>
       <div class="features-grid">
-        <div class="feature-card"><img src="/cdn/icons/bolt.svg" alt=""><h3>Lightning fast</h3><p>Instant load, custom lightbox, butter‑smooth player.</p></div>
-        <div class="feature-card"><img src="/cdn/icons/theme.svg" alt=""><h3>Adaptive theme</h3><p>Light, dark, system – choose your vibe.</p></div>
-        <div class="feature-card"><img src="/cdn/icons/language.svg" alt=""><h3>Two languages</h3><p>🇷🇺 Russian / 🇬🇧 English – switch in one click.</p></div>
-        <div class="feature-card"><img src="/cdn/icons/shield.svg" alt=""><h3>No tracking</h3><p>Zero analytics, no third‑party scripts, no data theft.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/bolt.svg" alt=""><h3>Lightning fast</h3><p>Blazing fast load, custom lightbox, smooth player.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/theme.svg" alt=""><h3>Adaptive theme</h3><p>Light, dark, system – pick your vibe.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/language.svg" alt=""><h3>Two languages</h3><p>Russian / English – switch in one click.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/shield.svg" alt=""><h3>No tracking</h3><p>Zero analytics, no third-party scripts, no data theft.</p></div>
         <div class="feature-card"><img src="/cdn/icons/heart.svg" alt=""><h3>Your collection</h3><p>Drop any file into /cdn/assets – it appears in gallery.</p></div>
-        <div class="feature-card"><img src="/cdn/icons/users.svg" alt=""><h3>Open source</h3><p>Fork on GitHub and build your own unique site in minutes.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/users.svg" alt=""><h3>Open source</h3><p>Fork on GitHub and build your own site in minutes.</p></div>
       </div>
     </div>
   </section>
 
   <section class="howto">
     <div class="container">
-      <h2 class="section-title">📥 How to add your own meme?</h2>
+      <h2 class="section-title"><img src="/cdn/icons/bolt.svg" alt="How to" class="section-icon"> How to add your own meme?</h2>
       <div class="howto-steps">
         <div class="step">1. Upload files to <code>/cdn/assets/photos/</code>, <code>/videos/</code>, <code>/gifs/</code>, <code>/audios/</code></div>
         <div class="step">2. Edit the `memesLibrary` array in `/js/common.js` (add name and path)</div>
         <div class="step">3. Reload the page – new memes are here!</div>
-        <div class="step">🎉 Supported formats: jpg, png, webp, mp4, webm, gif, mp3, ogg</div>
+        <div class="step"><img src="/cdn/icons/star.svg" alt="Supported" style="width:1.2rem; vertical-align:middle; margin-right:0.3rem;"> Supported formats: jpg, png, webp, mp4, webm, gif, mp3, ogg</div>
       </div>
     </div>
   </section>
 
   <section class="faq">
     <div class="container">
-      <h2 class="section-title">🤔 Frequently asked</h2>
+      <h2 class="section-title"><img src="/cdn/icons/users.svg" alt="FAQ" class="section-icon"> Frequently asked</h2>
       <div class="faq-list">
-        <div class="faq-item"><div class="faq-question">❓ Can I add videos without seeking?</div><div class="faq-answer">Yes, our custom player has a progress bar with click & drag seeking.</div></div>
-        <div class="faq-item"><div class="faq-question">❓ Does it work on mobile?</div><div class="faq-answer">Fully responsive – lightbox and player work great on any screen.</div></div>
-        <div class="faq-item"><div class="faq-question">❓ How to change language?</div><div class="faq-answer">Click on the flag in the navigation and pick Russian or English.</div></div>
-        <div class="faq-item"><div class="faq-question">❓ Can I remove a meme?</div><div class="faq-answer">Just delete the file and its entry from the array – done.</div></div>
+        <div class="faq-item"><div class="faq-question">Can I add videos without seeking?</div><div class="faq-answer">Yes, custom player has a progress bar with click & drag seeking.</div></div>
+        <div class="faq-item"><div class="faq-question">Does it work on mobile?</div><div class="faq-answer">Fully responsive – lightbox and player work great on any screen.</div></div>
+        <div class="faq-item"><div class="faq-question">How to change language?</div><div class="faq-answer">Click the flag in the navigation and pick Russian or English.</div></div>
+        <div class="faq-item"><div class="faq-question">What if I want to delete a meme?</div><div class="faq-answer">Just delete the file and its entry from the array – done.</div></div>
       </div>
     </div>
   </section>
 
   <section class="testimonials">
     <div class="container">
-      <h2 class="section-title">💬 Testimonials</h2>
+      <h2 class="section-title"><img src="/cdn/icons/shield.svg" alt="Testimonials" class="section-icon"> Testimonials</h2>
       <div class="testimonials-grid">
         <div class="testimonial-card">«The most convenient way to watch memes. Player is fire, dark theme soothes my eyes.»<div class="author">— Nikolai, 25</div></div>
         <div class="testimonial-card">«I uploaded 50 of my GIFs – all displayed perfectly. Lightbox opens smoothly.»<div class="author">— Alina, 19</div></div>
@@ -267,7 +267,6 @@
   })();
 </script>
 <style>
-  /* same additional styles as in Russian version */
   .random-meme-card { background: var(--card-bg); border-radius: 1.5rem; padding: 1.5rem; text-align: center; margin: 1rem auto; max-width: 400px; }
   .trending-slider { position: relative; overflow: hidden; }
   .slider-track { display: flex; gap: 1rem; transition: transform 0.3s; }

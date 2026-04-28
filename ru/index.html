@@ -11,7 +11,6 @@
   <meta property="og:url" content="https://memoteka.github.io/ru/">
   <meta name="twitter:card" content="summary_large_image">
   
-  <!-- все фавиконы (как у тебя, я сокращу для читаемости, но ты вставь свои теги) -->
   <link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
   <link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/cdn/favicon/apple-touch-icon.png">
@@ -53,7 +52,6 @@
 </nav>
 
 <main>
-  <!-- Hero -->
   <section class="hero">
     <div class="container hero-content">
       <h1>Добро пожаловать в <span class="gradient-text">Мемотеку</span></h1>
@@ -65,10 +63,9 @@
     </div>
   </section>
 
-  <!-- Случайный мем дня -->
   <section class="random-meme">
     <div class="container">
-      <h2 class="section-title">🎲 Мем дня</h2>
+      <h2 class="section-title"><img src="/cdn/icons/meme.svg" alt="Случайный мем" class="section-icon"> Случайный мем дня</h2>
       <div id="randomMemeCard" class="random-meme-card">
         <div class="random-meme-preview">Загрузка...</div>
         <div class="random-meme-title"></div>
@@ -77,7 +74,6 @@
     </div>
   </section>
 
-  <!-- Статистика -->
   <section class="stats">
     <div class="container stats-grid">
       <div class="stat-card"><img src="/cdn/icons/photo.svg" alt="Фото" class="stat-icon"><div class="stat-number" id="stat-photos">0</div><div class="stat-label">Фото</div></div>
@@ -87,10 +83,9 @@
     </div>
   </section>
 
-  <!-- Тренды (слайдер) -->
   <section class="trending">
     <div class="container">
-      <h2 class="section-title">🔥 Трендовые мемы</h2>
+      <h2 class="section-title"><img src="/cdn/icons/star.svg" alt="Тренды" class="section-icon"> Трендовые мемы</h2>
       <div class="trending-slider" id="trendingSlider">
         <div class="slider-track" id="sliderTrack"></div>
         <button class="slider-btn prev" id="sliderPrev">‹</button>
@@ -99,18 +94,16 @@
     </div>
   </section>
 
-  <!-- Недавно добавленные -->
   <section class="recent">
     <div class="container">
-      <h2 class="section-title">🆕 Свежачок</h2>
+      <h2 class="section-title"><img src="/cdn/icons/heart.svg" alt="Свежие" class="section-icon"> Свежачок</h2>
       <div class="recent-grid" id="recentGrid"></div>
     </div>
   </section>
 
-  <!-- Топ категорий (с иконками) -->
   <section class="top-categories">
     <div class="container">
-      <h2 class="section-title">🏆 Топ категорий</h2>
+      <h2 class="section-title"><img src="/cdn/icons/star.svg" alt="Топ категорий" class="section-icon"> Топ категорий</h2>
       <div class="categories-grid">
         <div class="category-card"><img src="/cdn/icons/meme.svg" alt="Мемы"><span>Мемы</span><div class="category-count" id="cat-memes">0</div></div>
         <div class="category-card"><img src="/cdn/icons/video.svg" alt="Видео"><span>Видео</span><div class="category-count" id="cat-videos">0</div></div>
@@ -120,14 +113,13 @@
     </div>
   </section>
 
-  <!-- Преимущества -->
   <section class="features">
     <div class="container">
-      <h2 class="section-title">Почему Мемотека?</h2>
+      <h2 class="section-title"><img src="/cdn/icons/bolt.svg" alt="Преимущества" class="section-icon"> Почему Мемотека?</h2>
       <div class="features-grid">
         <div class="feature-card"><img src="/cdn/icons/bolt.svg" alt=""><h3>Молниеносно</h3><p>Загрузка на скорости света, лайтбокс с кастомным плеером без тормозов.</p></div>
         <div class="feature-card"><img src="/cdn/icons/theme.svg" alt=""><h3>Адаптивная тема</h3><p>Светлая, тёмная, системная – под любой кайф.</p></div>
-        <div class="feature-card"><img src="/cdn/icons/language.svg" alt=""><h3>Два языка</h3><p>🇷🇺 Русский / 🇬🇧 English – переключение в один клик.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/language.svg" alt=""><h3>Два языка</h3><p>Русский / English – переключение в один клик.</p></div>
         <div class="feature-card"><img src="/cdn/icons/shield.svg" alt=""><h3>Без слежки</h3><p>Никаких аналитик, сторонних скриптов и краж данных.</p></div>
         <div class="feature-card"><img src="/cdn/icons/heart.svg" alt=""><h3>Твоя коллекция</h3><p>Кидай любые файлы в /cdn/assets – они сразу появятся в галерее.</p></div>
         <div class="feature-card"><img src="/cdn/icons/users.svg" alt=""><h3>Открытый код</h3><p>Форкай на GitHub и делай свой уникальный сайт за минуту.</p></div>
@@ -135,36 +127,33 @@
     </div>
   </section>
 
-  <!-- Как добавить свой мем (инструкция) -->
   <section class="howto">
     <div class="container">
-      <h2 class="section-title">📥 Как пополнить Мемотеку?</h2>
+      <h2 class="section-title"><img src="/cdn/icons/bolt.svg" alt="Инструкция" class="section-icon"> Как пополнить Мемотеку?</h2>
       <div class="howto-steps">
         <div class="step">1. Закинь файлы в <code>/cdn/assets/photos/</code>, <code>/videos/</code>, <code>/gifs/</code>, <code>/audios/</code></div>
         <div class="step">2. Отредактируй массив `memesLibrary` в `/js/common.js` (добавь имя и путь)</div>
         <div class="step">3. Перезагрузи страницу – новые мемы уже здесь!</div>
-        <div class="step">🎉 Поддерживаются любые форматы: jpg, png, webp, mp4, webm, gif, mp3, ogg</div>
+        <div class="step"><img src="/cdn/icons/star.svg" alt="Поддерживается" style="width:1.2rem; vertical-align:middle; margin-right:0.3rem;"> Поддерживаются любые форматы: jpg, png, webp, mp4, webm, gif, mp3, ogg</div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ аккордеон -->
   <section class="faq">
     <div class="container">
-      <h2 class="section-title">🤔 Часто спрашивают</h2>
+      <h2 class="section-title"><img src="/cdn/icons/users.svg" alt="FAQ" class="section-icon"> Часто спрашивают</h2>
       <div class="faq-list">
-        <div class="faq-item"><div class="faq-question">❓ Можно ли добавлять видео без перемотки?</div><div class="faq-answer">Да, у нас кастомный плеер с прогресс-баром, перемотка кликом и перетаскиванием.</div></div>
-        <div class="faq-item"><div class="faq-question">❓ А работает ли на телефоне?</div><div class="faq-answer">Полный адаптив, лайтбокс и плеер корректно работают на любых экранах.</div></div>
-        <div class="faq-item"><div class="faq-question">❓ Как сменить язык?</div><div class="faq-answer">Нажми на флаг в навигации и выбери русский или английский.</div></div>
-        <div class="faq-item"><div class="faq-question">❓ А если я захочу удалить мем?</div><div class="faq-answer">Просто удали файл из папки и строчку из массива – профит.</div></div>
+        <div class="faq-item"><div class="faq-question">Можно ли добавлять видео без перемотки?</div><div class="faq-answer">Да, у нас кастомный плеер с прогресс-баром, перемотка кликом и перетаскиванием.</div></div>
+        <div class="faq-item"><div class="faq-question">А работает ли на телефоне?</div><div class="faq-answer">Полный адаптив, лайтбокс и плеер корректно работают на любых экранах.</div></div>
+        <div class="faq-item"><div class="faq-question">Как сменить язык?</div><div class="faq-answer">Нажми на флаг в навигации и выбери русский или английский.</div></div>
+        <div class="faq-item"><div class="faq-question">А если я захочу удалить мем?</div><div class="faq-answer">Просто удали файл из папки и строчку из массива – профит.</div></div>
       </div>
     </div>
   </section>
 
-  <!-- Отзывы (увеличил до 5) -->
   <section class="testimonials">
     <div class="container">
-      <h2 class="section-title">💬 Отзывы</h2>
+      <h2 class="section-title"><img src="/cdn/icons/shield.svg" alt="Отзывы" class="section-icon"> Отзывы</h2>
       <div class="testimonials-grid">
         <div class="testimonial-card">«Самый удобный способ смотреть мемы. Плеер – огонь, тёмная тема радует глаза.»<div class="author">— Николай, 25 лет</div></div>
         <div class="testimonial-card">«Закинул 50 своих гифок – всё отображается идеально. Лайтбокс раскрывается плавно.»<div class="author">— Алина, 19 лет</div></div>
@@ -175,7 +164,6 @@
     </div>
   </section>
 
-  <!-- CTA + кнопка наверх -->
   <section class="cta">
     <div class="container cta-content">
       <h2>Готов зависнуть в Мемотеке?</h2>
@@ -198,7 +186,6 @@
 <script src="/js/theme-switcher.js"></script>
 <script>
   (function() {
-    // Ждём common.js и memesLibrary
     function initMainPage() {
       if (typeof memesLibrary === 'undefined') {
         setTimeout(initMainPage, 100);
@@ -210,7 +197,6 @@
         ...memesLibrary.gifs.map(m => ({...m, type: 'gif'})),
         ...memesLibrary.audios.map(m => ({...m, type: 'audio'}))
       ];
-      // Статистика
       document.getElementById('stat-photos').innerText = memesLibrary.photos.length;
       document.getElementById('stat-videos').innerText = memesLibrary.videos.length;
       document.getElementById('stat-gifs').innerText = memesLibrary.gifs.length;
@@ -220,7 +206,6 @@
       document.getElementById('cat-gifs').innerText = memesLibrary.gifs.length;
       document.getElementById('cat-audios').innerText = memesLibrary.audios.length;
 
-      // Случайный мем
       function getRandomMeme() { return allMemes[Math.floor(Math.random() * allMemes.length)]; }
       function displayRandomMeme() {
         const meme = getRandomMeme();
@@ -239,7 +224,6 @@
       displayRandomMeme();
       document.getElementById('refreshRandomMeme')?.addEventListener('click', displayRandomMeme);
 
-      // Слайдер трендов (первые 8)
       const trendingMemes = allMemes.slice(0, 8);
       const track = document.getElementById('sliderTrack');
       if (track) {
@@ -258,7 +242,6 @@
       document.getElementById('sliderNext')?.addEventListener('click', () => { if(track && currentIdx < trendingMemes.length-1) { currentIdx++; track.style.transform = `translateX(-${currentIdx * slideWidth}px)`; } });
       document.getElementById('sliderPrev')?.addEventListener('click', () => { if(track && currentIdx > 0) { currentIdx--; track.style.transform = `translateX(-${currentIdx * slideWidth}px)`; } });
 
-      // Недавно добавленные (последние 4)
       const recent = allMemes.slice(-4);
       const recentGrid = document.getElementById('recentGrid');
       if (recentGrid) {
@@ -273,7 +256,6 @@
         });
       }
 
-      // Аккордеон FAQ
       document.querySelectorAll('.faq-question').forEach(q => {
         q.addEventListener('click', () => {
           const answer = q.nextElementSibling;
@@ -285,7 +267,6 @@
   })();
 </script>
 <style>
-  /* Дополнительные стили для новых блоков (minimal) */
   .random-meme-card { background: var(--card-bg); border-radius: 1.5rem; padding: 1.5rem; text-align: center; margin: 1rem auto; max-width: 400px; }
   .trending-slider { position: relative; overflow: hidden; }
   .slider-track { display: flex; gap: 1rem; transition: transform 0.3s; }

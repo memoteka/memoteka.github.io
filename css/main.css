@@ -490,3 +490,12 @@ select {
     display: none;
   }
 }
+
+.section-icon {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  margin-right: 8px;
+  stroke: var(--accent);
+  fill: none;
+}
