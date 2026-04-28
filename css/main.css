@@ -512,3 +512,35 @@ select {
   vertical-align: middle;
   margin-right: 0.5rem;
 }
+
+/* Логотип — никаких выделений и подчёркиваний */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--text-primary) !important;
+}
+
+.logo:hover,
+.logo:focus,
+.logo:active,
+.logo:visited {
+  text-decoration: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--text-primary) !important;
+  outline: none !important;
+}
+
+.logo-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  vertical-align: middle;
+  display: inline-block;
+}
