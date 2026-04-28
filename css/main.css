@@ -614,4 +614,7 @@ select {
 .btn-donate, .alt-btn {
   user-select: none;
   -webkit-user-select: none;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }
