@@ -511,4 +511,6 @@ select {
   height: 1.8rem;
   vertical-align: middle;
   margin-right: 0.5rem;
+  user-select: none;
+  -webkit-user-select: none;
 }
