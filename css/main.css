@@ -602,6 +602,9 @@ select {
 .alt-btn img {
   width: 1.5rem;
   height: 1.5rem;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }
 .alt-btn:hover {
   transform: translateY(-2px);
@@ -614,7 +617,4 @@ select {
 .btn-donate, .alt-btn {
   user-select: none;
   -webkit-user-select: none;
-  -webkit-user-drag: none;
-  user-drag: none;
-  pointer-events: none;
 }
