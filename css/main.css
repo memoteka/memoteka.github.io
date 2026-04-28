@@ -504,3 +504,10 @@ select {
 [data-theme="dark"] img[src*="/cdn/icons/"] {
   filter: brightness(0) invert(1);
 }
+
+/* Убираем голубые обводки при фокусе для кастомных дропдаунов */
+.custom-dropdown *:focus,
+.custom-dropdown *:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
