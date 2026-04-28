@@ -202,6 +202,14 @@ function initVideoPlayers() {
   });
 }
 
+const toTopBtn = document.getElementById('backToTop');
+if (toTopBtn) {
+  toTopBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 const memesLibrary = {
   photos: [
     { name: 'Простоквашино', file: '/cdn/assets/photos/1.jpg' },
