@@ -572,3 +572,42 @@ select {
 .footer-col a { display: block; color: var(--text-secondary); text-decoration: none; margin: 0.3rem 0; }
 .btn-small { padding: 0.3rem 1rem; background: var(--accent); border: none; border-radius: 2rem; color: white; cursor: pointer; margin-top: 0.5rem; }
 @media (max-width: 768px) { .slider-btn { display: none; } .trend-card { min-width: 200px; } }
+
+.donate-alternatives {
+  margin-top: 2rem;
+  text-align: center;
+}
+.donate-alternatives h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+.alt-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.alt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  text-decoration: none;
+  font-weight: 500;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: #ccc; /* fallback */
+}
+.alt-btn img {
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: brightness(0) invert(1); /* иконки становятся белыми на цветном фоне */
+}
+.alt-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.yandex { background: #F53A1B; }
+.da { background: #FF6600; }
+.donatepay { background: #2E8B57; }
