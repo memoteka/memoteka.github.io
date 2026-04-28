@@ -499,3 +499,8 @@ select {
   stroke: var(--accent);
   fill: none;
 }
+
+/* Инвертируем иконки в тёмной теме, чтобы они стали светлыми */
+[data-theme="dark"] img[src*="/cdn/icons/"] {
+  filter: brightness(0) invert(1);
+}
