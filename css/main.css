@@ -506,41 +506,30 @@ select {
   filter: brightness(0) invert(1);
 }
 
-.logo-icon {
-  width: 1.8rem;
-  height: 1.8rem;
-  vertical-align: middle;
-  margin-right: 0.5rem;
-}
-
-/* Логотип — никаких выделений и подчёркиваний */
+/* Полное отключение эффектов для логотипа */
 .logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  transition: none !important;
+  transform: none !important;
+  -webkit-tap-highlight-color: transparent;
   text-decoration: none !important;
-  background: none !important;
-  -webkit-background-clip: unset !important;
-  background-clip: unset !important;
-  color: var(--text-primary) !important;
+  outline: none !important;
+  cursor: pointer; /* курсор всё равно должен быть pointer, чтобы клик был понятен */
 }
 
 .logo:hover,
 .logo:focus,
-.logo:active,
-.logo:visited {
+.logo:active {
+  background: linear-gradient(45deg, var(--accent), #a855f7) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  transform: none !important;
   text-decoration: none !important;
-  background: transparent !important;
-  background-image: none !important;
-  -webkit-background-clip: unset !important;
-  background-clip: unset !important;
-  color: var(--text-primary) !important;
   outline: none !important;
 }
 
 .logo-icon {
-  width: 1.8rem;
-  height: 1.8rem;
-  vertical-align: middle;
-  display: inline-block;
+  transition: none !important;
+  transform: none !important;
+  filter: none !important; /* чтобы фильтр для иконок в тёмной теме не срабатывал */
 }
