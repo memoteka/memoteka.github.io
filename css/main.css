@@ -400,6 +400,7 @@ select {
   backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: 1rem;
+  overflow: hidden; /* добавить эту строку */
   padding: 0.4rem 0;
   min-width: 120px;
   z-index: 200;
@@ -503,11 +504,4 @@ select {
 /* Инвертируем иконки в тёмной теме, чтобы они стали светлыми */
 [data-theme="dark"] img[src*="/cdn/icons/"] {
   filter: brightness(0) invert(1);
-}
-
-/* Убираем голубые обводки при фокусе для кастомных дропдаунов */
-.custom-dropdown *:focus,
-.custom-dropdown *:focus-visible {
-  outline: none;
-  box-shadow: none;
 }
