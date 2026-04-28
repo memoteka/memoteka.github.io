@@ -602,7 +602,6 @@ select {
 .alt-btn img {
   width: 1.5rem;
   height: 1.5rem;
-  filter: brightness(0) invert(1); /* иконки становятся белыми на цветном фоне */
 }
 .alt-btn:hover {
   transform: translateY(-2px);
