@@ -400,7 +400,7 @@ select {
   backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: 1rem;
-  overflow: hidden; /* добавить эту строку */
+  overflow: hidden;
   padding: 0.4rem 0;
   min-width: 120px;
   z-index: 200;
