@@ -187,7 +187,7 @@
       const authUrl = new URL('https://yoomoney.ru/oauth/authorize');
       authUrl.searchParams.append('client_id', '6F6E7CF4814C90EBF49DC5379FAA8BFC83712673EB19B1E7A2149F880053AB91');
       authUrl.searchParams.append('response_type', 'code');
-      authUrl.searchParams.append('redirect_uri', 'https://memoteka.github.io/en/donate/success');
+      authUrl.searchParams.append('redirect_uri', 'https://memoteka.github.io/en/donate/success/');
       authUrl.searchParams.append('scope', `payment.to-account("4100118296048272").limit(,${amount})`);
       authUrl.searchParams.append('state', `${name}||${message}`);
       
