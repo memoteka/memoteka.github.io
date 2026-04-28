@@ -106,12 +106,12 @@ function openLightbox(url, type) {
       timeSpan.textContent = `0:00 / ${formatTime(media.duration)}`;
     });
     media.addEventListener('timeupdate', () => {
-      if (!isDragging) {
-        const percent = (media.currentTime / media.duration) * 100;
-        progressFilled.style.width = `${percent}%`;
-        timeSpan.textContent = `${formatTime(media.currentTime)} / ${formatTime(media.duration)}`;
-      }
-    });
+	  if (!isDragging && media.duration && isFinite(media.duration)) {
+		const percent = (media.currentTime / media.duration) * 100;
+		progressFilled.style.width = `${percent}%`;
+		timeSpan.textContent = `${formatTime(media.currentTime)} / ${formatTime(media.duration)}`;
+	  }
+	});
     playBtn.addEventListener('click', () => {
       if (media.paused) {
         media.play();
@@ -138,21 +138,23 @@ function openLightbox(url, type) {
       }
     });
     progressBar.addEventListener('click', (e) => {
-      const rect = progressBar.getBoundingClientRect();
-      let pos = (e.clientX - rect.left) / rect.width;
-      pos = Math.min(Math.max(pos, 0), 1);
-      media.currentTime = pos * media.duration;
-    });
+	  if (!media.duration || isNaN(media.duration) || !isFinite(media.duration)) return;
+	  const rect = progressBar.getBoundingClientRect();
+	  let pos = (e.clientX - rect.left) / rect.width;
+	  pos = Math.min(Math.max(pos, 0), 1);
+	  media.currentTime = pos * media.duration;
+	});
     progressBar.addEventListener('mousedown', () => isDragging = true);
     document.addEventListener('mouseup', () => isDragging = false);
     progressBar.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        const rect = progressBar.getBoundingClientRect();
-        let pos = (e.clientX - rect.left) / rect.width;
-        pos = Math.min(Math.max(pos, 0), 1);
-        media.currentTime = pos * media.duration;
-      }
-    });
+	  if (isDragging) {
+		if (!media.duration || isNaN(media.duration) || !isFinite(media.duration)) return;
+		const rect = progressBar.getBoundingClientRect();
+		let pos = (e.clientX - rect.left) / rect.width;
+		pos = Math.min(Math.max(pos, 0), 1);
+		media.currentTime = pos * media.duration;
+	  }
+	});
     currentMedia = media;
     media.play().catch(e => console.log('autoplay error', e));
   } else {
