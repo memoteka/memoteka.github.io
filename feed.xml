@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Мемотека — новые мемы</title>
+    <link>https://memoteka.github.io/ru/</link>
+    <description>Свежие мемы, гифки, видео и аудио из Мемотеки</description>
+    <language>ru</language>
+    <lastBuildDate>2026-04-28T12:00:00+03:00</lastBuildDate>
+    <atom:link href="https://memoteka.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <!-- Вручную перечисли последние мемы (например, все имеющиеся) -->
+    <!-- Фото -->
+    <item>
+      <title>Простоквашино</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Фото: Простоквашино</description>
+      <pubDate>2026-04-28T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/1.jpg</guid>
+    </item>
+    <item>
+      <title>Кошак</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Фото: Кошак</description>
+      <pubDate>2026-04-27T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/2.webp</guid>
+    </item>
+    <item>
+      <title>Мем</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Фото: Мем</description>
+      <pubDate>2026-04-26T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/3.png</guid>
+    </item>
+    <item>
+      <title>Котик</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Фото: Котик</description>
+      <pubDate>2026-04-25T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/cat.jpg</guid>
+    </item>
+    <item>
+      <title>Закат</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Фото: Закат</description>
+      <pubDate>2026-04-24T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/sunset.jpg</guid>
+    </item>
+    <item>
+      <title>Пердёж</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Фото: Пердёж</description>
+      <pubDate>2026-04-23T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/fart.jpg</guid>
+    </item>
+
+    <!-- Видео -->
+    <item>
+      <title>Реакция обида, боль и разочарование</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Видео: Реакция обида</description>
+      <pubDate>2026-04-22T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/videos/demo.mp4</guid>
+    </item>
+    <item>
+      <title>Ну, типа, ура!</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Видео: Ура</description>
+      <pubDate>2026-04-21T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/videos/nature.webm</guid>
+    </item>
+
+    <!-- Гифки -->
+    <item>
+      <title>Негр</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>GIF: Негр</description>
+      <pubDate>2026-04-20T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/gifs/funny.gif</guid>
+    </item>
+    <item>
+      <title>Сигма</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>GIF: Сигма</description>
+      <pubDate>2026-04-19T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/gifs/reaction.gif</guid>
+    </item>
+
+    <!-- Аудио -->
+    <item>
+      <title>С писюном, блядь, поиграй!</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Аудио: Писюн</description>
+      <pubDate>2026-04-18T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/audios/beat.mp3</guid>
+    </item>
+    <item>
+      <title>Какие-то арабы или чё ваще, хз, короче</title>
+      <link>https://memoteka.github.io/ru/memes/</link>
+      <description>Аудио: Арабы</description>
+      <pubDate>2026-04-17T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/audios/voice.ogg</guid>
+    </item>
+  </channel>
+</rss>

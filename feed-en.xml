@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Memoteka — new memes</title>
+    <link>https://memoteka.github.io/en/</link>
+    <description>Fresh memes, GIFs, videos and audio from Memoteka</description>
+    <language>en</language>
+    <lastBuildDate>2026-04-28T12:00:00+03:00</lastBuildDate>
+    <atom:link href="https://memoteka.github.io/feed-en.xml" rel="self" type="application/rss+xml"/>
+    
+    <!-- Photos -->
+    <item>
+      <title>Prostokvashino</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Photo: Prostokvashino</description>
+      <pubDate>2026-04-28T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/1.jpg</guid>
+    </item>
+    <item>
+      <title>Cat</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Photo: Cat</description>
+      <pubDate>2026-04-27T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/2.webp</guid>
+    </item>
+    <item>
+      <title>Meme</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Photo: Meme</description>
+      <pubDate>2026-04-26T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/3.png</guid>
+    </item>
+    <item>
+      <title>Kitty</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Photo: Kitty</description>
+      <pubDate>2026-04-25T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/cat.jpg</guid>
+    </item>
+    <item>
+      <title>Sunset</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Photo: Sunset</description>
+      <pubDate>2026-04-24T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/sunset.jpg</guid>
+    </item>
+    <item>
+      <title>Fart</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Photo: Fart</description>
+      <pubDate>2026-04-23T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/photos/fart.jpg</guid>
+    </item>
+
+    <!-- Videos -->
+    <item>
+      <title>Reaction: hurt, pain and disappointment</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Video: Reaction hurt</description>
+      <pubDate>2026-04-22T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/videos/demo.mp4</guid>
+    </item>
+    <item>
+      <title>Well, like, hooray!</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Video: Hooray</description>
+      <pubDate>2026-04-21T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/videos/nature.webm</guid>
+    </item>
+
+    <!-- GIFs -->
+    <item>
+      <title>Black guy</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>GIF: Black guy</description>
+      <pubDate>2026-04-20T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/gifs/funny.gif</guid>
+    </item>
+    <item>
+      <title>Sigma</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>GIF: Sigma</description>
+      <pubDate>2026-04-19T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/gifs/reaction.gif</guid>
+    </item>
+
+    <!-- Audio -->
+    <item>
+      <title>Play with the dick, fuck!</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Audio: Dick</description>
+      <pubDate>2026-04-18T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/audios/beat.mp3</guid>
+    </item>
+    <item>
+      <title>Some Arabs or whatever, I don't know, in short</title>
+      <link>https://memoteka.github.io/en/memes/</link>
+      <description>Audio: Arabs</description>
+      <pubDate>2026-04-17T12:00:00+03:00</pubDate>
+      <guid>https://memoteka.github.io/cdn/assets/audios/voice.ogg</guid>
+    </item>
+  </channel>
+</rss>
