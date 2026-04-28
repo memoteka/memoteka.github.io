@@ -505,3 +505,11 @@ select {
 [data-theme="dark"] img[src*="/cdn/icons/"] {
   filter: brightness(0) invert(1);
 }
+
+.logo-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
