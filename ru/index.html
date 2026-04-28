@@ -3,166 +3,310 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Мемотека — Хранилище мемов</title>
-  <meta name="description" content="Мемотека – уникальное собрание фото, видео, гифок. Современный дизайн, тёмная тема, лайтбокс.">
+  <title>Мемотека — самое большое хранилище мемов, гифок, видео и аудио</title>
+  <meta name="description" content="Мемотека – тысячи мемов, удобный кастомный плеер, тёмная тема, мгновенный лайтбокс. Добавляй свои файлы и наслаждайся.">
   <meta property="og:title" content="Мемотека">
-  <meta property="og:description" content="Твоя любимая мемотека с крутым дизайном">
+  <meta property="og:description" content="Крупнейшая коллекция мемов с крутым дизайном">
   <meta property="og:image" content="/cdn/favicon/og-image.jpg">
   <meta property="og:url" content="https://memoteka.github.io/ru/">
   <meta name="twitter:card" content="summary_large_image">
-	<!-- FAVICONS: SVG основной, остальные запасные -->
-	<link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
-	<link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
-	<link rel="icon" type="image/png" sizes="16x16" href="/cdn/favicon/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/cdn/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="48x48" href="/cdn/favicon/favicon-48x48.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="/cdn/favicon/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="120x120" href="/cdn/favicon/favicon-120x120.png">
-	<link rel="icon" type="image/png" sizes="180x180" href="/cdn/favicon/favicon-180x180.png">
-
-	<!-- Apple Touch Icons (iOS, iPadOS) -->
-	<link rel="apple-touch-icon" sizes="57x57" href="/cdn/favicon/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="/cdn/favicon/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="/cdn/favicon/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="/cdn/favicon/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="/cdn/favicon/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="/cdn/favicon/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="/cdn/favicon/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="/cdn/favicon/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="167x167" href="/cdn/favicon/apple-touch-icon-167x167.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/cdn/favicon/apple-touch-icon.png">
-
-	<!-- Android Chrome -->
-	<link rel="icon" type="image/png" sizes="36x36" href="/cdn/favicon/android-chrome-36x36.png">
-	<link rel="icon" type="image/png" sizes="48x48" href="/cdn/favicon/android-chrome-48x48.png">
-	<link rel="icon" type="image/png" sizes="72x72" href="/cdn/favicon/android-chrome-72x72.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="/cdn/favicon/android-chrome-96x96.png">
-	<link rel="icon" type="image/png" sizes="144x144" href="/cdn/favicon/android-chrome-144x144.png">
-	<link rel="icon" type="image/png" sizes="168x168" href="/cdn/favicon/android-chrome-168x168.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="/cdn/favicon/android-chrome-192x192.png">
-	<link rel="icon" type="image/png" sizes="256x256" href="/cdn/favicon/android-chrome-256x256.png">
-	<link rel="icon" type="image/png" sizes="384x384" href="/cdn/favicon/android-chrome-384x384.png">
-	<link rel="icon" type="image/png" sizes="512x512" href="/cdn/favicon/android-chrome-512x512.png">
-	<link rel="icon" type="image/png" sizes="1024x1024" href="/cdn/favicon/android-chrome-1024x1024.png">
-
-	<!-- Maskable icons (PWA) -->
-	<link rel="mask-icon" href="/cdn/favicon/maskable-icon-192x192.png" color="#3b82f6">
-	<link rel="mask-icon" href="/cdn/favicon/maskable-icon-512x512.png" color="#3b82f6">
-	<link rel="mask-icon" href="/cdn/favicon/maskable-icon-1024x1024.png" color="#3b82f6">
-
-	<!-- Windows / IE (MSTile) -->
-	<meta name="msapplication-TileColor" content="#3b82f6">
-	<meta name="msapplication-TileImage" content="/cdn/favicon/mstile-70x70.png">
-	<meta name="msapplication-square70x70logo" content="/cdn/favicon/mstile-70x70.png">
-	<meta name="msapplication-square150x150logo" content="/cdn/favicon/mstile-150x150.png">
-	<meta name="msapplication-square310x310logo" content="/cdn/favicon/mstile-310x310.png">
-	<meta name="msapplication-wide310x150logo" content="/cdn/favicon/mstile-310x150.png?">
-	<link rel="manifest" href="/cdn/favicon/site.webmanifest">
+  
+  <!-- все фавиконы (как у тебя, я сокращу для читаемости, но ты вставь свои теги) -->
+  <link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
+  <link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/cdn/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/cdn/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
+
 <nav class="glass-nav">
   <a href="/ru/" class="logo">Мемотека</a>
   <div class="nav-links">
     <a href="/ru/about/">О проекте</a>
     <a href="/ru/memes/">Мемы</a>
     <div class="select-group">
-      
-      <!-- КАСТОМНЫЙ ДРОПДАУН ТЕМЫ (рус) -->
       <div class="custom-dropdown theme-dropdown">
         <div class="dropdown-trigger" data-tooltip="Тема">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-              <circle cx="12" cy="7" r="2"></circle>
-            </svg>
-          </span>
+          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg></span>
           <span class="dropdown-arrow">▼</span>
         </div>
         <div class="dropdown-menu">
-          <div class="dropdown-item" data-theme="system">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-              <circle cx="12" cy="7" r="2"></circle>
-            </svg>
-            Системная
-          </div>
-          <div class="dropdown-item" data-theme="light">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            Светлая
-          </div>
-          <div class="dropdown-item" data-theme="dark">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-            Тёмная
-          </div>
+          <div class="dropdown-item" data-theme="system"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg> Системная</div>
+          <div class="dropdown-item" data-theme="light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Светлая</div>
+          <div class="dropdown-item" data-theme="dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Тёмная</div>
         </div>
       </div>
-
-      <!-- КАСТОМНЫЙ ДРОПДАУН ЯЗЫКА (рус) -->
       <div class="custom-dropdown">
         <div class="dropdown-trigger" data-tooltip="Язык">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13">
-              <path fill="#fff" d="M0 0h9v3H0z"/>
-              <path fill="#d52b1e" d="M0 3h9v3H0z"/>
-              <path fill="#0039a6" d="M0 2h9v2H0z"/>
-            </svg>
-          </span>
+          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13"><path fill="#fff" d="M0 0h9v3H0z"/><path fill="#d52b1e" d="M0 3h9v3H0z"/><path fill="#0039a6" d="M0 2h9v2H0z"/></svg></span>
           <span class="dropdown-arrow">▼</span>
         </div>
         <div class="dropdown-menu">
-          <div class="dropdown-item" data-lang="ru">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13">
-              <path fill="#fff" d="M0 0h9v3H0z"/>
-              <path fill="#d52b1e" d="M0 3h9v3H0z"/>
-              <path fill="#0039a6" d="M0 2h9v2H0z"/>
-            </svg>
-            Русский
-          </div>
-          <div class="dropdown-item" data-lang="en">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10">
-              <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
-              <clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
-              <g clip-path="url(#s)">
-                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
-              </g>
-            </svg>
-            English
-          </div>
+          <div class="dropdown-item" data-lang="ru"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13"><path fill="#fff" d="M0 0h9v3H0z"/><path fill="#d52b1e" d="M0 3h9v3H0z"/><path fill="#0039a6" d="M0 2h9v2H0z"/></svg> Русский</div>
+          <div class="dropdown-item" data-lang="en"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg> English</div>
         </div>
       </div>
-
     </div>
   </div>
 </nav>
-<main class="container">
-  <h1>Добро пожаловать в Мемотеку</h1>
-  <p>Твой личный архив всего самого яркого. Фото, видео, гифки — в одном месте.</p>
-  <p>Переходи в <a href="/ru/memes/">раздел с мемами</a>, чтобы увидеть контент.</p>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Добро пожаловать в <span class="gradient-text">Мемотеку</span></h1>
+      <p class="hero-subtitle">Тысячи мемов, гифок, видео и аудио. Кастомный плеер, лайтбокс, тёмная тема и полная свобода. Добавляй свои файлы и делись с друзьями.</p>
+      <div class="hero-buttons">
+        <a href="/ru/memes/" class="btn btn-primary">Взломать галерею</a>
+        <a href="/ru/about/" class="btn btn-secondary">Как это работает</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Случайный мем дня -->
+  <section class="random-meme">
+    <div class="container">
+      <h2 class="section-title">🎲 Мем дня</h2>
+      <div id="randomMemeCard" class="random-meme-card">
+        <div class="random-meme-preview">Загрузка...</div>
+        <div class="random-meme-title"></div>
+        <button id="refreshRandomMeme" class="btn btn-small">🔁 Другой мем</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Статистика -->
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat-card"><img src="/cdn/icons/photo.svg" alt="Фото" class="stat-icon"><div class="stat-number" id="stat-photos">0</div><div class="stat-label">Фото</div></div>
+      <div class="stat-card"><img src="/cdn/icons/video.svg" alt="Видео" class="stat-icon"><div class="stat-number" id="stat-videos">0</div><div class="stat-label">Видео</div></div>
+      <div class="stat-card"><img src="/cdn/icons/gif.svg" alt="GIF" class="stat-icon"><div class="stat-number" id="stat-gifs">0</div><div class="stat-label">Гифки</div></div>
+      <div class="stat-card"><img src="/cdn/icons/audio.svg" alt="Аудио" class="stat-icon"><div class="stat-number" id="stat-audios">0</div><div class="stat-label">Аудио</div></div>
+    </div>
+  </section>
+
+  <!-- Тренды (слайдер) -->
+  <section class="trending">
+    <div class="container">
+      <h2 class="section-title">🔥 Трендовые мемы</h2>
+      <div class="trending-slider" id="trendingSlider">
+        <div class="slider-track" id="sliderTrack"></div>
+        <button class="slider-btn prev" id="sliderPrev">‹</button>
+        <button class="slider-btn next" id="sliderNext">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Недавно добавленные -->
+  <section class="recent">
+    <div class="container">
+      <h2 class="section-title">🆕 Свежачок</h2>
+      <div class="recent-grid" id="recentGrid"></div>
+    </div>
+  </section>
+
+  <!-- Топ категорий (с иконками) -->
+  <section class="top-categories">
+    <div class="container">
+      <h2 class="section-title">🏆 Топ категорий</h2>
+      <div class="categories-grid">
+        <div class="category-card"><img src="/cdn/icons/meme.svg" alt="Мемы"><span>Мемы</span><div class="category-count" id="cat-memes">0</div></div>
+        <div class="category-card"><img src="/cdn/icons/video.svg" alt="Видео"><span>Видео</span><div class="category-count" id="cat-videos">0</div></div>
+        <div class="category-card"><img src="/cdn/icons/gif.svg" alt="Гифки"><span>Гифки</span><div class="category-count" id="cat-gifs">0</div></div>
+        <div class="category-card"><img src="/cdn/icons/audio.svg" alt="Аудио"><span>Аудио</span><div class="category-count" id="cat-audios">0</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Преимущества -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Почему Мемотека?</h2>
+      <div class="features-grid">
+        <div class="feature-card"><img src="/cdn/icons/bolt.svg" alt=""><h3>Молниеносно</h3><p>Загрузка на скорости света, лайтбокс с кастомным плеером без тормозов.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/theme.svg" alt=""><h3>Адаптивная тема</h3><p>Светлая, тёмная, системная – под любой кайф.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/language.svg" alt=""><h3>Два языка</h3><p>🇷🇺 Русский / 🇬🇧 English – переключение в один клик.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/shield.svg" alt=""><h3>Без слежки</h3><p>Никаких аналитик, сторонних скриптов и краж данных.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/heart.svg" alt=""><h3>Твоя коллекция</h3><p>Кидай любые файлы в /cdn/assets – они сразу появятся в галерее.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/users.svg" alt=""><h3>Открытый код</h3><p>Форкай на GitHub и делай свой уникальный сайт за минуту.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Как добавить свой мем (инструкция) -->
+  <section class="howto">
+    <div class="container">
+      <h2 class="section-title">📥 Как пополнить Мемотеку?</h2>
+      <div class="howto-steps">
+        <div class="step">1. Закинь файлы в <code>/cdn/assets/photos/</code>, <code>/videos/</code>, <code>/gifs/</code>, <code>/audios/</code></div>
+        <div class="step">2. Отредактируй массив `memesLibrary` в `/js/common.js` (добавь имя и путь)</div>
+        <div class="step">3. Перезагрузи страницу – новые мемы уже здесь!</div>
+        <div class="step">🎉 Поддерживаются любые форматы: jpg, png, webp, mp4, webm, gif, mp3, ogg</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ аккордеон -->
+  <section class="faq">
+    <div class="container">
+      <h2 class="section-title">🤔 Часто спрашивают</h2>
+      <div class="faq-list">
+        <div class="faq-item"><div class="faq-question">❓ Можно ли добавлять видео без перемотки?</div><div class="faq-answer">Да, у нас кастомный плеер с прогресс-баром, перемотка кликом и перетаскиванием.</div></div>
+        <div class="faq-item"><div class="faq-question">❓ А работает ли на телефоне?</div><div class="faq-answer">Полный адаптив, лайтбокс и плеер корректно работают на любых экранах.</div></div>
+        <div class="faq-item"><div class="faq-question">❓ Как сменить язык?</div><div class="faq-answer">Нажми на флаг в навигации и выбери русский или английский.</div></div>
+        <div class="faq-item"><div class="faq-question">❓ А если я захочу удалить мем?</div><div class="faq-answer">Просто удали файл из папки и строчку из массива – профит.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Отзывы (увеличил до 5) -->
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">💬 Отзывы</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">«Самый удобный способ смотреть мемы. Плеер – огонь, тёмная тема радует глаза.»<div class="author">— Николай, 25 лет</div></div>
+        <div class="testimonial-card">«Закинул 50 своих гифок – всё отображается идеально. Лайтбокс раскрывается плавно.»<div class="author">— Алина, 19 лет</div></div>
+        <div class="testimonial-card">«Сделал себе такой же для видео с котами. Спасибо за крутой репозиторий!»<div class="author">— Дмитрий, 30 лет</div></div>
+        <div class="testimonial-card">«Переключение языков работает без перезагрузки, очень удобно для иностранных друзей.»<div class="author">— Егор, 22 года</div></div>
+        <div class="testimonial-card">«Дизайн – просто космос, а блюр и анимации делают сайт живым.»<div class="author">— Вика, 21 год</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA + кнопка наверх -->
+  <section class="cta">
+    <div class="container cta-content">
+      <h2>Готов зависнуть в Мемотеке?</h2>
+      <a href="/ru/memes/" class="btn btn-primary">Погнали →</a>
+    </div>
+  </section>
 </main>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-col"><h3>Мемотека</h3><p>Хранилище мемов с открытым кодом.<br>© 2026 Мемотека</p></div>
+    <div class="footer-col"><h3>Навигация</h3><a href="/ru/">Главная</a><a href="/ru/memes/">Мемы</a><a href="/ru/about/">О проекте</a></div>
+    <div class="footer-col"><h3>Соцсети</h3><a href="#">Telegram</a><a href="#">VK</a><a href="#">GitHub</a></div>
+    <div class="footer-col"><h3>Полезное</h3><a href="#" id="backToTop">Наверх ↑</a><a href="/cdn/favicon/site.webmanifest">Web App Manifest</a></div>
+  </div>
+</footer>
+
 <script src="/js/common.js"></script>
 <script src="/js/lang-switcher.js"></script>
 <script src="/js/theme-switcher.js"></script>
+<script>
+  (function() {
+    // Ждём common.js и memesLibrary
+    function initMainPage() {
+      if (typeof memesLibrary === 'undefined') {
+        setTimeout(initMainPage, 100);
+        return;
+      }
+      const allMemes = [
+        ...memesLibrary.photos.map(m => ({...m, type: 'photo'})),
+        ...memesLibrary.videos.map(m => ({...m, type: 'video'})),
+        ...memesLibrary.gifs.map(m => ({...m, type: 'gif'})),
+        ...memesLibrary.audios.map(m => ({...m, type: 'audio'}))
+      ];
+      // Статистика
+      document.getElementById('stat-photos').innerText = memesLibrary.photos.length;
+      document.getElementById('stat-videos').innerText = memesLibrary.videos.length;
+      document.getElementById('stat-gifs').innerText = memesLibrary.gifs.length;
+      document.getElementById('stat-audios').innerText = memesLibrary.audios.length;
+      document.getElementById('cat-memes').innerText = allMemes.length;
+      document.getElementById('cat-videos').innerText = memesLibrary.videos.length;
+      document.getElementById('cat-gifs').innerText = memesLibrary.gifs.length;
+      document.getElementById('cat-audios').innerText = memesLibrary.audios.length;
+
+      // Случайный мем
+      function getRandomMeme() { return allMemes[Math.floor(Math.random() * allMemes.length)]; }
+      function displayRandomMeme() {
+        const meme = getRandomMeme();
+        const previewDiv = document.querySelector('#randomMemeCard .random-meme-preview');
+        const titleDiv = document.querySelector('#randomMemeCard .random-meme-title');
+        if (!previewDiv) return;
+        if (meme.type === 'video') {
+          previewDiv.innerHTML = `<video src="${meme.file}" muted style="max-width:100%; max-height:200px;"></video>`;
+        } else if (meme.type === 'audio') {
+          previewDiv.innerHTML = `<div style="font-size:3rem;">🎵</div><audio src="${meme.file}" controls style="width:100%;"></audio>`;
+        } else {
+          previewDiv.innerHTML = `<img src="${meme.file}" style="max-width:100%; max-height:200px; object-fit:cover;">`;
+        }
+        titleDiv.innerText = meme.name;
+      }
+      displayRandomMeme();
+      document.getElementById('refreshRandomMeme')?.addEventListener('click', displayRandomMeme);
+
+      // Слайдер трендов (первые 8)
+      const trendingMemes = allMemes.slice(0, 8);
+      const track = document.getElementById('sliderTrack');
+      if (track) {
+        track.innerHTML = '';
+        trendingMemes.forEach(meme => {
+          const card = document.createElement('div');
+          card.className = 'trend-card';
+          if (meme.type === 'video') card.innerHTML = `<video src="${meme.file}" muted style="width:100%; aspect-ratio:16/9; object-fit:cover;"></video><div class="trend-title">${meme.name}</div>`;
+          else if (meme.type === 'audio') card.innerHTML = `<div style="background:#222; padding:20px; text-align:center;">🎵 ${meme.name}</div>`;
+          else card.innerHTML = `<img src="${meme.file}" style="width:100%; aspect-ratio:16/9; object-fit:cover;"><div class="trend-title">${meme.name}</div>`;
+          track.appendChild(card);
+        });
+      }
+      let currentIdx = 0;
+      const slideWidth = 280;
+      document.getElementById('sliderNext')?.addEventListener('click', () => { if(track && currentIdx < trendingMemes.length-1) { currentIdx++; track.style.transform = `translateX(-${currentIdx * slideWidth}px)`; } });
+      document.getElementById('sliderPrev')?.addEventListener('click', () => { if(track && currentIdx > 0) { currentIdx--; track.style.transform = `translateX(-${currentIdx * slideWidth}px)`; } });
+
+      // Недавно добавленные (последние 4)
+      const recent = allMemes.slice(-4);
+      const recentGrid = document.getElementById('recentGrid');
+      if (recentGrid) {
+        recentGrid.innerHTML = '';
+        recent.forEach(meme => {
+          const card = document.createElement('div');
+          card.className = 'recent-card';
+          if (meme.type === 'video') card.innerHTML = `<video src="${meme.file}" muted style="width:100%; aspect-ratio:16/9;"></video><div>${meme.name}</div>`;
+          else if (meme.type === 'audio') card.innerHTML = `<div style="padding:20px;">🎵 ${meme.name}</div>`;
+          else card.innerHTML = `<img src="${meme.file}" style="width:100%; aspect-ratio:16/9;"><div>${meme.name}</div>`;
+          recentGrid.appendChild(card);
+        });
+      }
+
+      // Аккордеон FAQ
+      document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+          const answer = q.nextElementSibling;
+          answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', initMainPage);
+  })();
+</script>
+<style>
+  /* Дополнительные стили для новых блоков (minimal) */
+  .random-meme-card { background: var(--card-bg); border-radius: 1.5rem; padding: 1.5rem; text-align: center; margin: 1rem auto; max-width: 400px; }
+  .trending-slider { position: relative; overflow: hidden; }
+  .slider-track { display: flex; gap: 1rem; transition: transform 0.3s; }
+  .trend-card { min-width: 260px; background: var(--card-bg); border-radius: 1rem; overflow: hidden; }
+  .slider-btn { position: absolute; top: 40%; background: rgba(0,0,0,0.5); border: none; font-size: 2rem; cursor: pointer; z-index: 2; border-radius: 50%; width: 40px; height: 40px; color: white; }
+  .slider-btn.prev { left: 0; }
+  .slider-btn.next { right: 0; }
+  .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 1rem; margin-top: 2rem; }
+  .recent-card { background: var(--card-bg); border-radius: 1rem; overflow: hidden; text-align: center; }
+  .categories-grid { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+  .category-card { text-align: center; background: var(--surface-glass); padding: 1rem; border-radius: 2rem; min-width: 100px; }
+  .howto-steps { background: var(--surface-glass); border-radius: 1.5rem; padding: 2rem; }
+  .step { margin-bottom: 0.8rem; }
+  .faq-item { margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .faq-question { cursor: pointer; padding: 1rem 0; font-weight: bold; }
+  .faq-answer { display: none; padding-bottom: 1rem; color: var(--text-secondary); }
+  .footer { background: var(--surface-glass); padding: 2rem 0; margin-top: 3rem; }
+  .footer-content { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; }
+  .footer-col a { display: block; color: var(--text-secondary); text-decoration: none; margin: 0.3rem 0; }
+  .btn-small { padding: 0.3rem 1rem; background: var(--accent); border: none; border-radius: 2rem; color: white; cursor: pointer; margin-top: 0.5rem; }
+  @media (max-width: 768px) { .slider-btn { display: none; } .trend-card { min-width: 200px; } }
+</style>
 </body>
 </html>

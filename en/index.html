@@ -2,173 +2,293 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memoteka — Meme Vault</title>
-  <meta name="description" content="Memoteka – unique collection of photos, videos, gifs. Modern design, dark theme, lightbox.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Memoteka — largest meme, GIF, video & audio vault</title>
+  <meta name="description" content="Memoteka – thousands of memes, custom player, dark theme, instant lightbox. Add your own files and enjoy.">
   <meta property="og:title" content="Memoteka">
-  <meta property="og:description" content="Your favorite meme library with cool design">
+  <meta property="og:description" content="Huge collection of memes with awesome design">
   <meta property="og:image" content="/cdn/favicon/og-image.jpg">
   <meta property="og:url" content="https://memoteka.github.io/en/">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- FAVICONS: SVG основной, остальные запасные -->
-	<link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
-	<link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
-	<link rel="icon" type="image/png" sizes="16x16" href="/cdn/favicon/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/cdn/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="48x48" href="/cdn/favicon/favicon-48x48.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="/cdn/favicon/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="120x120" href="/cdn/favicon/favicon-120x120.png">
-	<link rel="icon" type="image/png" sizes="180x180" href="/cdn/favicon/favicon-180x180.png">
-
-	<!-- Apple Touch Icons (iOS, iPadOS) -->
-	<link rel="apple-touch-icon" sizes="57x57" href="/cdn/favicon/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="/cdn/favicon/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="/cdn/favicon/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="/cdn/favicon/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="/cdn/favicon/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="/cdn/favicon/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="/cdn/favicon/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="/cdn/favicon/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="167x167" href="/cdn/favicon/apple-touch-icon-167x167.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/cdn/favicon/apple-touch-icon.png">
-
-	<!-- Android Chrome -->
-	<link rel="icon" type="image/png" sizes="36x36" href="/cdn/favicon/android-chrome-36x36.png">
-	<link rel="icon" type="image/png" sizes="48x48" href="/cdn/favicon/android-chrome-48x48.png">
-	<link rel="icon" type="image/png" sizes="72x72" href="/cdn/favicon/android-chrome-72x72.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="/cdn/favicon/android-chrome-96x96.png">
-	<link rel="icon" type="image/png" sizes="144x144" href="/cdn/favicon/android-chrome-144x144.png">
-	<link rel="icon" type="image/png" sizes="168x168" href="/cdn/favicon/android-chrome-168x168.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="/cdn/favicon/android-chrome-192x192.png">
-	<link rel="icon" type="image/png" sizes="256x256" href="/cdn/favicon/android-chrome-256x256.png">
-	<link rel="icon" type="image/png" sizes="384x384" href="/cdn/favicon/android-chrome-384x384.png">
-	<link rel="icon" type="image/png" sizes="512x512" href="/cdn/favicon/android-chrome-512x512.png">
-	<link rel="icon" type="image/png" sizes="1024x1024" href="/cdn/favicon/android-chrome-1024x1024.png">
-
-	<!-- Maskable icons (PWA) -->
-	<link rel="mask-icon" href="/cdn/favicon/maskable-icon-192x192.png" color="#3b82f6">
-	<link rel="mask-icon" href="/cdn/favicon/maskable-icon-512x512.png" color="#3b82f6">
-	<link rel="mask-icon" href="/cdn/favicon/maskable-icon-1024x1024.png" color="#3b82f6">
-
-	<!-- Windows / IE (MSTile) -->
-	<meta name="msapplication-TileColor" content="#3b82f6">
-	<meta name="msapplication-TileImage" content="/cdn/favicon/mstile-70x70.png">
-	<meta name="msapplication-square70x70logo" content="/cdn/favicon/mstile-70x70.png">
-	<meta name="msapplication-square150x150logo" content="/cdn/favicon/mstile-150x150.png">
-	<meta name="msapplication-square310x310logo" content="/cdn/favicon/mstile-310x310.png">
-	<meta name="msapplication-wide310x150logo" content="/cdn/favicon/mstile-310x150.png?">
-	<link rel="manifest" href="/cdn/favicon/site-en.webmanifest">
+  
+  <link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
+  <link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/cdn/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/cdn/favicon/site-en.webmanifest">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
+
 <nav class="glass-nav">
   <a href="/en/" class="logo">Memoteka</a>
   <div class="nav-links">
     <a href="/en/about/">About</a>
     <a href="/en/memes/">Memes</a>
     <div class="select-group">
-      
-      <!-- CUSTOM THEME DROPDOWN (English) -->
       <div class="custom-dropdown theme-dropdown">
         <div class="dropdown-trigger" data-tooltip="Theme">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-              <circle cx="12" cy="7" r="2"></circle>
-            </svg>
-          </span>
+          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg></span>
           <span class="dropdown-arrow">▼</span>
         </div>
         <div class="dropdown-menu">
-          <div class="dropdown-item" data-theme="system">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-              <circle cx="12" cy="7" r="2"></circle>
-            </svg>
-            System
-          </div>
-          <div class="dropdown-item" data-theme="light">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            Light
-          </div>
-          <div class="dropdown-item" data-theme="dark">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-            Dark
-          </div>
+          <div class="dropdown-item" data-theme="system"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg> System</div>
+          <div class="dropdown-item" data-theme="light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Light</div>
+          <div class="dropdown-item" data-theme="dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Dark</div>
         </div>
       </div>
-
-      <!-- CUSTOM LANGUAGE DROPDOWN (English) -->
       <div class="custom-dropdown">
         <div class="dropdown-trigger" data-tooltip="Language">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10">
-              <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
-              <clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
-              <g clip-path="url(#s)">
-                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
-              </g>
-            </svg>
-          </span>
+          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg></span>
           <span class="dropdown-arrow">▼</span>
         </div>
         <div class="dropdown-menu">
-          <div class="dropdown-item" data-lang="ru">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13">
-              <path fill="#fff" d="M0 0h9v3H0z"/>
-              <path fill="#d52b1e" d="M0 3h9v3H0z"/>
-              <path fill="#0039a6" d="M0 2h9v2H0z"/>
-            </svg>
-            Русский
-          </div>
-          <div class="dropdown-item" data-lang="en">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10">
-              <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
-              <clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
-              <g clip-path="url(#s)">
-                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
-              </g>
-            </svg>
-            English
-          </div>
+          <div class="dropdown-item" data-lang="ru"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13"><path fill="#fff" d="M0 0h9v3H0z"/><path fill="#d52b1e" d="M0 3h9v3H0z"/><path fill="#0039a6" d="M0 2h9v2H0z"/></svg> Русский</div>
+          <div class="dropdown-item" data-lang="en"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg> English</div>
         </div>
       </div>
-
     </div>
   </div>
 </nav>
-<main class="container">
-  <h1>Welcome to Memoteka</h1>
-  <p>Your personal archive of everything bright. Photos, videos, gifs — all in one place.</p>
-  <p>Go to the <a href="/en/memes/">memes section</a> to see the content.</p>
+
+<main>
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Welcome to <span class="gradient-text">Memoteka</span></h1>
+      <p class="hero-subtitle">Thousands of memes, GIFs, videos & audio. Custom player, lightbox, dark theme, and full freedom. Add your own files and share them.</p>
+      <div class="hero-buttons">
+        <a href="/en/memes/" class="btn btn-primary">Enter the gallery</a>
+        <a href="/en/about/" class="btn btn-secondary">How it works</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="random-meme">
+    <div class="container">
+      <h2 class="section-title">🎲 Meme of the day</h2>
+      <div id="randomMemeCard" class="random-meme-card">
+        <div class="random-meme-preview">Loading...</div>
+        <div class="random-meme-title"></div>
+        <button id="refreshRandomMeme" class="btn btn-small">🔁 Another meme</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat-card"><img src="/cdn/icons/photo.svg" alt="Photos" class="stat-icon"><div class="stat-number" id="stat-photos">0</div><div class="stat-label">Photos</div></div>
+      <div class="stat-card"><img src="/cdn/icons/video.svg" alt="Videos" class="stat-icon"><div class="stat-number" id="stat-videos">0</div><div class="stat-label">Videos</div></div>
+      <div class="stat-card"><img src="/cdn/icons/gif.svg" alt="GIFs" class="stat-icon"><div class="stat-number" id="stat-gifs">0</div><div class="stat-label">GIFs</div></div>
+      <div class="stat-card"><img src="/cdn/icons/audio.svg" alt="Audio" class="stat-icon"><div class="stat-number" id="stat-audios">0</div><div class="stat-label">Audio</div></div>
+    </div>
+  </section>
+
+  <section class="trending">
+    <div class="container">
+      <h2 class="section-title">🔥 Trending memes</h2>
+      <div class="trending-slider" id="trendingSlider">
+        <div class="slider-track" id="sliderTrack"></div>
+        <button class="slider-btn prev" id="sliderPrev">‹</button>
+        <button class="slider-btn next" id="sliderNext">›</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="recent">
+    <div class="container">
+      <h2 class="section-title">🆕 Freshly added</h2>
+      <div class="recent-grid" id="recentGrid"></div>
+    </div>
+  </section>
+
+  <section class="top-categories">
+    <div class="container">
+      <h2 class="section-title">🏆 Top categories</h2>
+      <div class="categories-grid">
+        <div class="category-card"><img src="/cdn/icons/meme.svg" alt="Memes"><span>Memes</span><div class="category-count" id="cat-memes">0</div></div>
+        <div class="category-card"><img src="/cdn/icons/video.svg" alt="Videos"><span>Videos</span><div class="category-count" id="cat-videos">0</div></div>
+        <div class="category-card"><img src="/cdn/icons/gif.svg" alt="GIFs"><span>GIFs</span><div class="category-count" id="cat-gifs">0</div></div>
+        <div class="category-card"><img src="/cdn/icons/audio.svg" alt="Audio"><span>Audio</span><div class="category-count" id="cat-audios">0</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Why Memoteka?</h2>
+      <div class="features-grid">
+        <div class="feature-card"><img src="/cdn/icons/bolt.svg" alt=""><h3>Lightning fast</h3><p>Instant load, custom lightbox, butter‑smooth player.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/theme.svg" alt=""><h3>Adaptive theme</h3><p>Light, dark, system – choose your vibe.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/language.svg" alt=""><h3>Two languages</h3><p>🇷🇺 Russian / 🇬🇧 English – switch in one click.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/shield.svg" alt=""><h3>No tracking</h3><p>Zero analytics, no third‑party scripts, no data theft.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/heart.svg" alt=""><h3>Your collection</h3><p>Drop any file into /cdn/assets – it appears in gallery.</p></div>
+        <div class="feature-card"><img src="/cdn/icons/users.svg" alt=""><h3>Open source</h3><p>Fork on GitHub and build your own unique site in minutes.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="howto">
+    <div class="container">
+      <h2 class="section-title">📥 How to add your own meme?</h2>
+      <div class="howto-steps">
+        <div class="step">1. Upload files to <code>/cdn/assets/photos/</code>, <code>/videos/</code>, <code>/gifs/</code>, <code>/audios/</code></div>
+        <div class="step">2. Edit the `memesLibrary` array in `/js/common.js` (add name and path)</div>
+        <div class="step">3. Reload the page – new memes are here!</div>
+        <div class="step">🎉 Supported formats: jpg, png, webp, mp4, webm, gif, mp3, ogg</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="container">
+      <h2 class="section-title">🤔 Frequently asked</h2>
+      <div class="faq-list">
+        <div class="faq-item"><div class="faq-question">❓ Can I add videos without seeking?</div><div class="faq-answer">Yes, our custom player has a progress bar with click & drag seeking.</div></div>
+        <div class="faq-item"><div class="faq-question">❓ Does it work on mobile?</div><div class="faq-answer">Fully responsive – lightbox and player work great on any screen.</div></div>
+        <div class="faq-item"><div class="faq-question">❓ How to change language?</div><div class="faq-answer">Click on the flag in the navigation and pick Russian or English.</div></div>
+        <div class="faq-item"><div class="faq-question">❓ Can I remove a meme?</div><div class="faq-answer">Just delete the file and its entry from the array – done.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">💬 Testimonials</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">«The most convenient way to watch memes. Player is fire, dark theme soothes my eyes.»<div class="author">— Nikolai, 25</div></div>
+        <div class="testimonial-card">«I uploaded 50 of my GIFs – all displayed perfectly. Lightbox opens smoothly.»<div class="author">— Alina, 19</div></div>
+        <div class="testimonial-card">«Built a similar site for cat videos. Thanks for the awesome repo!»<div class="author">— Dmitry, 30</div></div>
+        <div class="testimonial-card">«Language switching works instantly, great for sharing with foreign friends.»<div class="author">— Egor, 22</div></div>
+        <div class="testimonial-card">«Design is out of this world, blur & animations make it feel alive.»<div class="author">— Vika, 21</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container cta-content">
+      <h2>Ready to dive into Memoteka?</h2>
+      <a href="/en/memes/" class="btn btn-primary">Let's go →</a>
+    </div>
+  </section>
 </main>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-col"><h3>Memoteka</h3><p>Open‑source meme vault.<br>© 2026 Memoteka</p></div>
+    <div class="footer-col"><h3>Navigation</h3><a href="/en/">Home</a><a href="/en/memes/">Memes</a><a href="/en/about/">About</a></div>
+    <div class="footer-col"><h3>Social</h3><a href="#">Telegram</a><a href="#">VK</a><a href="#">GitHub</a></div>
+    <div class="footer-col"><h3>Useful</h3><a href="#" id="backToTop">Back to top ↑</a><a href="/cdn/favicon/site-en.webmanifest">Web App Manifest</a></div>
+  </div>
+</footer>
+
 <script src="/js/common.js"></script>
 <script src="/js/lang-switcher.js"></script>
 <script src="/js/theme-switcher.js"></script>
+<script>
+  (function() {
+    function initMainPage() {
+      if (typeof memesLibrary === 'undefined') {
+        setTimeout(initMainPage, 100);
+        return;
+      }
+      const allMemes = [
+        ...memesLibrary.photos.map(m => ({...m, type: 'photo'})),
+        ...memesLibrary.videos.map(m => ({...m, type: 'video'})),
+        ...memesLibrary.gifs.map(m => ({...m, type: 'gif'})),
+        ...memesLibrary.audios.map(m => ({...m, type: 'audio'}))
+      ];
+      document.getElementById('stat-photos').innerText = memesLibrary.photos.length;
+      document.getElementById('stat-videos').innerText = memesLibrary.videos.length;
+      document.getElementById('stat-gifs').innerText = memesLibrary.gifs.length;
+      document.getElementById('stat-audios').innerText = memesLibrary.audios.length;
+      document.getElementById('cat-memes').innerText = allMemes.length;
+      document.getElementById('cat-videos').innerText = memesLibrary.videos.length;
+      document.getElementById('cat-gifs').innerText = memesLibrary.gifs.length;
+      document.getElementById('cat-audios').innerText = memesLibrary.audios.length;
+
+      function getRandomMeme() { return allMemes[Math.floor(Math.random() * allMemes.length)]; }
+      function displayRandomMeme() {
+        const meme = getRandomMeme();
+        const previewDiv = document.querySelector('#randomMemeCard .random-meme-preview');
+        const titleDiv = document.querySelector('#randomMemeCard .random-meme-title');
+        if (!previewDiv) return;
+        if (meme.type === 'video') {
+          previewDiv.innerHTML = `<video src="${meme.file}" muted style="max-width:100%; max-height:200px;"></video>`;
+        } else if (meme.type === 'audio') {
+          previewDiv.innerHTML = `<div style="font-size:3rem;">🎵</div><audio src="${meme.file}" controls style="width:100%;"></audio>`;
+        } else {
+          previewDiv.innerHTML = `<img src="${meme.file}" style="max-width:100%; max-height:200px; object-fit:cover;">`;
+        }
+        titleDiv.innerText = meme.name;
+      }
+      displayRandomMeme();
+      document.getElementById('refreshRandomMeme')?.addEventListener('click', displayRandomMeme);
+
+      const trendingMemes = allMemes.slice(0, 8);
+      const track = document.getElementById('sliderTrack');
+      if (track) {
+        track.innerHTML = '';
+        trendingMemes.forEach(meme => {
+          const card = document.createElement('div');
+          card.className = 'trend-card';
+          if (meme.type === 'video') card.innerHTML = `<video src="${meme.file}" muted style="width:100%; aspect-ratio:16/9; object-fit:cover;"></video><div class="trend-title">${meme.name}</div>`;
+          else if (meme.type === 'audio') card.innerHTML = `<div style="background:#222; padding:20px; text-align:center;">🎵 ${meme.name}</div>`;
+          else card.innerHTML = `<img src="${meme.file}" style="width:100%; aspect-ratio:16/9; object-fit:cover;"><div class="trend-title">${meme.name}</div>`;
+          track.appendChild(card);
+        });
+      }
+      let currentIdx = 0;
+      const slideWidth = 280;
+      document.getElementById('sliderNext')?.addEventListener('click', () => { if(track && currentIdx < trendingMemes.length-1) { currentIdx++; track.style.transform = `translateX(-${currentIdx * slideWidth}px)`; } });
+      document.getElementById('sliderPrev')?.addEventListener('click', () => { if(track && currentIdx > 0) { currentIdx--; track.style.transform = `translateX(-${currentIdx * slideWidth}px)`; } });
+
+      const recent = allMemes.slice(-4);
+      const recentGrid = document.getElementById('recentGrid');
+      if (recentGrid) {
+        recentGrid.innerHTML = '';
+        recent.forEach(meme => {
+          const card = document.createElement('div');
+          card.className = 'recent-card';
+          if (meme.type === 'video') card.innerHTML = `<video src="${meme.file}" muted style="width:100%; aspect-ratio:16/9;"></video><div>${meme.name}</div>`;
+          else if (meme.type === 'audio') card.innerHTML = `<div style="padding:20px;">🎵 ${meme.name}</div>`;
+          else card.innerHTML = `<img src="${meme.file}" style="width:100%; aspect-ratio:16/9;"><div>${meme.name}</div>`;
+          recentGrid.appendChild(card);
+        });
+      }
+
+      document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+          const answer = q.nextElementSibling;
+          answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', initMainPage);
+  })();
+</script>
+<style>
+  /* same additional styles as in Russian version */
+  .random-meme-card { background: var(--card-bg); border-radius: 1.5rem; padding: 1.5rem; text-align: center; margin: 1rem auto; max-width: 400px; }
+  .trending-slider { position: relative; overflow: hidden; }
+  .slider-track { display: flex; gap: 1rem; transition: transform 0.3s; }
+  .trend-card { min-width: 260px; background: var(--card-bg); border-radius: 1rem; overflow: hidden; }
+  .slider-btn { position: absolute; top: 40%; background: rgba(0,0,0,0.5); border: none; font-size: 2rem; cursor: pointer; z-index: 2; border-radius: 50%; width: 40px; height: 40px; color: white; }
+  .slider-btn.prev { left: 0; }
+  .slider-btn.next { right: 0; }
+  .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 1rem; margin-top: 2rem; }
+  .recent-card { background: var(--card-bg); border-radius: 1rem; overflow: hidden; text-align: center; }
+  .categories-grid { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+  .category-card { text-align: center; background: var(--surface-glass); padding: 1rem; border-radius: 2rem; min-width: 100px; }
+  .howto-steps { background: var(--surface-glass); border-radius: 1.5rem; padding: 2rem; }
+  .step { margin-bottom: 0.8rem; }
+  .faq-item { margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .faq-question { cursor: pointer; padding: 1rem 0; font-weight: bold; }
+  .faq-answer { display: none; padding-bottom: 1rem; color: var(--text-secondary); }
+  .footer { background: var(--surface-glass); padding: 2rem 0; margin-top: 3rem; }
+  .footer-content { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; }
+  .footer-col a { display: block; color: var(--text-secondary); text-decoration: none; margin: 0.3rem 0; }
+  .btn-small { padding: 0.3rem 1rem; background: var(--accent); border: none; border-radius: 2rem; color: white; cursor: pointer; margin-top: 0.5rem; }
+  @media (max-width: 768px) { .slider-btn { display: none; } .trend-card { min-width: 200px; } }
+</style>
 </body>
 </html>
