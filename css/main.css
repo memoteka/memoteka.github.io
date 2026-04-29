@@ -925,3 +925,64 @@ select {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* ========== ТОП КАТЕГОРИЙ: АНИМИРОВАННЫЕ RGB-ГРАНИЦЫ ========== */
+.categories-grid {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+
+.category-card {
+  text-align: center;
+  background: var(--surface-glass);
+  backdrop-filter: blur(8px);
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  min-width: 110px;
+  transition: transform 0.3s;
+  border: 2px solid;
+  animation: rgbBorder 3s linear infinite;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+}
+
+.category-card img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 0.5rem;
+  filter: none !important; /* цветные иконки не инвертируем */
+}
+
+.category-card span {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.category-count {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Та же анимация, что у статистики */
+@keyframes rgbBorder {
+  0% { border-color: #ff0000; }
+  16% { border-color: #ff8000; }
+  33% { border-color: #ffff00; }
+  50% { border-color: #00ff00; }
+  66% { border-color: #0080ff; }
+  83% { border-color: #8000ff; }
+  100% { border-color: #ff0000; }
+}
+
+[data-theme="dark"] .category-card {
+  background: rgba(0,0,0,0.6);
+}
