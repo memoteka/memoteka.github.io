@@ -909,7 +909,6 @@ select {
   width: 48px;
   height: 48px;
   margin-bottom: 0.5rem;
-  filter: none !important; /* иконки цветные, не инвертируем */
 }
 
 .stat-number {
@@ -956,7 +955,6 @@ select {
   width: 32px;
   height: 32px;
   margin-bottom: 0.5rem;
-  filter: none !important; /* цветные иконки не инвертируем */
 }
 
 .category-card span {
