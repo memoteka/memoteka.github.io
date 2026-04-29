@@ -507,7 +507,7 @@ select {
 }
 
 /* Инвертируем иконки в тёмной теме, чтобы они стали светлыми */
-[data-theme="dark"] img[src*="/cdn/icons/"]:not(.logo-icon):not([src*="/donations/"]) {
+[data-theme="dark"] img[src*="/cdn/icons/"]:not(.logo-icon):not([src*="/donations/"]):not([src*="/socials/"]) {
   filter: brightness(0) invert(1);
 }
 

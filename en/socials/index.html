@@ -3,88 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Support Memoteka — donate for cookies</title>
-  <meta name="description" content="Support Memoteka development. Donate for cookies — content will become even better!">
-  <meta property="og:title" content="Support Memoteka">
-  <meta property="og:description" content="Donate to the project">
-  <meta property="og:image" content="/cdn/favicon/og-image.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  
+  <title>Socials — Memoteka</title>
+  <meta name="description" content="All social media links of Memoteka: Bluesky, Tumblr, Mastodon, TikTok, X, Facebook, YouTube, VK, Instagram, Telegram, Odysee, Rumble.">
   <link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
   <link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/cdn/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/cdn/favicon/site-en.webmanifest">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/responsive.css">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  
   <style>
-    .donate-container {
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 2rem;
+    .socials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .social-card {
       background: var(--card-bg);
       backdrop-filter: blur(8px);
       border-radius: 1.5rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       border: 1px solid var(--border);
-    }
-    .donate-container h1 {
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-    .donate-container .cookies-emoji {
-      font-size: 3rem;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-    .donate-container p {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    .form-input {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
+      transition: transform 0.2s, background 0.2s;
+      text-decoration: none;
       color: var(--text-primary);
-      font-size: 1rem;
     }
-    .form-input:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-    .btn-donate {
-      width: 100%;
+    .social-card:hover {
+      transform: translateY(-5px);
       background: var(--accent);
       color: white;
-      border: none;
-      padding: 0.8rem;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border-radius: 2rem;
-      cursor: pointer;
-      transition: all 0.2s;
     }
-    .btn-donate:hover {
-      background: var(--accent-hover);
-      transform: scale(1.02);
+    .social-card:hover .social-name {
+      color: white;
     }
-    .small-note {
-      text-align: center;
-      font-size: 0.8rem;
-      margin-top: 1.5rem;
-      color: var(--text-secondary);
+    .social-icon {
+      width: 2rem;
+      height: 2rem;
+      object-fit: contain;
+    }
+    .social-name {
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.2s;
     }
   </style>
 </head>
@@ -122,45 +85,58 @@
   </div>
 </nav>
 
-<main>
-  <div class="donate-container">
-    <div class="cookies-emoji">🍪</div>
-    <h1>Throw some cookies, bro!</h1>
-    <p>Your support makes content even better!</p>
-
-    <form id="donateForm">
-      <div class="form-group">
-        <label for="name">Your name:</label>
-        <input type="text" id="name" class="form-input" placeholder="How should I call you?" required>
-      </div>
-      <div class="form-group">
-        <label for="amount">Donation amount (₽):</label>
-        <input type="number" id="amount" class="form-input" placeholder="How many rubles?" min="1" required>
-      </div>
-      <div class="form-group">
-        <label for="message">Message for stream (optional):</label>
-        <input type="text" id="message" class="form-input" placeholder="What to say on stream?" maxlength="50">
-      </div>
-      <button type="submit" class="btn-donate">Support! 🚀</button>
-    </form>
-	<div class="donate-alternatives">
-  <h3>Other ways to support</h3>
-  <div class="alt-buttons">
-    <a href="https://tips.yandex.ru/guest/payment/3052933" class="alt-btn yandex" target="_blank" rel="noopener noreferrer">
-      <img src="/cdn/icons/donations/YandexTips.svg" alt="Yandex.Tips">
-      <span>Yandex.Tips</span>
+<main class="container">
+  <h1>We're on social media</h1>
+  <p>Follow us to never miss new memes, updates and contests.</p>
+  <div class="socials-grid">
+    <a href="https://vk.com/normik_chel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/vk.svg" alt="VK" class="social-icon">
+      <span class="social-name">VK</span>
     </a>
-    <a href="https://www.donationalerts.com/r/normik_chel" class="alt-btn da" target="_blank" rel="noopener noreferrer">
-      <img src="/cdn/icons/donations/DonationAlerts.svg" alt="DonationAlerts">
-      <span>DonationAlerts</span>
+    <a href="https://t.me/normik_chel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/telegram.svg" alt="Telegram" class="social-icon">
+      <span class="social-name">Telegram</span>
     </a>
-    <a href="https://new.donatepay.ru/@NormikChel" class="alt-btn donatepay" target="_blank" rel="noopener noreferrer">
-      <img src="/cdn/icons/donations/DonatePay.svg" alt="DonatePay">
-      <span>DonatePay</span>
+    <a href="https://www.youtube.com/channel/UCkpmUHi3zRQVmhLQ3NMY7yA" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/youtube.svg" alt="YouTube" class="social-icon">
+      <span class="social-name">YouTube</span>
     </a>
-  </div>
-</div>
-    <div class="small-note">Clicking will redirect you to YooMoney to confirm the payment.</div>
+    <a href="https://x.com/normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/x.svg" alt="X" class="social-icon">
+      <span class="social-name">X</span>
+    </a>
+    <a href="https://bsky.app/profile/normikchel.github.io" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/bluesky.svg" alt="Bluesky" class="social-icon">
+      <span class="social-name">Bluesky</span>
+    </a>
+    <a href="https://mastodon.social/@normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/mastodon.svg" alt="Mastodon" class="social-icon">
+      <span class="social-name">Mastodon</span>
+    </a>
+    <a href="https://www.tiktok.com/@normik.chel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/tiktok.svg" alt="TikTok" class="social-icon">
+      <span class="social-name">TikTok</span>
+    </a>
+    <a href="https://www.facebook.com/normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/facebook.svg" alt="Facebook" class="social-icon">
+      <span class="social-name">Facebook</span>
+    </a>
+    <a href="https://www.instagram.com/normikchelik" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/instagram.svg" alt="Instagram" class="social-icon">
+      <span class="social-name">Instagram</span>
+    </a>
+    <a href="https://www.tumblr.com/blog/normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/tumblr.svg" alt="Tumblr" class="social-icon">
+      <span class="social-name">Tumblr</span>
+    </a>
+    <a href="https://odysee.com/@NormikChel:b" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/odysee.svg" alt="Odysee" class="social-icon">
+      <span class="social-name">Odysee</span>
+    </a>
+    <a href="https://rumble.com/user/NormikChel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/rumble.svg" alt="Rumble" class="social-icon">
+      <span class="social-name">Rumble</span>
+    </a>
   </div>
 </main>
 
@@ -177,45 +153,5 @@
 <script src="/js/common.js"></script>
 <script src="/js/lang-switcher.js"></script>
 <script src="/js/theme-switcher.js"></script>
-<script>
-  (function() {
-    const form = document.getElementById('donateForm');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('name').value.trim();
-      const amount = document.getElementById('amount').value.trim();
-      const message = document.getElementById('message').value.trim() || 'For Memoteka!';
-      
-      if (!name) {
-        alert('Enter your name, bro!');
-        return;
-      }
-      if (!amount || amount < 1) {
-        alert('Amount must be greater than 0');
-        return;
-      }
-      
-      const donationData = {
-        name: name,
-        amount: amount,
-        message: message,
-        timestamp: Date.now(),
-        status: 'pending'
-      };
-      localStorage.setItem('lastDonation', JSON.stringify(donationData));
-      localStorage.setItem('donationAmount', amount);
-      
-      const authUrl = new URL('https://yoomoney.ru/oauth/authorize');
-      authUrl.searchParams.append('client_id', '6F6E7CF4814C90EBF49DC5379FAA8BFC83712673EB19B1E7A2149F880053AB91');
-      authUrl.searchParams.append('response_type', 'code');
-      authUrl.searchParams.append('redirect_uri', 'https://memoteka.github.io/en/donate/success');
-      authUrl.searchParams.append('scope', `payment.to-account("4100118296048272").limit(,${amount})`);
-      authUrl.searchParams.append('state', `${name}||${message}`);
-      
-      window.location.href = authUrl.toString();
-    });
-  })();
-</script>
 </body>
 </html>

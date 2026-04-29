@@ -3,19 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>404 — Страница не найдена | Мемотека</title>
-  <meta name="description" content="Страница не найдена. Проверьте адрес или вернитесь на главную.">
-  <meta property="og:title" content="Мемотека — 404">
-  <meta property="og:description" content="Страница не найдена">
-  <meta property="og:image" content="/cdn/favicon/og-image.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  
+  <title>Соцсети — Мемотека</title>
+  <meta name="description" content="Все ссылки на соцсети Мемотеки: Bluesky, Tumblr, Mastodon, TikTok, X, Facebook, YouTube, VK, Instagram, Telegram, Odysee, Rumble.">
   <link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
   <link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/cdn/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/cdn/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/responsive.css">
+  <style>
+    .socials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .social-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, background 0.2s;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .social-card:hover {
+      transform: translateY(-5px);
+      background: var(--accent);
+      color: white;
+    }
+    .social-card:hover .social-name {
+      color: white;
+    }
+    .social-icon {
+      width: 2rem;
+      height: 2rem;
+      object-fit: contain;
+    }
+    .social-name {
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+  </style>
 </head>
 <body>
 
@@ -51,11 +85,60 @@
   </div>
 </nav>
 
-<main class="container" style="text-align: center; padding: 4rem 2rem;">
-  <h1 style="font-size: 6rem; margin-bottom: 0.5rem;">404</h1>
-  <h2>Страница не найдена</h2>
-  <p style="margin: 1rem 0 2rem;">Извините, такой страницы не существует. Возможно, она была удалена или вы ошиблись адресом.</p>
-  <a href="/ru/" class="btn btn-primary">Вернуться на главную</a>
+<main class="container">
+  <h1>Мы в соцсетях</h1>
+  <p>Подписывайся, чтобы не пропускать новые мемы, обновления и конкурсы.</p>
+  <div class="socials-grid">
+    <a href="https://vk.com/normik_chel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/vk.svg" alt="VK" class="social-icon">
+      <span class="social-name">VK</span>
+    </a>
+    <a href="https://t.me/normik_chel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/telegram.svg" alt="Telegram" class="social-icon">
+      <span class="social-name">Telegram</span>
+    </a>
+    <a href="https://www.youtube.com/channel/UCkpmUHi3zRQVmhLQ3NMY7yA" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/youtube.svg" alt="YouTube" class="social-icon">
+      <span class="social-name">YouTube</span>
+    </a>
+    <a href="https://x.com/normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <!-- Используем x.svg (светлый/тёмный вариант через CSS не нужен) -->
+      <img src="/cdn/icons/socials/x.svg" alt="X" class="social-icon">
+      <span class="social-name">X</span>
+    </a>
+    <a href="https://bsky.app/profile/normikchel.github.io" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/bluesky.svg" alt="Bluesky" class="social-icon">
+      <span class="social-name">Bluesky</span>
+    </a>
+    <a href="https://mastodon.social/@normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/mastodon.svg" alt="Mastodon" class="social-icon">
+      <span class="social-name">Mastodon</span>
+    </a>
+    <a href="https://www.tiktok.com/@normik.chel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/tiktok.svg" alt="TikTok" class="social-icon">
+      <span class="social-name">TikTok</span>
+    </a>
+    <a href="https://www.facebook.com/normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/facebook.svg" alt="Facebook" class="social-icon">
+      <span class="social-name">Facebook</span>
+    </a>
+    <a href="https://www.instagram.com/normikchelik" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/instagram.svg" alt="Instagram" class="social-icon">
+      <span class="social-name">Instagram</span>
+    </a>
+    <a href="https://www.tumblr.com/blog/normikchel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/tumblr.svg" alt="Tumblr" class="social-icon">
+      <span class="social-name">Tumblr</span>
+    </a>
+    <a href="https://odysee.com/@NormikChel:b" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/odysee.svg" alt="Odysee" class="social-icon">
+      <span class="social-name">Odysee</span>
+    </a>
+    <a href="https://rumble.com/user/NormikChel" class="social-card" target="_blank" rel="noopener noreferrer">
+      <img src="/cdn/icons/socials/rumble.svg" alt="Rumble" class="social-icon">
+      <span class="social-name">Rumble</span>
+    </a>
+  </div>
 </main>
 
 <footer class="footer">
