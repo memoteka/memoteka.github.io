@@ -273,3 +273,91 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('memesContainer')) renderMemes('memesContainer');
   initVideoPlayers();
 });
+
+// ========== ПЛАВАЮЩАЯ ПАНЕЛЬ ШАРИНГА ==========
+(function() {
+  // Создаём контейнер
+  const fab = document.createElement('div');
+  fab.className = 'share-fab';
+  
+  // Кнопка-триггер
+  const btn = document.createElement('button');
+  btn.className = 'share-button';
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>';
+  
+  // Панель с иконками
+  const panel = document.createElement('div');
+  panel.className = 'share-panel';
+  
+  // Иконки соцсетей (пути к вашим файлам)
+  const networks = [
+    { name: 'telegram', file: '/cdn/icons/share/TG.svg', url: (u,t) => `https://t.me/share/url?url=${encodeURIComponent(u)}&text=${encodeURIComponent(t)}` },
+    { name: 'whatsapp', file: '/cdn/icons/share/WA.svg', url: (u,t) => `https://api.whatsapp.com/send?text=${encodeURIComponent(t+' '+u)}` },
+    { name: 'vk', file: '/cdn/icons/share/VK.svg', url: (u,t) => `https://vk.com/share.php?url=${encodeURIComponent(u)}&title=${encodeURIComponent(t)}` },
+    { name: 'x', file: '/cdn/icons/share/X.svg', url: (u,t) => `https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}` },
+    { name: 'facebook', file: '/cdn/icons/share/FB.svg', url: (u) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(u)}` },
+    { name: 'viber', file: '/cdn/icons/share/Viber.svg', url: (u,t) => `viber://forward?text=${encodeURIComponent(t+' '+u)}` },
+    { name: 'ok', file: '/cdn/icons/share/OK.svg', url: (u,t) => `https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=${encodeURIComponent(u)}&st.comments=${encodeURIComponent(t)}` }
+  ];
+  
+  networks.forEach(net => {
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'share-icon';
+    const img = document.createElement('img');
+    img.src = net.file;
+    img.alt = net.name;
+    iconDiv.appendChild(img);
+    iconDiv.addEventListener('click', () => {
+      const url = window.location.href;
+      const title = document.title;
+      let shareUrl;
+      if (net.name === 'viber') {
+        shareUrl = net.url(url, title);
+        window.open(shareUrl, '_blank');
+      } else {
+        shareUrl = net.url(url, title);
+        window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+      }
+    });
+    panel.appendChild(iconDiv);
+  });
+  
+  // Добавляем кнопку копирования ссылки (дополнительно)
+  const copyDiv = document.createElement('div');
+  copyDiv.className = 'share-icon';
+  const copyImg = document.createElement('img');
+  copyImg.src = '/cdn/icons/share/copy.svg'; // если нет такой иконки, пропустим или создадим временно
+  copyImg.alt = 'copy';
+  // Если нет иконки copy.svg — можем использовать текстовую иконку или спросить
+  // Но для надёжности сделаем SVG прямо тут
+  if (!copyImg.complete || copyImg.naturalWidth === 0) {
+    copyDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+  } else {
+    copyDiv.appendChild(copyImg);
+  }
+  copyDiv.addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      // временное уведомление (можно всплывашку)
+      const oldTitle = btn.title;
+      btn.title = 'Ссылка скопирована!';
+      setTimeout(() => { btn.title = oldTitle; }, 1500);
+    });
+  });
+  panel.appendChild(copyDiv);
+  
+  fab.appendChild(btn);
+  fab.appendChild(panel);
+  document.body.appendChild(fab);
+  
+  // Toggle panel
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    panel.classList.toggle('show');
+  });
+  // Закрыть при клике вне
+  document.addEventListener('click', (e) => {
+    if (!fab.contains(e.target)) {
+      panel.classList.remove('show');
+    }
+  });
+})();

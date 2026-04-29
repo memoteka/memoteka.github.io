@@ -631,3 +631,79 @@ select {
   user-drag: none;
   pointer-events: none;
 }
+
+/* ========== ПЛАВАЮЩАЯ ПАНЕЛЬ ШАРИНГА ========== */
+.share-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+}
+.share-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+}
+.share-button:hover {
+  transform: scale(1.05);
+  background: var(--accent-hover);
+}
+.share-button svg {
+  width: 28px;
+  height: 28px;
+  fill: white;
+  stroke: none;
+}
+.share-panel {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.share-panel.show {
+  opacity: 1;
+  visibility: visible;
+}
+.share-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.share-icon:hover {
+  transform: translateY(-3px);
+}
+.share-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+@media (max-width: 768px) {
+  .share-fab { bottom: 10px; right: 10px; }
+  .share-panel { gap: 0.6rem; padding: 0.6rem 0.8rem; }
+  .share-icon { width: 36px; height: 36px; }
+  .share-icon img { width: 20px; height: 20px; }
+}
