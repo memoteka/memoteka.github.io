@@ -1042,3 +1042,28 @@ select {
     height: 40px;
   }
 }
+
+/* ========== ИНСТРУКЦИЯ (HOWTO) – РАДУЖНАЯ ОБВОДКА ========== */
+.howto-steps {
+  background: var(--surface-glass);
+  backdrop-filter: blur(8px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 2px solid;
+  animation: rgbBorder 3s linear infinite;
+  transition: transform 0.2s;
+}
+.howto-steps:hover {
+  transform: scale(1.01);
+}
+
+/* Переиспользуем анимацию rgbBorder, она уже объявлена ранее */
+@keyframes rgbBorder {
+  0% { border-color: #ff0000; }
+  16% { border-color: #ff8000; }
+  33% { border-color: #ffff00; }
+  50% { border-color: #00ff00; }
+  66% { border-color: #0080ff; }
+  83% { border-color: #8000ff; }
+  100% { border-color: #ff0000; }
+}
