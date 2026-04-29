@@ -1179,3 +1179,135 @@ select {
 .btn-secondary:active {
   transform: translateY(1px);
 }
+
+/* ========== СТРАНИЦА "О ПРОЕКТЕ" — ПРЕМИУМ-ОФОРМЛЕНИЕ ========== */
+/* Основной контейнер на странице about */
+body .container:has(h1) {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Заголовок h1 на about */
+.container h1 {
+  font-size: 2.8rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.5rem;
+  animation: fadeInDown 0.6s ease;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Вступление (первый абзац после h1) */
+.container p:first-of-type {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Все подзаголовки h2 */
+.container h2 {
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+  background: linear-gradient(120deg, transparent 0%, transparent 50%, var(--accent) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.4s;
+  padding: 0 0.2rem;
+}
+
+.container h2:hover {
+  background-position: 0 0;
+  color: white;
+}
+
+/* Списки преимуществ (ul, которые идут после h2) */
+.container ul {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.container li {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  padding: 0.8rem 1rem;
+  transition: all 0.2s;
+  border-left: 4px solid var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.container li:hover {
+  transform: translateX(8px);
+  background: var(--accent);
+  color: white;
+}
+
+/* Эмодзи в li (если они есть) */
+.container li::before {
+  content: "✨";
+  font-size: 1.2rem;
+}
+
+/* Если хотим убрать лишние псевдоэлементы у тех пунктов, где эмодзи уже есть, то можно задать конкретнее, но оставим как есть */
+
+/* Ссылка в конце (перейти в галерею) */
+.container a:last-child {
+  display: inline-block;
+  margin-top: 2rem;
+  background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #8000ff, #ff0000);
+  background-size: 200% auto;
+  color: white;
+  font-weight: bold;
+  padding: 0.8rem 2rem;
+  border-radius: 3rem;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: rgbBorderLink 3s linear infinite;
+  border: 2px solid transparent;
+}
+
+.container a:last-child:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);
+  background-position: 100% 0;
+}
+
+@keyframes rgbBorderLink {
+  0% { border-color: #ff0000; }
+  16% { border-color: #ff8000; }
+  33% { border-color: #ffff00; }
+  50% { border-color: #00ff00; }
+  66% { border-color: #0080ff; }
+  83% { border-color: #8000ff; }
+  100% { border-color: #ff0000; }
+}
+
+/* Добавим плавающую тень для всей страницы */
+body:has(.container h1) {
+  background-attachment: fixed;
+}
