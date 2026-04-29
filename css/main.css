@@ -1137,11 +1137,45 @@ select {
   justify-content: center;
 }
 
+/* ========== ВЫРАВНИВАЕМ СТИЛИ КНОПОК ========== */
+/* Делаем кнопку "Как это работает" (.btn-secondary) такой же, как "Взломать галерею" (.btn-primary) */
 .btn-secondary {
-  background: var(--accent);
+  position: relative;
+  background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #8000ff, #ff0000);
+  background-size: 200% auto;
   color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 3rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+  overflow: hidden;
 }
-.btn-secondary:hover {
+
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: var(--accent);
+  border-radius: 3rem;
+  z-index: -1;
+  transition: background 0.3s;
+}
+
+.btn-secondary:hover::before {
   background: var(--accent-hover);
-  transform: translateY(-2px);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+  background-position: 100% 0;
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
 }
