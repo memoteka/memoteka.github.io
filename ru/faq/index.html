@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Часто задаваемые вопросы — Мемотека</title>
+  <meta name="description" content="Ответы на частые вопросы о Мемотеке: донаты, как добавить мем, темы, языки, плеер.">
+  <link rel="icon" type="image/svg+xml" href="/cdn/favicon/favicon.svg">
+  <link rel="alternate icon" href="/cdn/favicon/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/cdn/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/cdn/favicon/site.webmanifest">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <style>
+    .faq-page-list {
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+    .faq-page-item {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-page-question {
+      cursor: pointer;
+      padding: 1.2rem 1.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .faq-page-question:hover {
+      background: rgba(59,130,246,0.1);
+    }
+    .faq-page-question::after {
+      content: '▼';
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+    .faq-page-item.open .faq-page-question::after {
+      transform: rotate(180deg);
+    }
+    .faq-page-answer {
+      display: none;
+      padding: 0 1.5rem 1.2rem 1.5rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .faq-page-item.open .faq-page-answer {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <a href="/ru/" class="logo"><img src="/cdn/favicon/favicon.svg" alt="Мемотека" class="logo-icon"> Мемотека</a>
+  <div class="nav-links">
+    <a href="/ru/about/">О проекте</a>
+    <a href="/ru/memes/">Мемы</a>
+	<a href="/ru/donate/">🍪 Поддержать</a>
+    <div class="select-group">
+      <div class="custom-dropdown theme-dropdown">
+        <div class="dropdown-trigger" data-tooltip="Тема">
+          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg></span>
+          <span class="dropdown-arrow">▼</span>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-item" data-theme="system"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="7" r="2"/></svg> Системная</div>
+          <div class="dropdown-item" data-theme="light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Светлая</div>
+          <div class="dropdown-item" data-theme="dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Тёмная</div>
+        </div>
+      </div>
+      <div class="custom-dropdown">
+        <div class="dropdown-trigger" data-tooltip="Язык">
+          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13"><path fill="#fff" d="M0 0h9v3H0z"/><path fill="#d52b1e" d="M0 3h9v3H0z"/><path fill="#0039a6" d="M0 2h9v2H0z"/></svg></span>
+          <span class="dropdown-arrow">▼</span>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-item" data-lang="ru"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6" width="20" height="13"><path fill="#fff" d="M0 0h9v3H0z"/><path fill="#d52b1e" d="M0 3h9v3H0z"/><path fill="#0039a6" d="M0 2h9v2H0z"/></svg> Русский</div>
+          <div class="dropdown-item" data-lang="en"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="10"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg> English</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <h1>Часто задаваемые вопросы</h1>
+  <p>Собрали самое главное о Мемотеке. Если не нашли ответ — пишите в Telegram.</p>
+  <div class="faq-page-list">
+    <div class="faq-page-item">
+      <div class="faq-page-question">Что такое Мемотека?</div>
+      <div class="faq-page-answer">Мемотека — это архив мемов, фотографий, видео, гифок и аудио. Вы можете просматривать контент, менять тему и язык, а также добавлять свои файлы.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Как добавить свой мем?</div>
+      <div class="faq-page-answer">Закиньте файл в нужную папку внутри <code>/cdn/assets/</code> (photos, videos, gifs, audios), затем отредактируйте массив `memesLibrary` в файле <code>/js/common.js</code> — добавьте название и путь. Перезагрузите страницу.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Как работает смена темы?</div>
+      <div class="faq-page-answer">Вы можете выбрать светлую, тёмную или системную тему через выпадающее меню в навигации. Ваш выбор сохраняется в браузере.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Как переключить язык?</div>
+      <div class="faq-page-answer">Нажмите на флаг в навигации и выберите русский или английский. Язык запоминается для всех страниц.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Как работает плеер в лайтбоксе?</div>
+      <div class="faq-page-answer">Видео и аудио открываются в лайтбоксе с кастомным плеером: кнопки play/pause, громкость, прогресс-бар с перемоткой кликом и перетаскиванием, отображение времени.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Как поддержать проект?</div>
+      <div class="faq-page-answer">Перейдите на страницу <a href="/ru/donate/">Поддержать</a>. Там есть форма для доната через ЮMoney и альтернативные способы (Яндекс.Чаевые, DonationAlerts, DonatePay).</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Почему видео не перематывается?</div>
+      <div class="faq-page-answer">Подождите полной загрузки метаданных плеера. Если проблема повторяется — обновите страницу. Наш плеер поддерживает перемотку кликом по прогресс-бару и перетаскиванием.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Как удалить мем?</div>
+      <div class="faq-page-answer">Удалите файл из папки <code>/cdn/assets/...</code> и уберите соответствующую запись из массива `memesLibrary` в <code>/js/common.js</code>. После обновления страницы мем исчезнет.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Есть ли ограничения по форматам?</div>
+      <div class="faq-page-answer">Поддерживаются: jpg, png, webp, mp4, webm, gif, mp3, ogg. Другие форматы могут не работать в лайтбоксе или плеере.</div>
+    </div>
+    <div class="faq-page-item">
+      <div class="faq-page-question">Где скачать исходный код?</div>
+      <div class="faq-page-answer">Весь код открыт на GitHub: <a href="https://github.com/memoteka" target="_blank">github.com/memoteka</a>. Вы можете форкнуть репозиторий и сделать свой сайт.</div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-col"><h3>Мемотека</h3><p>Хранилище мемов с открытым кодом.<br>© 2026 Мемотека</p></div>
+    <div class="footer-col"><h3>Навигация</h3><a href="/ru/">Главная</a><a href="/ru/memes/">Мемы</a><a href="/ru/about/">О проекте</a><a href="/ru/donate/">Поддержать 🍪</a></div>
+    <div class="footer-col"><h3>Соцсети</h3><a href="https://t.me/normik_chel">Telegram</a><a href="https://vk.com/normik_chel">VK</a><a href="https://github.com/memoteka">GitHub</a><a href="/ru/socials/">Соцсети</a></div>
+    <div class="footer-col"><h3>Полезное</h3><a href="#" id="backToTop">Наверх ↑</a><a href="/cdn/favicon/site.webmanifest">Web App Manifest</a><a href="/ru/sitemap/">Карта сайта</a><a href="/feed.xml" target="_blank">RSS (русский)</a><a href="/ru/faq/">FAQ</a></div>
+    <div class="footer-col"><h3>Документы</h3><a href="/ru/documents/privacy">Политика конфиденциальности</a><a href="/ru/documents/tos">Пользовательское соглашение</a></div>
+  </div>
+</footer>
+
+<script src="/js/common.js"></script>
+<script src="/js/lang-switcher.js"></script>
+<script src="/js/theme-switcher.js"></script>
+<script>
+  document.querySelectorAll('.faq-page-question').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-page-item');
+      item.classList.toggle('open');
+    });
+  });
+</script>
+</body>
+</html>
