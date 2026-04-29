@@ -618,3 +618,16 @@ select {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Запрет выделения на карточках соцсетей */
+.social-card {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Запрет перетаскивания и выделения иконок соцсетей */
+.social-icon {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
