@@ -1137,36 +1137,11 @@ select {
   justify-content: center;
 }
 
-/* ========== КНОПКА "КАК ЭТО РАБОТАЕТ" СТАЛА ОДИНАКОВОЙ С ГЛАВНОЙ ========== */
 .btn-secondary {
-  background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #8000ff, #ff0000);
-  background-size: 200% auto;
-  color: white;
-  border: none;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.btn-secondary::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  right: 2px;
-  bottom: 2px;
   background: var(--accent);
-  border-radius: 3rem;
-  z-index: -1;
-  transition: background 0.3s;
+  color: white;
 }
-
-.btn-secondary:hover::before {
-  background: var(--accent-hover);
-}
-
 .btn-secondary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
-  background-position: 100% 0;
+  background: var(--accent-hover);
+  transform: translateY(-2px);
 }
