@@ -1115,3 +1115,24 @@ select {
   margin-top: 0.5rem;
   display: inline-block;
 }
+
+/* ========== ОТСТУПЫ В HERO, ЧТОБЫ КНОПКИ НЕ НАЕЗЖАЛИ НА ТЕКСТ ========== */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-content p {
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+}
+
+.hero-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
