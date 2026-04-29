@@ -507,7 +507,7 @@ select {
 }
 
 /* Инвертируем иконки в тёмной теме, чтобы они стали светлыми */
-[data-theme="dark"] img[src*="/cdn/icons/"]:not(.logo-icon):not([src*="/donations/"]):not([src*="/socials/"]) {
+[data-theme="dark"] img[src*="/cdn/icons/"]:not(.logo-icon):not([src*="/donations/"]):not([src*="/socials/"]):not([src*="/share/"]) {
   filter: brightness(0) invert(1);
 }
 
@@ -706,4 +706,15 @@ select {
   .share-panel { gap: 0.6rem; padding: 0.6rem 0.8rem; }
   .share-icon { width: 36px; height: 36px; }
   .share-icon img { width: 20px; height: 20px; }
+}
+
+/* Запрет выделения и перетаскивания иконок шеринга */
+.share-icon {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.share-icon img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }
