@@ -154,5 +154,26 @@
 <script src="/js/common.js"></script>
 <script src="/js/lang-switcher.js"></script>
 <script src="/js/theme-switcher.js"></script>
+
+<script>
+  (function() {
+    const xImg = document.querySelector('.social-card img[alt="X"]');
+    if (!xImg) return;
+    const updateXIcon = () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      if (theme === 'dark') {
+        xImg.src = '/cdn/icons/socials/x-light.svg';
+      } else {
+        xImg.src = '/cdn/icons/socials/x.svg';
+      }
+    };
+    // Наблюдаем за изменением атрибута data-theme
+    const observer = new MutationObserver(() => updateXIcon());
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    updateXIcon();
+  })();
+</script>
+
+
 </body>
 </html>
