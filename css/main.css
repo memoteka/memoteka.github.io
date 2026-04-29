@@ -1067,3 +1067,45 @@ select {
   83% { border-color: #8000ff; }
   100% { border-color: #ff0000; }
 }
+
+/* ========== КНОПКА "Погнали →" И ДРУГИЕ ГЛАВНЫЕ КНОПКИ ========== */
+.btn-primary {
+  position: relative;
+  background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #8000ff, #ff0000);
+  background-size: 200% auto;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 3rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: var(--accent);
+  border-radius: 3rem;
+  z-index: -1;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover::before {
+  background: var(--accent-hover);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+  background-position: 100% 0;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
