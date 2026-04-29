@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://memoteka.github.io/sitemap.xml
+
+Disallow: /cdn/
+Disallow: /css/
+Disallow: /js/
+Disallow: /ru/donate/success
+Disallow: /en/donate/success
