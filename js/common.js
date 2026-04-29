@@ -361,3 +361,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 })();
+
+// Добавление мобильной нижней панели навигации
+if (window.innerWidth <= 768) {
+  const bottomNav = document.createElement('div');
+  bottomNav.className = 'mobile-bottom-nav';
+  const currentLang = document.documentElement.lang === 'ru' ? 'ru' : 'en';
+  
+  const links = [
+    { name: currentLang === 'ru' ? 'Главная' : 'Home', url: `/${currentLang}/`, icon: '/cdn/icons/photo.svg' },
+    { name: currentLang === 'ru' ? 'Мемы' : 'Memes', url: `/${currentLang}/memes/`, icon: '/cdn/icons/meme.svg' },
+    { name: currentLang === 'ru' ? 'Соцсети' : 'Socials', url: `/${currentLang}/socials/`, icon: '/cdn/icons/socials/vk.svg' }
+  ];
+  
+  links.forEach(link => {
+    const a = document.createElement('a');
+    a.href = link.url;
+    const img = document.createElement('img');
+    img.src = link.icon;
+    img.alt = link.name;
+    const span = document.createElement('span');
+    span.textContent = link.name;
+    a.appendChild(img);
+    a.appendChild(span);
+    if (window.location.pathname === link.url) a.classList.add('active');
+    bottomNav.appendChild(a);
+  });
+  
+  document.body.appendChild(bottomNav);
+}
