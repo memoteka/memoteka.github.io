@@ -1096,3 +1096,22 @@ select {
 .btn-primary:active {
   transform: translateY(1px);
 }
+
+/* ========== ОТСТУПЫ В CTA-БЛОКЕ, ЧТОБЫ КНОПКА НЕ НАЕЗЖАЛА ========== */
+.cta-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.cta-content h2 {
+  margin-bottom: 0;
+}
+
+.cta .btn-primary {
+  margin-top: 0.5rem;
+  display: inline-block;
+}
