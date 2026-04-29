@@ -1136,3 +1136,23 @@ select {
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* ========== КНОПКА "Как это работает" (btn-secondary) ========== */
+.btn-secondary {
+  background: transparent;
+  backdrop-filter: blur(4px);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59,130,246,0.3);
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
