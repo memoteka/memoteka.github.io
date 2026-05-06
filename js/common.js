@@ -402,26 +402,95 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('wheel', onWheel, { passive: false });
 })();
 
-// ========== ВЕРСИЯ ДЛЯ СЛАБОВИДЯЩИХ С РАСШИРЕННЫМИ НАСТРОЙКАМИ ==========
+// ========== ВЕРСИЯ ДЛЯ СЛАБОВИДЯЩИХ (улучшенная с reset, i18n, голосом) ==========
 (function() {
   const ACCESSIBILITY_KEY = 'accessibilityMode';
   let isAccessibilityMode = localStorage.getItem(ACCESSIBILITY_KEY) === 'true';
 
+  // Тексты интерфейса в зависимости от языка
+  const i18n = {
+    ru: {
+      font: 'Шрифт:',
+      sans: 'Без засечек',
+      serif: 'С засечками',
+      size: 'Размер:',
+      small: 'Маленький',
+      medium: 'Средний',
+      large: 'Большой',
+      spacing: 'Интервал:',
+      normal_spacing: 'Обычный',
+      wide: 'Широкий',
+      extra_wide: 'Очень широкий',
+      color: 'Цвет:',
+      bw: 'Ч/б',
+      by: 'Ч/ж',
+      bc: 'Б/ч',
+      yw: 'Ж/ч',
+      wb: 'Б/с',
+      speech: 'Диктор:',
+      speech_on: '🔊 Диктор (вкл)',
+      speech_off: '🔇 Диктор (выкл)',
+      voice: 'Голос:',
+      female: 'Женский',
+      male: 'Мужской',
+      reset: 'Сброс'
+    },
+    en: {
+      font: 'Font:',
+      sans: 'Sans-serif',
+      serif: 'Serif',
+      size: 'Size:',
+      small: 'Small',
+      medium: 'Medium',
+      large: 'Large',
+      spacing: 'Spacing:',
+      normal_spacing: 'Normal',
+      wide: 'Wide',
+      extra_wide: 'Extra wide',
+      color: 'Color:',
+      bw: 'B/W',
+      by: 'B/Y',
+      bc: 'W/B',
+      yw: 'Y/B',
+      wb: 'W/Bl',
+      speech: 'Speech:',
+      speech_on: '🔊 Speech (on)',
+      speech_off: '🔇 Speech (off)',
+      voice: 'Voice:',
+      female: 'Female',
+      male: 'Male',
+      reset: 'Reset'
+    }
+  };
+
+  function getCurrentLang() {
+    // Определяем язык из URL или атрибута html
+    const path = window.location.pathname;
+    if (path.startsWith('/en/')) return 'en';
+    if (path.startsWith('/ru/')) return 'ru';
+    const htmlLang = document.documentElement.lang;
+    if (htmlLang === 'en' || htmlLang === 'ru') return htmlLang;
+    return 'ru'; // по умолчанию русский
+  }
+
+  let currentLang = getCurrentLang();
+
   // Настройки по умолчанию
-  let accessibilitySettings = {
+  const defaultSettings = {
     fontFamily: 'sans',
     fontSize: 'medium',
     letterSpacing: 'normal',
     colorScheme: 'bw',
     speechEnabled: false,
-    voiceGender: 'female' // 'male' или 'female'
+    voiceGender: 'female'
   };
 
+  let accessibilitySettings = { ...defaultSettings };
   const savedSettings = localStorage.getItem('accessibilitySettings');
   if (savedSettings) {
     try {
       const parsed = JSON.parse(savedSettings);
-      accessibilitySettings = { ...accessibilitySettings, ...parsed };
+      accessibilitySettings = { ...defaultSettings, ...parsed };
     } catch(e) {}
   }
 
@@ -437,13 +506,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateSelectedVoice() {
     if (!availableVoices.length) return;
+    const lang = currentLang === 'ru' ? 'ru' : 'en';
     let voice = null;
     if (accessibilitySettings.voiceGender === 'female') {
-      voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en') && /female|woman|girl/i.test(v.name));
-      if (!voice) voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en'));
+      voice = availableVoices.find(v => v.lang.startsWith(lang) && /female|woman|girl/i.test(v.name));
+      if (!voice) voice = availableVoices.find(v => v.lang.startsWith(lang));
     } else {
-      voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en') && /male|man|boy/i.test(v.name));
-      if (!voice) voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en'));
+      voice = availableVoices.find(v => v.lang.startsWith(lang) && /male|man|boy/i.test(v.name));
+      if (!voice) voice = availableVoices.find(v => v.lang.startsWith(lang));
     }
     selectedVoice = voice || availableVoices[0];
   }
@@ -460,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (!text || !text.trim()) return;
     const utterance = new SpeechSynthesisUtterance(text.trim());
-    utterance.lang = document.documentElement.lang === 'ru' ? 'ru-RU' : 'en-US';
+    utterance.lang = currentLang === 'ru' ? 'ru-RU' : 'en-US';
     utterance.rate = 0.9;
     utterance.pitch = 1;
     if (selectedVoice) utterance.voice = selectedVoice;
@@ -474,7 +544,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hoverTimeout) clearTimeout(hoverTimeout);
     let target = e.target;
     let text = '';
-    // Ищем подходящий текст: title, alt, aria-label, текст элемента
     if (target.getAttribute('title')) {
       text = target.getAttribute('title');
     } else if (target.getAttribute('alt')) {
@@ -483,7 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
       text = target.getAttribute('aria-label');
     } else if (target.innerText || target.textContent) {
       text = (target.innerText || target.textContent).trim();
-      // Если текст слишком длинный, берём первые 200 символов
       if (text.length > 200) text = text.slice(0, 200) + '…';
     }
     if (text) {
@@ -492,10 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleMouseLeave() {
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-      hoverTimeout = null;
-    }
+    if (hoverTimeout) clearTimeout(hoverTimeout);
     if (currentSpeechUtterance) {
       window.speechSynthesis.cancel();
       currentSpeechUtterance = null;
@@ -503,7 +568,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function bindSpeechEvents() {
-    document.querySelectorAll('a, button, .meme-card, .faq-question, .testimonial-card, h1, h2, h3, p, img, .dropdown-trigger, .social-card').forEach(el => {
+    const selectors = 'a, button, .meme-card, .faq-question, .testimonial-card, h1, h2, h3, p, img, .dropdown-trigger, .social-card';
+    document.querySelectorAll(selectors).forEach(el => {
       el.removeEventListener('mouseenter', handleMouseEnter);
       el.removeEventListener('mouseleave', handleMouseLeave);
       if (accessibilitySettings.speechEnabled) {
@@ -521,7 +587,8 @@ document.addEventListener('DOMContentLoaded', () => {
       bindSpeechEvents();
     } else {
       if (window.speechSynthesis) window.speechSynthesis.cancel();
-      document.querySelectorAll('a, button, .meme-card, .faq-question, .testimonial-card, h1, h2, h3, p, img, .dropdown-trigger, .social-card').forEach(el => {
+      const selectors = 'a, button, .meme-card, .faq-question, .testimonial-card, h1, h2, h3, p, img, .dropdown-trigger, .social-card';
+      document.querySelectorAll(selectors).forEach(el => {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
@@ -530,13 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSpeechUtterance = null;
       }
     }
-    // Обновить состояние кнопки диктора, если панель существует
-    const speechBtn = document.getElementById('a11y-speech-btn');
-    if (speechBtn) {
-      speechBtn.textContent = accessibilitySettings.speechEnabled ? '🔊 Диктор (вкл)' : '🔇 Диктор (выкл)';
-    }
-    const genderSelect = document.getElementById('a11y-voice-gender');
-    if (genderSelect) genderSelect.disabled = !accessibilitySettings.speechEnabled;
+    updatePanelUI();
   }
 
   // Применение стилей
@@ -544,15 +605,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isAccessibilityMode) return;
     document.body.classList.add('accessibility-mode');
     const root = document.documentElement;
-    // Шрифт
     document.body.style.fontFamily = accessibilitySettings.fontFamily === 'serif' ? "'Times New Roman', Times, serif" : "'Inter', system-ui, sans-serif";
-    // Размер
     const sizes = { small: '1rem', medium: '1.2rem', large: '1.5rem' };
     document.body.style.fontSize = sizes[accessibilitySettings.fontSize] || '1.2rem';
-    // Интервал
     const spacing = { normal: 'normal', wide: '0.1em', 'extra-wide': '0.2em' };
     document.body.style.letterSpacing = spacing[accessibilitySettings.letterSpacing] || 'normal';
-    // Цветовая схема
     const schemes = {
       bw: { bg: '#ffffff', text: '#000000', accent: '#0000ff', border: '#000000' },
       by: { bg: '#ffff00', text: '#000000', accent: '#0000ff', border: '#000000' },
@@ -570,7 +627,6 @@ document.addEventListener('DOMContentLoaded', () => {
     root.style.setProperty('--border', s.border);
     root.style.setProperty('--accent', s.accent);
     root.style.setProperty('--accent-hover', s.accent);
-    // Доп. стили
     let dynStyle = document.getElementById('a11y-dynamic-styles');
     if (!dynStyle) {
       const style = document.createElement('style');
@@ -602,9 +658,99 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dynStyle) dynStyle.remove();
   }
 
-  // Создание панели управления (вверху, без закрытия)
+  // Функция сброса всех настроек
+  function resetToDefault() {
+    accessibilitySettings = { ...defaultSettings };
+    localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+    if (isAccessibilityMode) {
+      applyAccessibilityStyles();
+      if (window.speechSynthesis) loadVoices();
+      toggleSpeech(accessibilitySettings.speechEnabled);
+    }
+    updatePanelUI();
+  }
+
+  // Обновление UI панели (значения селектов и кнопок)
+  function updatePanelUI() {
+    const panel = document.getElementById('accessibility-panel');
+    if (!panel) return;
+    const fontSelect = document.getElementById('a11y-font-family');
+    const sizeSelect = document.getElementById('a11y-font-size');
+    const spacingSelect = document.getElementById('a11y-letter-spacing');
+    const colorSelect = document.getElementById('a11y-color-scheme');
+    const speechBtn = document.getElementById('a11y-speech-btn');
+    const genderSelect = document.getElementById('a11y-voice-gender');
+    if (fontSelect) fontSelect.value = accessibilitySettings.fontFamily;
+    if (sizeSelect) sizeSelect.value = accessibilitySettings.fontSize;
+    if (spacingSelect) spacingSelect.value = accessibilitySettings.letterSpacing;
+    if (colorSelect) colorSelect.value = accessibilitySettings.colorScheme;
+    if (speechBtn) {
+      const texts = i18n[currentLang];
+      speechBtn.textContent = accessibilitySettings.speechEnabled ? texts.speech_on : texts.speech_off;
+    }
+    if (genderSelect) {
+      genderSelect.value = accessibilitySettings.voiceGender;
+      genderSelect.disabled = !accessibilitySettings.speechEnabled;
+    }
+    // Обновить тексты всех элементов панели согласно текущему языку
+    updatePanelLanguage();
+  }
+
+  function updatePanelLanguage() {
+    const panel = document.getElementById('accessibility-panel');
+    if (!panel) return;
+    const t = i18n[currentLang];
+    // Метки
+    const labels = panel.querySelectorAll('label');
+    if (labels[0]) labels[0].innerHTML = t.font;
+    if (labels[1]) labels[1].innerHTML = t.size;
+    if (labels[2]) labels[2].innerHTML = t.spacing;
+    if (labels[3]) labels[3].innerHTML = t.color;
+    if (labels[4]) labels[4].innerHTML = t.speech;
+    if (labels[5]) labels[5].innerHTML = t.voice;
+    // Опции селектов
+    const fontSelect = document.getElementById('a11y-font-family');
+    if (fontSelect) {
+      fontSelect.options[0].text = t.sans;
+      fontSelect.options[1].text = t.serif;
+    }
+    const sizeSelect = document.getElementById('a11y-font-size');
+    if (sizeSelect) {
+      sizeSelect.options[0].text = t.small;
+      sizeSelect.options[1].text = t.medium;
+      sizeSelect.options[2].text = t.large;
+    }
+    const spacingSelect = document.getElementById('a11y-letter-spacing');
+    if (spacingSelect) {
+      spacingSelect.options[0].text = t.normal_spacing;
+      spacingSelect.options[1].text = t.wide;
+      spacingSelect.options[2].text = t.extra_wide;
+    }
+    const colorSelect = document.getElementById('a11y-color-scheme');
+    if (colorSelect) {
+      colorSelect.options[0].text = t.bw;
+      colorSelect.options[1].text = t.by;
+      colorSelect.options[2].text = t.bc;
+      colorSelect.options[3].text = t.yw;
+      colorSelect.options[4].text = t.wb;
+    }
+    const genderSelect = document.getElementById('a11y-voice-gender');
+    if (genderSelect) {
+      genderSelect.options[0].text = t.female;
+      genderSelect.options[1].text = t.male;
+    }
+    const speechBtn = document.getElementById('a11y-speech-btn');
+    if (speechBtn) {
+      speechBtn.textContent = accessibilitySettings.speechEnabled ? t.speech_on : t.speech_off;
+    }
+    const resetBtn = document.getElementById('a11y-reset-btn');
+    if (resetBtn) resetBtn.textContent = t.reset;
+  }
+
+  // Создание панели управления
   function createAccessibilityPanel() {
     if (document.getElementById('accessibility-panel')) return;
+    const t = i18n[currentLang];
     const panel = document.createElement('div');
     panel.id = 'accessibility-panel';
     panel.style.cssText = `
@@ -624,56 +770,49 @@ document.addEventListener('DOMContentLoaded', () => {
       box-sizing: border-box;
     `;
     panel.innerHTML = `
-      <div><label>Шрифт:</label>
+      <div><label>${t.font}</label>
         <select id="a11y-font-family">
-          <option value="sans">Без засечек</option>
-          <option value="serif">С засечками</option>
+          <option value="sans">${t.sans}</option>
+          <option value="serif">${t.serif}</option>
         </select>
       </div>
-      <div><label>Размер:</label>
+      <div><label>${t.size}</label>
         <select id="a11y-font-size">
-          <option value="small">Маленький</option>
-          <option value="medium">Средний</option>
-          <option value="large">Большой</option>
+          <option value="small">${t.small}</option>
+          <option value="medium">${t.medium}</option>
+          <option value="large">${t.large}</option>
         </select>
       </div>
-      <div><label>Интервал:</label>
+      <div><label>${t.spacing}</label>
         <select id="a11y-letter-spacing">
-          <option value="normal">Обычный</option>
-          <option value="wide">Широкий</option>
-          <option value="extra-wide">Очень широкий</option>
+          <option value="normal">${t.normal_spacing}</option>
+          <option value="wide">${t.wide}</option>
+          <option value="extra-wide">${t.extra_wide}</option>
         </select>
       </div>
-      <div><label>Цвет:</label>
+      <div><label>${t.color}</label>
         <select id="a11y-color-scheme">
-          <option value="bw">Ч/б</option>
-          <option value="by">Ч/ж</option>
-          <option value="bc">Б/ч</option>
-          <option value="yw">Ж/ч</option>
-          <option value="wb">Б/с</option>
+          <option value="bw">${t.bw}</option>
+          <option value="by">${t.by}</option>
+          <option value="bc">${t.bc}</option>
+          <option value="yw">${t.yw}</option>
+          <option value="wb">${t.wb}</option>
         </select>
       </div>
-      <div><label>Диктор:</label>
-        <button id="a11y-speech-btn" style="background:#000; color:#fff; border:none; padding:4px 10px; border-radius:20px; cursor:pointer;">${accessibilitySettings.speechEnabled ? '🔊 Диктор (вкл)' : '🔇 Диктор (выкл)'}</button>
+      <div><label>${t.speech}</label>
+        <button id="a11y-speech-btn" style="background:#000; color:#fff; border:none; padding:4px 10px; border-radius:20px; cursor:pointer;">${accessibilitySettings.speechEnabled ? t.speech_on : t.speech_off}</button>
       </div>
-      <div><label>Голос:</label>
+      <div><label>${t.voice}</label>
         <select id="a11y-voice-gender" ${!accessibilitySettings.speechEnabled ? 'disabled' : ''}>
-          <option value="female">Женский</option>
-          <option value="male">Мужской</option>
+          <option value="female">${t.female}</option>
+          <option value="male">${t.male}</option>
         </select>
       </div>
+      <div><button id="a11y-reset-btn" style="background:#000; color:#fff; border:none; padding:4px 10px; border-radius:20px; cursor:pointer;">${t.reset}</button></div>
     `;
-    // Вставляем панель в самое начало body (после открывающего тега)
     document.body.insertBefore(panel, document.body.firstChild);
 
-    // Установка значений
-    document.getElementById('a11y-font-family').value = accessibilitySettings.fontFamily;
-    document.getElementById('a11y-font-size').value = accessibilitySettings.fontSize;
-    document.getElementById('a11y-letter-spacing').value = accessibilitySettings.letterSpacing;
-    document.getElementById('a11y-color-scheme').value = accessibilitySettings.colorScheme;
-    document.getElementById('a11y-voice-gender').value = accessibilitySettings.voiceGender;
-
-    // Обработчики
+    // Привязка обработчиков
     document.getElementById('a11y-font-family').addEventListener('change', (e) => {
       accessibilitySettings.fontFamily = e.target.value;
       localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
@@ -703,14 +842,18 @@ document.addEventListener('DOMContentLoaded', () => {
       accessibilitySettings.voiceGender = e.target.value;
       localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
       if (window.speechSynthesis) loadVoices();
-      // Если диктор включён, перезапускаем привязку событий (необязательно)
+      // если диктор включён, привязка остаётся, голос изменится при следующем чтении
+    });
+    const resetBtn = document.getElementById('a11y-reset-btn');
+    resetBtn.addEventListener('click', () => {
+      resetToDefault();
     });
   }
 
   function showAccessibilityPanel() {
     const panel = document.getElementById('accessibility-panel');
     if (!panel) createAccessibilityPanel();
-    // Панель всегда видна, ничего дополнительно не делаем
+    else updatePanelLanguage();
   }
 
   function hideAccessibilityPanel() {
@@ -718,14 +861,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (panel) panel.remove();
   }
 
-  // Включение/выключение режима
   function setAccessibilityMode(enabled) {
     isAccessibilityMode = enabled;
     if (enabled) {
       createAccessibilityPanel();
       applyAccessibilityStyles();
       if (window.speechSynthesis) loadVoices();
-      toggleSpeech(accessibilitySettings.speechEnabled); // перепривяжет события и установит диктор
+      toggleSpeech(accessibilitySettings.speechEnabled);
     } else {
       resetAccessibilityStyles();
       hideAccessibilityPanel();
@@ -734,7 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(ACCESSIBILITY_KEY, enabled);
   }
 
-  // Добавление кнопки в навигацию
+  // Кнопка в навигации
   function addAccessibilityButton() {
     const selectGroup = document.querySelector('.glass-nav .select-group');
     if (!selectGroup) return;
@@ -778,7 +920,36 @@ document.addEventListener('DOMContentLoaded', () => {
     else selectGroup.prepend(btn);
   }
 
-  // Загрузка голосов (некоторые браузеры загружают асинхронно)
+  // Смена языка на лету (если переключают язык через дропдаун)
+  function observeLangChange() {
+    const observer = new MutationObserver(() => {
+      const newLang = getCurrentLang();
+      if (newLang !== currentLang) {
+        currentLang = newLang;
+        updatePanelLanguage();
+        if (window.speechSynthesis) loadVoices();
+        bindSpeechEvents(); // перепривяжем с новым языком
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    // также слушаем изменения URL (для history.pushState)
+    let lastUrl = location.href;
+    new MutationObserver(() => {
+      const url = location.href;
+      if (url !== lastUrl) {
+        lastUrl = url;
+        const newLang = getCurrentLang();
+        if (newLang !== currentLang) {
+          currentLang = newLang;
+          updatePanelLanguage();
+          if (window.speechSynthesis) loadVoices();
+          bindSpeechEvents();
+        }
+      }
+    }).observe(document, { subtree: true, childList: true });
+  }
+
+  // Загрузка голосов
   if (window.speechSynthesis) {
     window.speechSynthesis.onvoiceschanged = () => { loadVoices(); };
     loadVoices();
@@ -789,9 +960,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('DOMContentLoaded', () => {
       if (isAccessibilityMode) setAccessibilityMode(true);
       addAccessibilityButton();
+      observeLangChange();
     });
   } else {
     if (isAccessibilityMode) setAccessibilityMode(true);
     addAccessibilityButton();
+    observeLangChange();
   }
 })();
