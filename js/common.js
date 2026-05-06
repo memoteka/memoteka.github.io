@@ -969,349 +969,61 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== МОБИЛЬНАЯ ВЕРСИЯ (нижняя панель фиксирована как в VK) ==========
+// ==================== МОБИЛЬНАЯ НИЖНЯЯ ПАНЕЛЬ (как в VK) ====================
 (function() {
-  let isMobileLayout = window.innerWidth <= 768;
-  let mobileElementsCreated = false;
+  let isMobile = window.innerWidth <= 768;
+  let panel = null;
 
-  // Гамбургер-меню (без изменений)
-  function createMobileNav() {
-    const glassNav = document.querySelector('.glass-nav');
-    if (!glassNav || document.querySelector('.burger-btn')) return;
-    const navLinks = glassNav.querySelector('.nav-links');
-    if (navLinks) navLinks.style.display = 'none';
-
-    const burger = document.createElement('div');
-    burger.className = 'burger-btn';
-    burger.innerHTML = '<span></span><span></span><span></span>';
-    burger.style.cssText = `
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 28px;
-      height: 20px;
-      cursor: pointer;
-      z-index: 1001;
-      margin-left: auto;
-    `;
-    burger.querySelectorAll('span').forEach(span => {
-      span.style.cssText = `
-        width: 100%;
-        height: 3px;
-        background: var(--text-primary);
-        border-radius: 2px;
-        transition: 0.2s;
-      `;
-    });
-    glassNav.appendChild(burger);
-
-    const mobileMenu = document.createElement('div');
-    mobileMenu.className = 'mobile-menu';
-    mobileMenu.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: -80%;
-      width: 80%;
-      max-width: 320px;
-      height: 100%;
-      background: var(--surface-glass);
-      backdrop-filter: blur(12px);
-      z-index: 1000;
-      transition: left 0.3s ease;
-      padding: 4rem 1.5rem 2rem;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    `;
-    if (navLinks) {
-      const links = navLinks.querySelectorAll('a:not(.logo)');
-      links.forEach(link => {
-        const a = document.createElement('a');
-        a.href = link.href;
-        a.textContent = link.textContent;
-        a.style.cssText = `
-          font-size: 1.2rem;
-          font-weight: 500;
-          color: var(--text-primary);
-          text-decoration: none;
-          padding: 0.5rem 0;
-        `;
-        mobileMenu.appendChild(a);
-      });
-    }
-    const settingsBtn = document.createElement('button');
-    settingsBtn.textContent = '⚙️ Настройки';
-    settingsBtn.style.cssText = `
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 2rem;
-      font-size: 1rem;
-      margin-top: 1rem;
-      cursor: pointer;
-    `;
-    settingsBtn.onclick = () => {
-      openSettingsModal();
-      mobileMenu.style.left = '-80%';
-      burger.classList.remove('active');
-    };
-    mobileMenu.appendChild(settingsBtn);
-    document.body.appendChild(mobileMenu);
-
-    burger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = mobileMenu.style.left === '0%';
-      mobileMenu.style.left = isOpen ? '-80%' : '0%';
-      burger.classList.toggle('active');
-      if (!isOpen) {
-        const spans = burger.querySelectorAll('span');
-        spans[0].style.position = 'absolute';
-        spans[0].style.width = '28px';
-        spans[0].style.transform = 'rotate(45deg)';
-        spans[1].style.opacity = '0';
-        spans[2].style.position = 'absolute';
-        spans[2].style.width = '28px';
-        spans[2].style.transform = 'rotate(-45deg)';
-      } else {
-        const spans = burger.querySelectorAll('span');
-        spans[0].style.position = 'relative';
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.position = 'relative';
-        spans[2].style.transform = 'none';
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      if (mobileMenu.style.left === '0%' && !burger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.style.left = '-80%';
-        burger.classList.remove('active');
-      }
-    });
+  function getLangPrefix() {
+    return document.documentElement.lang === 'ru' ? 'ru' : 'en';
   }
 
-  // НИЖНЯЯ ПАНЕЛЬ – фиксированная, как в ВК
-  function createBottomNav() {
-    if (document.querySelector('.bottom-nav-fixed')) return;
-    const bottomBar = document.createElement('div');
-    bottomBar.className = 'bottom-nav-fixed';
-    // Стили прописаны в CSS, но дублируем здесь для надёжности
-    bottomBar.style.cssText = `
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      background: var(--surface-glass) !important;
-      backdrop-filter: blur(20px) !important;
-      display: flex !important;
-      justify-content: space-around !important;
-      align-items: center !important;
-      padding: 0.5rem 0.5rem !important;
-      box-sizing: border-box !important;
-      z-index: 99999 !important;
-      transform: none !important;
-      border-top: 1px solid var(--border) !important;
-    `;
+  function createPanel() {
+    if (panel) return;
+    panel = document.createElement('div');
+    panel.className = 'vk-style-bottom-nav';
+    // Определяем ссылки в зависимости от языка
+    const lang = getLangPrefix();
     const items = [
-      { name: '🏠', text: 'Главная', url: `/${document.documentElement.lang}/` },
-      { name: '🖼️', text: 'Мемы', url: `/${document.documentElement.lang}/memes/` },
-      { name: 'ℹ️', text: 'О сайте', url: `/${document.documentElement.lang}/about/` },
-      { name: '🍪', text: 'Донат', url: `/${document.documentElement.lang}/donate/` },
-      { name: '⚙️', text: 'Настройки', action: () => openSettingsModal() }
+      { icon: '🏠', label: lang === 'ru' ? 'Главная' : 'Home', url: `/${lang}/` },
+      { icon: '🖼️', label: lang === 'ru' ? 'Мемы' : 'Memes', url: `/${lang}/memes/` },
+      { icon: 'ℹ️', label: lang === 'ru' ? 'О сайте' : 'About', url: `/${lang}/about/` },
+      { icon: '🍪', label: lang === 'ru' ? 'Донат' : 'Donate', url: `/${lang}/donate/` },
+      { icon: '⚙️', label: lang === 'ru' ? 'Настройки' : 'Settings', action: () => openSettingsModal() }
     ];
     items.forEach(item => {
-      const btn = document.createElement(item.url ? 'a' : 'button');
+      const el = item.url ? document.createElement('a') : document.createElement('button');
       if (item.url) {
-        btn.href = item.url;
-        btn.style.textDecoration = 'none';
+        el.href = item.url;
       } else {
-        btn.onclick = item.action;
+        el.onclick = item.action;
       }
-      btn.innerHTML = `${item.name}`;
-      Object.assign(btn.style, {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'transparent',
-        color: 'var(--text-primary)',
-        fontSize: '1.4rem',
-        padding: '0.2rem 0',
-        borderRadius: '0',
-        fontFamily: 'inherit',
-        flex: '1',
-        textAlign: 'center',
-        cursor: 'pointer',
-        border: 'none'
-      });
-      const span = document.createElement('span');
-      span.textContent = item.text;
-      span.style.fontSize = '0.65rem';
-      span.style.marginTop = '2px';
-      btn.appendChild(span);
-      bottomBar.appendChild(btn);
+      el.innerHTML = `${item.icon}<span>${item.label}</span>`;
+      panel.appendChild(el);
     });
-    document.body.appendChild(bottomBar);
+    document.body.appendChild(panel);
     document.body.style.paddingBottom = '70px';
   }
 
-  // Модальное окно настроек (без изменений)
-  function createSettingsModal() {
-    if (document.getElementById('settings-modal')) return;
-    const modal = document.createElement('div');
-    modal.id = 'settings-modal';
-    Object.assign(modal.style, {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'rgba(0,0,0,0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'none',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: '10000'
-    });
-    const modalContent = document.createElement('div');
-    Object.assign(modalContent.style, {
-      background: 'var(--surface)',
-      borderRadius: '2rem',
-      padding: '1.8rem',
-      width: '85%',
-      maxWidth: '360px',
-      maxHeight: '85vh',
-      overflowY: 'auto',
-      boxShadow: '0 20px 35px rgba(0,0,0,0.3)',
-      textAlign: 'center',
-      color: 'var(--text-primary)'
-    });
-    modalContent.innerHTML = `
-      <h3 style="margin-bottom: 1.5rem; font-size: 1.6rem;">⚙️ Настройки</h3>
-      <div class="modal-setting" style="margin-bottom: 1.8rem;">
-        <label style="display: block; margin-bottom: 0.6rem; font-weight: 600;">🎨 Тема</label>
-        <div class="theme-options" style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-          <button data-theme="light">🌞 Светлая</button>
-          <button data-theme="dark">🌙 Тёмная</button>
-          <button data-theme="system">🖥️ Системная</button>
-        </div>
-      </div>
-      <div class="modal-setting" style="margin-bottom: 1.8rem;">
-        <label style="display: block; margin-bottom: 0.6rem; font-weight: 600;">🌐 Язык</label>
-        <div class="lang-options" style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-          <button data-lang="ru">🇷🇺 Русский</button>
-          <button data-lang="en">🇬🇧 English</button>
-        </div>
-      </div>
-      <div class="modal-setting" style="margin-bottom: 1.8rem;">
-        <label style="display: block; margin-bottom: 0.6rem; font-weight: 600;">👁️ Режим слабовидящих</label>
-        <button id="modal-accessibility-toggle">Включить</button>
-      </div>
-      <button id="modal-close">Закрыть</button>
-    `;
-    modalContent.querySelectorAll('button').forEach(btn => {
-      if (!btn.style.background) {
-        btn.style.background = 'var(--accent)';
-        btn.style.color = 'white';
-        btn.style.border = 'none';
-        btn.style.padding = '0.5rem 1rem';
-        btn.style.borderRadius = '2rem';
-        btn.style.cursor = 'pointer';
-        btn.style.fontSize = '1rem';
-      }
-    });
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-
-    modalContent.querySelectorAll('[data-theme]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const theme = btn.getAttribute('data-theme');
-        if (typeof setTheme === 'function') setTheme(theme);
-      });
-    });
-    modalContent.querySelectorAll('[data-lang]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.getAttribute('data-lang');
-        if (lang) {
-          localStorage.setItem('memotekaLang', lang);
-          let path = window.location.pathname;
-          if (path.startsWith('/ru/')) path = path.replace('/ru/', `/${lang}/`);
-          else if (path.startsWith('/en/')) path = path.replace('/en/', `/${lang}/`);
-          else path = `/${lang}/`;
-          window.location.href = path;
-        }
-      });
-    });
-    const a11yToggle = document.getElementById('modal-accessibility-toggle');
-    a11yToggle.addEventListener('click', () => {
-      if (typeof window.setAccessibilityMode === 'function') {
-        const isOn = localStorage.getItem('accessibilityMode') === 'true';
-        window.setAccessibilityMode(!isOn);
-        a11yToggle.textContent = !isOn ? 'Выключить' : 'Включить';
-      }
-    });
-    document.getElementById('modal-close').addEventListener('click', closeSettingsModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeSettingsModal();
-    });
-  }
-
-  function openSettingsModal() {
-    const modal = document.getElementById('settings-modal');
-    if (!modal) createSettingsModal();
-    const modalElem = document.getElementById('settings-modal');
-    if (modalElem) {
-      const a11yToggle = document.getElementById('modal-accessibility-toggle');
-      if (a11yToggle) {
-        const isOn = localStorage.getItem('accessibilityMode') === 'true';
-        a11yToggle.textContent = isOn ? 'Выключить' : 'Включить';
-      }
-      modalElem.style.display = 'flex';
+  function destroyPanel() {
+    if (panel) {
+      panel.remove();
+      panel = null;
+      document.body.style.paddingBottom = '';
     }
   }
 
-  function closeSettingsModal() {
-    const modal = document.getElementById('settings-modal');
-    if (modal) modal.style.display = 'none';
-  }
-
-  function removeMobileElements() {
-    document.querySelector('.burger-btn')?.remove();
-    document.querySelector('.mobile-menu')?.remove();
-    document.querySelector('.bottom-nav-fixed')?.remove();
-    const glassNav = document.querySelector('.glass-nav');
-    if (glassNav) {
-      const navLinks = glassNav.querySelector('.nav-links');
-      if (navLinks) navLinks.style.display = '';
-      const selectGroup = glassNav.querySelector('.select-group');
-      if (selectGroup) selectGroup.style.display = '';
-    }
-    document.body.style.paddingBottom = '';
-    document.getElementById('settings-modal')?.remove();
-    mobileElementsCreated = false;
-  }
-
-  function initMobileLayout() {
-    if (window.innerWidth <= 768) {
-      if (!mobileElementsCreated) {
-        createMobileNav();
-        createBottomNav();
-        createSettingsModal();
-        const selectGroup = document.querySelector('.glass-nav .select-group');
-        if (selectGroup) selectGroup.style.display = 'none';
-        mobileElementsCreated = true;
-      }
-    } else {
-      if (mobileElementsCreated) removeMobileElements();
+  function checkAndToggle() {
+    const nowMobile = window.innerWidth <= 768;
+    if (nowMobile && !panel) {
+      createPanel();
+    } else if (!nowMobile && panel) {
+      destroyPanel();
     }
   }
 
-  window.addEventListener('resize', () => {
-    initMobileLayout();
-  });
-  window.openSettingsModal = openSettingsModal;
-  document.addEventListener('DOMContentLoaded', initMobileLayout);
+  window.addEventListener('resize', checkAndToggle);
+  document.addEventListener('DOMContentLoaded', checkAndToggle);
+  // Если openSettingsModal определена позже, но она должна быть уже глобально
+  window.openSettingsModal = window.openSettingsModal || function() { console.warn('openSettingsModal not defined'); };
 })();
