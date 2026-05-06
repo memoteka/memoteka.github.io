@@ -1349,16 +1349,3 @@ select {
   .footer-col {
     text-align: center;
   }
-  
-  /* Жёсткая фиксация нижней панели – перебивает любые конфликты */
-.bottom-nav {
-  position: fixed !important;
-  bottom: 12px !important;
-  left: 12px !important;
-  right: 12px !important;
-  width: auto !important;
-  top: auto !important;
-  z-index: 2147483647 !important;
-  transform: none !important;
-  will-change: auto !important;
-}

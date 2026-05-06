@@ -969,12 +969,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== МОБИЛЬНАЯ ВЕРСИЯ (фиксированная нижняя панель ВСЕГДА ВНИЗУ ЭКРАНА) ==========
+// ========== МОБИЛЬНАЯ ВЕРСИЯ (нижняя панель фиксирована как в VK) ==========
 (function() {
   let isMobileLayout = window.innerWidth <= 768;
   let mobileElementsCreated = false;
 
-  // Гамбургер-меню
+  // Гамбургер-меню (без изменений)
   function createMobileNav() {
     const glassNav = document.querySelector('.glass-nav');
     if (!glassNav || document.querySelector('.burger-btn')) return;
@@ -1092,30 +1092,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ (всегда внизу окна браузера)
+  // НИЖНЯЯ ПАНЕЛЬ – фиксированная, как в ВК
   function createBottomNav() {
-    if (document.querySelector('.bottom-nav')) return;
+    if (document.querySelector('.bottom-nav-fixed')) return;
     const bottomBar = document.createElement('div');
-    bottomBar.className = 'bottom-nav';
-    // Ключевые стили – position fixed, привязан к нижнему краю окна, игнорирует скролл
-    Object.assign(bottomBar.style, {
-      position: 'fixed',
-      bottom: '12px',
-      left: '12px',
-      right: '12px',
-      width: 'auto',
-      background: 'var(--surface-glass)',
-      backdropFilter: 'blur(20px)',
-      borderRadius: '32px',
-      border: '1px solid var(--border)',
-      display: 'flex',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      padding: '0.5rem 0.5rem',
-      zIndex: '9999',
-      boxSizing: 'border-box',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-    });
+    bottomBar.className = 'bottom-nav-fixed';
+    // Стили прописаны в CSS, но дублируем здесь для надёжности
+    bottomBar.style.cssText = `
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      background: var(--surface-glass) !important;
+      backdrop-filter: blur(20px) !important;
+      display: flex !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      padding: 0.5rem 0.5rem !important;
+      box-sizing: border-box !important;
+      z-index: 99999 !important;
+      transform: none !important;
+      border-top: 1px solid var(--border) !important;
+    `;
     const items = [
       { name: '🏠', text: 'Главная', url: `/${document.documentElement.lang}/` },
       { name: '🖼️', text: 'Мемы', url: `/${document.documentElement.lang}/memes/` },
@@ -1141,8 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         color: 'var(--text-primary)',
         fontSize: '1.4rem',
         padding: '0.2rem 0',
-        borderRadius: '2rem',
-        transition: '0.2s',
+        borderRadius: '0',
         fontFamily: 'inherit',
         flex: '1',
         textAlign: 'center',
@@ -1157,10 +1155,10 @@ document.addEventListener('DOMContentLoaded', () => {
       bottomBar.appendChild(btn);
     });
     document.body.appendChild(bottomBar);
-    document.body.style.paddingBottom = '80px';
+    document.body.style.paddingBottom = '70px';
   }
 
-  // Модальное окно настроек (повыше)
+  // Модальное окно настроек (без изменений)
   function createSettingsModal() {
     if (document.getElementById('settings-modal')) return;
     const modal = document.createElement('div');
@@ -1214,7 +1212,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <button id="modal-close">Закрыть</button>
     `;
-    // Стили для кнопок внутри модалки
     modalContent.querySelectorAll('button').forEach(btn => {
       if (!btn.style.background) {
         btn.style.background = 'var(--accent)';
@@ -1284,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function removeMobileElements() {
     document.querySelector('.burger-btn')?.remove();
     document.querySelector('.mobile-menu')?.remove();
-    document.querySelector('.bottom-nav')?.remove();
+    document.querySelector('.bottom-nav-fixed')?.remove();
     const glassNav = document.querySelector('.glass-nav');
     if (glassNav) {
       const navLinks = glassNav.querySelector('.nav-links');
@@ -1313,7 +1310,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('resize', () => {
-    const wasMobile = window.innerWidth <= 768;
     initMobileLayout();
   });
   window.openSettingsModal = openSettingsModal;
