@@ -361,3 +361,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 })();
+
+// ========== ПЛАВНЫЙ СКРОЛЛ (ИНЕРЦИЯ) ==========
+(function() {
+  let targetScroll = window.scrollY;
+  let currentScroll = window.scrollY;
+  let animationId = null;
+  let isScrolling = false;
+
+  function smoothScrollLoop() {
+    currentScroll += (targetScroll - currentScroll) * 0.12; // 0.12 – плавность, можно менять
+    if (Math.abs(targetScroll - currentScroll) < 0.5) {
+      currentScroll = targetScroll;
+      window.scrollTo(0, targetScroll);
+      if (animationId) cancelAnimationFrame(animationId);
+      animationId = null;
+      isScrolling = false;
+      return;
+    }
+    window.scrollTo(0, currentScroll);
+    animationId = requestAnimationFrame(smoothScrollLoop);
+  }
+
+  function onWheel(e) {
+    e.preventDefault(); // отключаем родную резкую прокрутку
+
+    const delta = e.deltaY || e.deltaX; // нормализуем дельту (колёсико или тачпад)
+    targetScroll += delta * 0.8; // множитель чувствительности
+    // ограничиваем границами документа
+    targetScroll = Math.min(Math.max(targetScroll, 0), document.body.scrollHeight - window.innerHeight);
+    
+    if (!isScrolling) {
+      isScrolling = true;
+      smoothScrollLoop();
+    }
+  }
+
+  window.addEventListener('wheel', onWheel, { passive: false });
+})();
