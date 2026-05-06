@@ -1349,3 +1349,58 @@ select {
   .footer-col {
     text-align: center;
   }
+  
+  /* Мобильная адаптивка от души */
+@media (max-width: 768px) {
+    /* Прячем лишнее из шапки */
+    .nav-links {
+        display: none !important;
+    }
+
+    /* Нижняя панель как в ВК */
+    .mobile-tabbar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: rgba(20, 20, 20, 0.85);
+        backdrop-filter: blur(15px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1000;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .tab-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #888;
+        text-decoration: none;
+        font-size: 10px;
+        flex: 1;
+    }
+
+    .tab-item.active { color: #fff; }
+    .tab-item img { width: 24px; height: 24px; margin-bottom: 2px; }
+
+    /* Кнопка Гамбургер */
+    .burger-btn {
+        display: block;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* Смещаем футер, чтоб панель не перекрывала */
+    body { padding-bottom: 80px; }
+}
+
+@media (min-width: 769px) {
+    .mobile-tabbar, .burger-btn { display: none; }
+}

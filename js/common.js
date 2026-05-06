@@ -968,3 +968,40 @@ document.addEventListener('DOMContentLoaded', () => {
     observeLangChange();
   }
 })();
+
+// Пацанская мобильная навигация
+(function() {
+    if (window.innerWidth > 768) return;
+
+    const isEn = window.location.pathname.includes('/en/');
+    const paths = {
+        home: isEn ? '/en/' : '/ru/',
+        memes: isEn ? '/en/memes/' : '/ru/memes/',
+        about: isEn ? '/en/about/' : '/ru/about/',
+        donate: isEn ? '/en/donate/' : '/ru/donate/'
+    };
+
+    // Создаем нижний бар
+    const tabbar = document.createElement('div');
+    tabbar.className = 'mobile-tabbar';
+    tabbar.innerHTML = `
+        <a href="${paths.home}" class="tab-item ${window.location.pathname.endsWith(paths.home) ? 'active' : ''}">
+            <img src="/cdn/icons/bolt.svg" alt=""><span>${isEn ? 'Home' : 'Главная'}</span>
+        </a>
+        <a href="${paths.memes}" class="tab-item ${window.location.pathname.includes('memes') ? 'active' : ''}">
+            <img src="/cdn/icons/meme.svg" alt=""><span>${isEn ? 'Memes' : 'Мемы'}</span>
+        </a>
+        <a href="${paths.donate}" class="tab-item ${window.location.pathname.includes('donate') ? 'active' : ''}">
+            <img src="/cdn/icons/heart.svg" alt=""><span>${isEn ? 'Donate' : 'Донат'}</span>
+        </a>
+        <button class="tab-item burger-btn" id="openMobileMenu">
+            <span>☰</span><span>${isEn ? 'Menu' : 'Меню'}</span>
+        </button>
+    `;
+    document.body.appendChild(tabbar);
+
+    // Обработка клика по гамбургеру (можно вызывать модалку или меню)
+    document.getElementById('openMobileMenu')?.addEventListener('click', () => {
+        alert(isEn ? 'Full menu coming soon!' : 'Полное меню в разработке, не кипишуй!');
+    });
+})();
