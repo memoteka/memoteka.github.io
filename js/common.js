@@ -969,12 +969,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== МОБИЛЬНАЯ ВЕРСИЯ (гамбургер, нижняя панель, модальные настройки) ==========
+// ========== МОБИЛЬНАЯ ВЕРСИЯ (фиксированная нижняя панель, гамбургер, модальные настройки) ==========
 (function() {
   let isMobileLayout = window.innerWidth <= 768;
   let mobileElementsCreated = false;
 
-  // Создаём гамбургер-меню
+  // Гамбургер-меню (без изменений, работает)
   function createMobileNav() {
     const glassNav = document.querySelector('.glass-nav');
     if (!glassNav) return;
@@ -1101,17 +1101,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Создаём нижнюю панель (закруглённая, подвешенная, закреплённая)
+  // ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ (всегда внизу экрана, не скроллится)
   function createBottomNav() {
     if (document.querySelector('.bottom-nav')) return;
+    
     const bottomBar = document.createElement('div');
     bottomBar.className = 'bottom-nav';
+    // Ключевые стили: position fixed, прижат к низу, высокий z-index
     bottomBar.style.cssText = `
-      position: fixed;
-      bottom: 12px;
-      left: 12px;
-      right: 12px;
-      width: calc(100% - 24px);
+      position: fixed !important;
+      bottom: 12px !important;
+      left: 12px !important;
+      right: 12px !important;
+      width: auto !important;
       background: var(--surface-glass);
       backdrop-filter: blur(20px);
       border-radius: 32px;
@@ -1120,10 +1122,12 @@ document.addEventListener('DOMContentLoaded', () => {
       justify-content: space-around;
       align-items: center;
       padding: 0.5rem 0.5rem;
-      z-index: 900;
+      z-index: 9999 !important;
       box-sizing: border-box;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: none;
     `;
+    
     const items = [
       { name: '🏠', text: 'Главная', url: `/${document.documentElement.lang}/` },
       { name: '🖼️', text: 'Мемы', url: `/${document.documentElement.lang}/memes/` },
@@ -1131,6 +1135,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: '🍪', text: 'Донат', url: `/${document.documentElement.lang}/donate/` },
       { name: '⚙️', text: 'Настройки', action: () => openSettingsModal() }
     ];
+    
     items.forEach(item => {
       const btn = document.createElement(item.url ? 'a' : 'button');
       if (item.url) {
@@ -1151,12 +1156,13 @@ document.addEventListener('DOMContentLoaded', () => {
         background: transparent;
         color: var(--text-primary);
         font-size: 1.4rem;
-        padding: 0.2rem 0.6rem;
+        padding: 0.2rem 0;
         border-radius: 2rem;
         transition: 0.2s;
         font-family: inherit;
         flex: 1;
         text-align: center;
+        cursor: pointer;
       `;
       const span = document.createElement('span');
       span.textContent = item.text;
@@ -1165,11 +1171,13 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.appendChild(span);
       bottomBar.appendChild(btn);
     });
+    
     document.body.appendChild(bottomBar);
+    // Добавляем отступ снизу, чтобы содержимое не перекрывалось панелью
     document.body.style.paddingBottom = '80px';
   }
 
-  // Модальное окно настроек (повыше, с прокруткой)
+  // Модальное окно настроек (повыше)
   function createSettingsModal() {
     if (document.getElementById('settings-modal')) return;
     const modal = document.createElement('div');
@@ -1185,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 10000;
     `;
     const modalContent = document.createElement('div');
     modalContent.style.cssText = `
