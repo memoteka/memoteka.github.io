@@ -362,40 +362,187 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// ========== ПЛАВНЫЙ СКРОЛЛ (ИНЕРЦИЯ) ==========
+// ========== МЕГАПЛАВНЫЙ СКРОЛЛ (всё, кроме полосы прокрутки) ==========
 (function() {
-  let targetScroll = window.scrollY;
-  let currentScroll = window.scrollY;
-  let animationId = null;
-  let isScrolling = false;
-
-  function smoothScrollLoop() {
-    currentScroll += (targetScroll - currentScroll) * 0.12; // 0.12 – плавность, можно менять
-    if (Math.abs(targetScroll - currentScroll) < 0.5) {
-      currentScroll = targetScroll;
-      window.scrollTo(0, targetScroll);
-      if (animationId) cancelAnimationFrame(animationId);
-      animationId = null;
-      isScrolling = false;
-      return;
-    }
-    window.scrollTo(0, currentScroll);
-    animationId = requestAnimationFrame(smoothScrollLoop);
+  // ---- Настройки (подкрути под себя) ----
+  const SMOOTH_FACTOR = 0.09;    // плавность (0.05 = очень плавно, 0.2 = резче)
+  const WHEEL_MULT = 0.8;        // чувствительность колёсика/тачпада
+  const TOUCH_MULT = 1.2;        // чувствительность пальца (на телефоне)
+  const KEY_STEP = 120;          // шаг для стрелок (пикселей)
+  
+  // ---- Переменные ----
+  let targetY = window.scrollY;
+  let currentY = window.scrollY;
+  let animFrame = null;
+  let isAnimating = false;
+  
+  // Для тач-инерции
+  let touchStartY = 0, touchStartScroll = 0;
+  let touchVelocity = 0, lastTouchY = 0, lastTouchTime = 0;
+  let inertiaFrame = null;
+  
+  // Флаг, что сейчас идёт наша анимация – чтобы не конфликтовать с внешними событиями
+  let ourAnimation = false;
+  
+  function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
+  
+  function getMaxScroll() {
+    return document.body.scrollHeight - window.innerHeight;
   }
-
+  
+  function setTarget(value, animated = true) {
+    targetY = clamp(value, 0, getMaxScroll());
+    if (animated && !isAnimating) startAnimation();
+    else if (!animated) {
+      currentY = targetY;
+      window.scrollTo(0, targetY);
+      if (animFrame) cancelAnimationFrame(animFrame);
+      isAnimating = false;
+    }
+  }
+  
+  function startAnimation() {
+    if (animFrame) return;
+    isAnimating = true;
+    function step() {
+      const diff = targetY - currentY;
+      if (Math.abs(diff) < 0.5) {
+        currentY = targetY;
+        window.scrollTo(0, currentY);
+        cancelAnimationFrame(animFrame);
+        animFrame = null;
+        isAnimating = false;
+        ourAnimation = false;
+        return;
+      }
+      currentY += diff * SMOOTH_FACTOR;
+      window.scrollTo(0, currentY);
+      animFrame = requestAnimationFrame(step);
+    }
+    ourAnimation = true;
+    animFrame = requestAnimationFrame(step);
+  }
+  
+  // ---- Колёсико / тачпад ----
   function onWheel(e) {
-    e.preventDefault(); // отключаем родную резкую прокрутку
-
-    const delta = e.deltaY || e.deltaX; // нормализуем дельту (колёсико или тачпад)
-    targetScroll += delta * 0.8; // множитель чувствительности
-    // ограничиваем границами документа
-    targetScroll = Math.min(Math.max(targetScroll, 0), document.body.scrollHeight - window.innerHeight);
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.classList.contains('active')) return;
     
-    if (!isScrolling) {
-      isScrolling = true;
-      smoothScrollLoop();
-    }
+    e.preventDefault();
+    const delta = e.deltaY || e.deltaX;
+    targetY = clamp(targetY + delta * WHEEL_MULT, 0, getMaxScroll());
+    startAnimation();
   }
-
+  
+  // ---- Палец на сенсорном экране (с инерцией) ----
+  function onTouchStart(e) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.classList.contains('active')) return;
+    
+    // Останавливаем инерцию от предыдущего касания
+    if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
+    touchVelocity = 0;
+    touchStartY = e.touches[0].clientY;
+    touchStartScroll = targetY;
+    lastTouchY = touchStartY;
+    lastTouchTime = Date.now();
+  }
+  
+  function onTouchMove(e) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.classList.contains('active')) return;
+    
+    e.preventDefault();
+    const now = Date.now();
+    const deltaY = e.touches[0].clientY - touchStartY;
+    let newTarget = touchStartScroll - deltaY * TOUCH_MULT;
+    targetY = clamp(newTarget, 0, getMaxScroll());
+    startAnimation();
+    
+    // Вычисляем скорость для инерции
+    const moveDelta = e.touches[0].clientY - lastTouchY;
+    const timeDelta = now - lastTouchTime;
+    if (timeDelta > 0 && Math.abs(moveDelta) > 1) {
+      touchVelocity = (moveDelta / timeDelta) * 16; // скорость (пикселей/кадр)
+      // ограничиваем
+      touchVelocity = clamp(touchVelocity, -30, 30);
+    }
+    lastTouchY = e.touches[0].clientY;
+    lastTouchTime = now;
+  }
+  
+  function onTouchEnd(e) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.classList.contains('active')) return;
+    
+    if (Math.abs(touchVelocity) < 0.5) return;
+    
+    // Инерция после отпускания пальца
+    let speed = touchVelocity * 15;
+    function inertiaStep() {
+      if (Math.abs(speed) < 0.3) {
+        cancelAnimationFrame(inertiaFrame);
+        inertiaFrame = null;
+        return;
+      }
+      targetY = clamp(targetY - speed, 0, getMaxScroll());
+      startAnimation();
+      speed *= 0.96; // затухание
+      inertiaFrame = requestAnimationFrame(inertiaStep);
+    }
+    if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
+    inertiaFrame = requestAnimationFrame(inertiaStep);
+  }
+  
+  // ---- Клавиатура (стрелки, PgUp, PgDown, Home, End) ----
+  function onKeyDown(e) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.classList.contains('active')) return;
+    
+    const tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    
+    let delta = 0;
+    switch (e.key) {
+      case 'ArrowUp': delta = -KEY_STEP; break;
+      case 'ArrowDown': delta = KEY_STEP; break;
+      case 'PageUp': delta = -window.innerHeight; break;
+      case 'PageDown': delta = window.innerHeight; break;
+      case 'Home': targetY = 0; startAnimation(); e.preventDefault(); return;
+      case 'End': targetY = getMaxScroll(); startAnimation(); e.preventDefault(); return;
+      default: return;
+    }
+    e.preventDefault();
+    targetY = clamp(targetY + delta, 0, getMaxScroll());
+    startAnimation();
+  }
+  
+  // ---- Синхронизация с внешними изменениями (например, кнопка "наверх" с smooth) ----
+  // Слушаем событие scroll, но только если оно пришло не от нашей анимации
+  let scrollFromExternal = false;
+  window.addEventListener('scroll', () => {
+    if (!ourAnimation) {
+      // Внешний скролл (скролл-бар, якорь, чужая анимация)
+      const newScroll = window.scrollY;
+      if (Math.abs(newScroll - targetY) > 2) {
+        targetY = newScroll;
+        currentY = newScroll;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        isAnimating = false;
+        ourAnimation = false;
+        // можно было бы запустить плавное догоняние, но часто приводит к рывкам – лучше просто синхронизировать
+      }
+    }
+  });
+  
+  // ---- Регистрация событий ----
   window.addEventListener('wheel', onWheel, { passive: false });
+  window.addEventListener('touchstart', onTouchStart, { passive: false });
+  window.addEventListener('touchmove', onTouchMove, { passive: false });
+  window.addEventListener('touchend', onTouchEnd);
+  window.addEventListener('keydown', onKeyDown);
+  
+  // Инициализация целевого значения
+  targetY = window.scrollY;
+  currentY = window.scrollY;
 })();
