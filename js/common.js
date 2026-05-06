@@ -401,3 +401,156 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('wheel', onWheel, { passive: false });
 })();
+
+// ========== ВЕРСИЯ ДЛЯ СЛАБОВИДЯЩИХ ==========
+(function() {
+  const ACCESSIBILITY_KEY = 'accessibilityMode';
+  let isAccessibilityMode = localStorage.getItem(ACCESSIBILITY_KEY) === 'true';
+
+  // Добавляем стили для режима слабовидящих
+  const styleId = 'accessibility-styles';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      /* Режим слабовидящих */
+      body.accessibility-mode {
+        font-size: 1.2rem !important;
+        line-height: 1.6 !important;
+        letter-spacing: 0.05em !important;
+      }
+      body.accessibility-mode * {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background-blend-mode: normal !important;
+      }
+      body.accessibility-mode .glass-nav,
+      body.accessibility-mode .card-bg,
+      body.accessibility-mode .feature-card,
+      body.accessibility-mode .howto-steps,
+      body.accessibility-mode .testimonial-card,
+      body.accessibility-mode .faq-item,
+      body.accessibility-mode .random-meme-card,
+      body.accessibility-mode .stat-card,
+      body.accessibility-mode .category-card {
+        backdrop-filter: none !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 2px solid #000 !important;
+        box-shadow: none !important;
+      }
+      body.accessibility-mode a,
+      body.accessibility-mode button,
+      body.accessibility-mode .btn-primary,
+      body.accessibility-mode .btn-secondary {
+        background: #000 !important;
+        color: #fff !important;
+        border: 2px solid #fff !important;
+        text-decoration: underline !important;
+      }
+      body.accessibility-mode .logo,
+      body.accessibility-mode .gradient-text {
+        background: none !important;
+        color: #000 !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+      }
+      body.accessibility-mode .stat-card,
+      body.accessibility-mode .category-card {
+        animation: none !important;
+        border-color: #000 !important;
+      }
+      body.accessibility-mode .lightbox {
+        background: #000 !important;
+        backdrop-filter: none !important;
+      }
+      body.accessibility-mode .lightbox .close-lightbox {
+        color: #fff !important;
+        background: #000 !important;
+        border: 2px solid #fff !important;
+      }
+      body.accessibility-mode input,
+      body.accessibility-mode select,
+      body.accessibility-mode textarea {
+        background: #fff !important;
+        color: #000 !important;
+        border: 2px solid #000 !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function setAccessibilityMode(enabled) {
+    if (enabled) {
+      document.body.classList.add('accessibility-mode');
+    } else {
+      document.body.classList.remove('accessibility-mode');
+    }
+    localStorage.setItem(ACCESSIBILITY_KEY, enabled);
+  }
+
+  // Создаём кнопку и вставляем перед theme-dropdown
+  function addAccessibilityButton() {
+    const selectGroup = document.querySelector('.glass-nav .select-group');
+    if (!selectGroup) return;
+    // Если кнопка уже есть, не добавляем повторно
+    if (selectGroup.querySelector('.accessibility-btn')) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'accessibility-btn';
+    btn.setAttribute('aria-label', 'Версия для слабовидящих');
+    btn.style.cssText = `
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem;
+      margin-right: 0.5rem;
+      border-radius: 2rem;
+      transition: background 0.2s;
+    `;
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 41 41" width="24" height="24"><circle cx="31.5" cy="19.5" r="7.5" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19.5" r="7.5" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" d="M15 15c3.333-4 6.667-4 10 0"/></svg>`;
+    
+    // Цвет иконки подстраиваем под тему
+    const updateBtnColor = () => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      if (theme === 'dark') {
+        btn.style.color = '#fff';
+      } else {
+        btn.style.color = '#E2241C';
+      }
+    };
+    updateBtnColor();
+    const observer = new MutationObserver(updateBtnColor);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    btn.addEventListener('click', () => {
+      isAccessibilityMode = !isAccessibilityMode;
+      setAccessibilityMode(isAccessibilityMode);
+      // Визуальная обратная связь
+      btn.style.transform = 'scale(0.95)';
+      setTimeout(() => { btn.style.transform = ''; }, 150);
+    });
+
+    // Вставляем перед .theme-dropdown
+    const themeDropdown = selectGroup.querySelector('.theme-dropdown');
+    if (themeDropdown) {
+      selectGroup.insertBefore(btn, themeDropdown);
+    } else {
+      selectGroup.prepend(btn);
+    }
+  }
+
+  // Инициализация после загрузки DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setAccessibilityMode(isAccessibilityMode);
+      addAccessibilityButton();
+    });
+  } else {
+    setAccessibilityMode(isAccessibilityMode);
+    addAccessibilityButton();
+  }
+})();
