@@ -409,14 +409,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Настройки по умолчанию
   let accessibilitySettings = {
-    fontFamily: 'sans',        // 'sans' или 'serif'
-    fontSize: 'medium',        // 'small', 'medium', 'large'
-    letterSpacing: 'normal',   // 'normal', 'wide', 'extra-wide'
-    colorScheme: 'bw',         // 'bw', 'by', 'bc', 'yw', 'wb'
-    speechEnabled: false
+    fontFamily: 'sans',
+    fontSize: 'medium',
+    letterSpacing: 'normal',
+    colorScheme: 'bw',
+    speechEnabled: false,
+    voiceGender: 'female' // 'male' или 'female'
   };
 
-  // Загрузка сохранённых настроек
   const savedSettings = localStorage.getItem('accessibilitySettings');
   if (savedSettings) {
     try {
@@ -425,142 +425,167 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {}
   }
 
-  // Функция применения всех стилей и речевых возможностей
-  function applyAccessibilityStyles() {
-    if (!isAccessibilityMode) return;
+  // Голосовые настройки
+  let availableVoices = [];
+  let selectedVoice = null;
 
-    const root = document.documentElement;
-    let body = document.body;
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    availableVoices = window.speechSynthesis.getVoices();
+    updateSelectedVoice();
+  }
 
-    // Базовые стили (увеличиваем контраст, убираем блюр)
-    body.classList.add('accessibility-mode');
-
-    // Шрифт
-    if (accessibilitySettings.fontFamily === 'serif') {
-      body.style.fontFamily = "'Times New Roman', Times, serif";
+  function updateSelectedVoice() {
+    if (!availableVoices.length) return;
+    let voice = null;
+    if (accessibilitySettings.voiceGender === 'female') {
+      voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en') && /female|woman|girl/i.test(v.name));
+      if (!voice) voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en'));
     } else {
-      body.style.fontFamily = "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+      voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en') && /male|man|boy/i.test(v.name));
+      if (!voice) voice = availableVoices.find(v => v.lang.startsWith(document.documentElement.lang === 'ru' ? 'ru' : 'en'));
     }
+    selectedVoice = voice || availableVoices[0];
+  }
 
-    // Размер шрифта
-    switch (accessibilitySettings.fontSize) {
-      case 'small':
-        body.style.fontSize = '1rem';
-        break;
-      case 'medium':
-        body.style.fontSize = '1.2rem';
-        break;
-      case 'large':
-        body.style.fontSize = '1.5rem';
-        break;
-      default: body.style.fontSize = '1.2rem';
+  // Диктор при наведении
+  let currentSpeechUtterance = null;
+  let hoverTimeout = null;
+
+  function speakText(text) {
+    if (!accessibilitySettings.speechEnabled || !window.speechSynthesis) return;
+    if (currentSpeechUtterance) {
+      window.speechSynthesis.cancel();
+      currentSpeechUtterance = null;
     }
+    if (!text || !text.trim()) return;
+    const utterance = new SpeechSynthesisUtterance(text.trim());
+    utterance.lang = document.documentElement.lang === 'ru' ? 'ru-RU' : 'en-US';
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    if (selectedVoice) utterance.voice = selectedVoice;
+    utterance.onend = () => { currentSpeechUtterance = null; };
+    currentSpeechUtterance = utterance;
+    window.speechSynthesis.speak(utterance);
+  }
 
-    // Межбуквенный интервал
-    switch (accessibilitySettings.letterSpacing) {
-      case 'normal':
-        body.style.letterSpacing = 'normal';
-        break;
-      case 'wide':
-        body.style.letterSpacing = '0.1em';
-        break;
-      case 'extra-wide':
-        body.style.letterSpacing = '0.2em';
-        break;
-      default: body.style.letterSpacing = 'normal';
+  function handleMouseEnter(e) {
+    if (!accessibilitySettings.speechEnabled) return;
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    let target = e.target;
+    let text = '';
+    // Ищем подходящий текст: title, alt, aria-label, текст элемента
+    if (target.getAttribute('title')) {
+      text = target.getAttribute('title');
+    } else if (target.getAttribute('alt')) {
+      text = target.getAttribute('alt');
+    } else if (target.getAttribute('aria-label')) {
+      text = target.getAttribute('aria-label');
+    } else if (target.innerText || target.textContent) {
+      text = (target.innerText || target.textContent).trim();
+      // Если текст слишком длинный, берём первые 200 символов
+      if (text.length > 200) text = text.slice(0, 200) + '…';
     }
-
-    // Цветовая схема (переопределяем CSS-переменные)
-    switch (accessibilitySettings.colorScheme) {
-      case 'bw': // чёрный текст на белом фоне
-        root.style.setProperty('--bg-gradient', 'none');
-        root.style.setProperty('--surface', '#ffffff');
-        root.style.setProperty('--surface-glass', '#ffffff');
-        root.style.setProperty('--text-primary', '#000000');
-        root.style.setProperty('--text-secondary', '#000000');
-        root.style.setProperty('--card-bg', '#ffffff');
-        root.style.setProperty('--border', '#000000');
-        root.style.setProperty('--accent', '#0000ff');
-        root.style.setProperty('--accent-hover', '#0000cc');
-        break;
-      case 'by': // чёрный на жёлтом
-        root.style.setProperty('--bg-gradient', 'none');
-        root.style.setProperty('--surface', '#ffff00');
-        root.style.setProperty('--surface-glass', '#ffff00');
-        root.style.setProperty('--text-primary', '#000000');
-        root.style.setProperty('--text-secondary', '#000000');
-        root.style.setProperty('--card-bg', '#ffff00');
-        root.style.setProperty('--border', '#000000');
-        root.style.setProperty('--accent', '#0000ff');
-        break;
-      case 'bc': // белый на чёрном
-        root.style.setProperty('--bg-gradient', 'none');
-        root.style.setProperty('--surface', '#000000');
-        root.style.setProperty('--surface-glass', '#000000');
-        root.style.setProperty('--text-primary', '#ffffff');
-        root.style.setProperty('--text-secondary', '#ffffff');
-        root.style.setProperty('--card-bg', '#000000');
-        root.style.setProperty('--border', '#ffffff');
-        root.style.setProperty('--accent', '#ffff00');
-        break;
-      case 'yw': // жёлтый на чёрном
-        root.style.setProperty('--bg-gradient', 'none');
-        root.style.setProperty('--surface', '#000000');
-        root.style.setProperty('--surface-glass', '#000000');
-        root.style.setProperty('--text-primary', '#ffff00');
-        root.style.setProperty('--text-secondary', '#ffff00');
-        root.style.setProperty('--card-bg', '#000000');
-        root.style.setProperty('--border', '#ffff00');
-        root.style.setProperty('--accent', '#ffffff');
-        break;
-      case 'wb': // белый на синем
-        root.style.setProperty('--bg-gradient', 'none');
-        root.style.setProperty('--surface', '#0000aa');
-        root.style.setProperty('--surface-glass', '#0000aa');
-        root.style.setProperty('--text-primary', '#ffffff');
-        root.style.setProperty('--text-secondary', '#ffffff');
-        root.style.setProperty('--card-bg', '#0000aa');
-        root.style.setProperty('--border', '#ffffff');
-        root.style.setProperty('--accent', '#ffff00');
-        break;
-      default: // fallback to bw
-        root.style.setProperty('--bg-gradient', 'none');
-        root.style.setProperty('--surface', '#ffffff');
-        root.style.setProperty('--text-primary', '#000000');
-        root.style.setProperty('--card-bg', '#ffffff');
-        root.style.setProperty('--border', '#000000');
-    }
-
-    // Дополнительно: убираем все анимации и тени
-    const styleOverride = document.getElementById('a11y-dynamic-styles');
-    if (!styleOverride) {
-      const s = document.createElement('style');
-      s.id = 'a11y-dynamic-styles';
-      s.textContent = `
-        .accessibility-mode * {
-          animation: none !important;
-          transition: none !important;
-          box-shadow: none !important;
-          text-shadow: none !important;
-          backdrop-filter: none !important;
-        }
-        .accessibility-mode .stat-card,
-        .accessibility-mode .category-card {
-          border: 2px solid var(--border) !important;
-        }
-        .accessibility-mode a, .accessibility-mode button {
-          text-decoration: underline !important;
-        }
-      `;
-      document.head.appendChild(s);
+    if (text) {
+      hoverTimeout = setTimeout(() => speakText(text), 100);
     }
   }
 
-  // Сброс стилей при выключении режима
+  function handleMouseLeave() {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
+    if (currentSpeechUtterance) {
+      window.speechSynthesis.cancel();
+      currentSpeechUtterance = null;
+    }
+  }
+
+  function bindSpeechEvents() {
+    document.querySelectorAll('a, button, .meme-card, .faq-question, .testimonial-card, h1, h2, h3, p, img, .dropdown-trigger, .social-card').forEach(el => {
+      el.removeEventListener('mouseenter', handleMouseEnter);
+      el.removeEventListener('mouseleave', handleMouseLeave);
+      if (accessibilitySettings.speechEnabled) {
+        el.addEventListener('mouseenter', handleMouseEnter);
+        el.addEventListener('mouseleave', handleMouseLeave);
+      }
+    });
+  }
+
+  function toggleSpeech(enabled) {
+    accessibilitySettings.speechEnabled = enabled;
+    localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+    if (enabled) {
+      if (window.speechSynthesis) loadVoices();
+      bindSpeechEvents();
+    } else {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      document.querySelectorAll('a, button, .meme-card, .faq-question, .testimonial-card, h1, h2, h3, p, img, .dropdown-trigger, .social-card').forEach(el => {
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+      });
+      if (currentSpeechUtterance) {
+        window.speechSynthesis.cancel();
+        currentSpeechUtterance = null;
+      }
+    }
+    // Обновить состояние кнопки диктора, если панель существует
+    const speechBtn = document.getElementById('a11y-speech-btn');
+    if (speechBtn) {
+      speechBtn.textContent = accessibilitySettings.speechEnabled ? '🔊 Диктор (вкл)' : '🔇 Диктор (выкл)';
+    }
+    const genderSelect = document.getElementById('a11y-voice-gender');
+    if (genderSelect) genderSelect.disabled = !accessibilitySettings.speechEnabled;
+  }
+
+  // Применение стилей
+  function applyAccessibilityStyles() {
+    if (!isAccessibilityMode) return;
+    document.body.classList.add('accessibility-mode');
+    const root = document.documentElement;
+    // Шрифт
+    document.body.style.fontFamily = accessibilitySettings.fontFamily === 'serif' ? "'Times New Roman', Times, serif" : "'Inter', system-ui, sans-serif";
+    // Размер
+    const sizes = { small: '1rem', medium: '1.2rem', large: '1.5rem' };
+    document.body.style.fontSize = sizes[accessibilitySettings.fontSize] || '1.2rem';
+    // Интервал
+    const spacing = { normal: 'normal', wide: '0.1em', 'extra-wide': '0.2em' };
+    document.body.style.letterSpacing = spacing[accessibilitySettings.letterSpacing] || 'normal';
+    // Цветовая схема
+    const schemes = {
+      bw: { bg: '#ffffff', text: '#000000', accent: '#0000ff', border: '#000000' },
+      by: { bg: '#ffff00', text: '#000000', accent: '#0000ff', border: '#000000' },
+      bc: { bg: '#000000', text: '#ffffff', accent: '#ffff00', border: '#ffffff' },
+      yw: { bg: '#000000', text: '#ffff00', accent: '#ffffff', border: '#ffff00' },
+      wb: { bg: '#0000aa', text: '#ffffff', accent: '#ffff00', border: '#ffffff' }
+    };
+    const s = schemes[accessibilitySettings.colorScheme] || schemes.bw;
+    root.style.setProperty('--bg-gradient', 'none');
+    root.style.setProperty('--surface', s.bg);
+    root.style.setProperty('--surface-glass', s.bg);
+    root.style.setProperty('--text-primary', s.text);
+    root.style.setProperty('--text-secondary', s.text);
+    root.style.setProperty('--card-bg', s.bg);
+    root.style.setProperty('--border', s.border);
+    root.style.setProperty('--accent', s.accent);
+    root.style.setProperty('--accent-hover', s.accent);
+    // Доп. стили
+    let dynStyle = document.getElementById('a11y-dynamic-styles');
+    if (!dynStyle) {
+      const style = document.createElement('style');
+      style.id = 'a11y-dynamic-styles';
+      style.textContent = `
+        .accessibility-mode * { animation: none !important; transition: none !important; box-shadow: none !important; backdrop-filter: none !important; }
+        .accessibility-mode a, .accessibility-mode button { text-decoration: underline !important; }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
   function resetAccessibilityStyles() {
     document.body.classList.remove('accessibility-mode');
     const root = document.documentElement;
-    // Возвращаем исходные CSS-переменные (удаляем инлайн-стили)
     root.style.removeProperty('--bg-gradient');
     root.style.removeProperty('--surface');
     root.style.removeProperty('--surface-glass');
@@ -577,93 +602,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dynStyle) dynStyle.remove();
   }
 
-  // Включение/выключение голосового чтения (синтез речи)
-  let speechSynthesisEnabled = false;
-  let currentUtterance = null;
-
-  function stopSpeaking() {
-    if (window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
-    if (currentUtterance) {
-      currentUtterance = null;
-    }
-  }
-
-  function startSpeaking() {
-    if (!window.speechSynthesis) {
-      alert('Ваш браузер не поддерживает синтез речи.');
-      return;
-    }
-    stopSpeaking();
-    // Собираем текст со страницы: заголовки, параграфы, ссылки, тексты карточек
-    const elements = document.querySelectorAll('h1, h2, h3, h4, p, a, .meme-title, .faq-question, .testimonial-card');
-    let text = '';
-    elements.forEach(el => {
-      let txt = el.innerText || el.textContent;
-      if (txt && txt.trim()) text += txt + '. ';
-    });
-    if (!text.trim()) return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = document.documentElement.lang === 'ru' ? 'ru-RU' : 'en-US';
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    window.speechSynthesis.speak(utterance);
-    currentUtterance = utterance;
-    utterance.onend = () => { currentUtterance = null; };
-  }
-
-  function toggleSpeech() {
-    if (!window.speechSynthesis) {
-      alert('Синтез речи не поддерживается');
-      return;
-    }
-    if (speechSynthesisEnabled) {
-      stopSpeaking();
-      speechSynthesisEnabled = false;
-    } else {
-      startSpeaking();
-      speechSynthesisEnabled = true;
-    }
-    // Сохраняем в настройках
-    accessibilitySettings.speechEnabled = speechSynthesisEnabled;
-    localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
-    // Обновляем вид кнопки в панели, если панель существует
-    const speechBtn = document.getElementById('a11y-speech-btn');
-    if (speechBtn) {
-      speechBtn.textContent = speechSynthesisEnabled ? '🔊 Диктор выкл' : '🔇 Диктор вкл';
-    }
-  }
-
-  // Создание выезжающей панели управления
+  // Создание панели управления (вверху, без закрытия)
   function createAccessibilityPanel() {
     if (document.getElementById('accessibility-panel')) return;
-
     const panel = document.createElement('div');
     panel.id = 'accessibility-panel';
     panel.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
-      background: #fff;
+      background: #f0f0f0;
       border-bottom: 2px solid #000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10000;
-      padding: 12px 20px;
       font-family: sans-serif;
-      transition: transform 0.3s ease;
-      transform: translateY(-100%);
+      padding: 10px 20px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
       gap: 15px;
-      background-color: #f0f0f0;
       color: #000;
+      position: relative;
+      z-index: 1000;
+      box-sizing: border-box;
     `;
     panel.innerHTML = `
-      <button id="a11y-close-panel" style="background:#000; color:#fff; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">✖ Закрыть</button>
       <div><label>Шрифт:</label>
         <select id="a11y-font-family">
           <option value="sans">Без засечек</option>
@@ -684,24 +644,34 @@ document.addEventListener('DOMContentLoaded', () => {
           <option value="extra-wide">Очень широкий</option>
         </select>
       </div>
-      <div><label>Цветовая схема:</label>
+      <div><label>Цвет:</label>
         <select id="a11y-color-scheme">
-          <option value="bw">Чёрный на белом</option>
-          <option value="by">Чёрный на жёлтом</option>
-          <option value="bc">Белый на чёрном</option>
-          <option value="yw">Жёлтый на чёрном</option>
-          <option value="wb">Белый на синем</option>
+          <option value="bw">Ч/б</option>
+          <option value="by">Ч/ж</option>
+          <option value="bc">Б/ч</option>
+          <option value="yw">Ж/ч</option>
+          <option value="wb">Б/с</option>
         </select>
       </div>
-      <button id="a11y-speech-btn" style="background:#000; color:#fff; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">${accessibilitySettings.speechEnabled ? '🔊 Диктор выкл' : '🔇 Диктор вкл'}</button>
+      <div><label>Диктор:</label>
+        <button id="a11y-speech-btn" style="background:#000; color:#fff; border:none; padding:4px 10px; border-radius:20px; cursor:pointer;">${accessibilitySettings.speechEnabled ? '🔊 Диктор (вкл)' : '🔇 Диктор (выкл)'}</button>
+      </div>
+      <div><label>Голос:</label>
+        <select id="a11y-voice-gender" ${!accessibilitySettings.speechEnabled ? 'disabled' : ''}>
+          <option value="female">Женский</option>
+          <option value="male">Мужской</option>
+        </select>
+      </div>
     `;
-    document.body.appendChild(panel);
+    // Вставляем панель в самое начало body (после открывающего тега)
+    document.body.insertBefore(panel, document.body.firstChild);
 
-    // Установка значений select в соответствии с сохранёнными настройками
+    // Установка значений
     document.getElementById('a11y-font-family').value = accessibilitySettings.fontFamily;
     document.getElementById('a11y-font-size').value = accessibilitySettings.fontSize;
     document.getElementById('a11y-letter-spacing').value = accessibilitySettings.letterSpacing;
     document.getElementById('a11y-color-scheme').value = accessibilitySettings.colorScheme;
+    document.getElementById('a11y-voice-gender').value = accessibilitySettings.voiceGender;
 
     // Обработчики
     document.getElementById('a11y-font-family').addEventListener('change', (e) => {
@@ -726,46 +696,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const speechBtn = document.getElementById('a11y-speech-btn');
     speechBtn.addEventListener('click', () => {
-      toggleSpeech();
+      toggleSpeech(!accessibilitySettings.speechEnabled);
     });
-    document.getElementById('a11y-close-panel').addEventListener('click', () => {
-      panel.style.transform = 'translateY(-100%)';
+    const genderSelect = document.getElementById('a11y-voice-gender');
+    genderSelect.addEventListener('change', (e) => {
+      accessibilitySettings.voiceGender = e.target.value;
+      localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+      if (window.speechSynthesis) loadVoices();
+      // Если диктор включён, перезапускаем привязку событий (необязательно)
     });
-    return panel;
   }
 
   function showAccessibilityPanel() {
-    const panel = document.getElementById('accessibility-panel') || createAccessibilityPanel();
-    setTimeout(() => {
-      panel.style.transform = 'translateY(0)';
-    }, 10);
+    const panel = document.getElementById('accessibility-panel');
+    if (!panel) createAccessibilityPanel();
+    // Панель всегда видна, ничего дополнительно не делаем
   }
 
   function hideAccessibilityPanel() {
     const panel = document.getElementById('accessibility-panel');
-    if (panel) panel.style.transform = 'translateY(-100%)';
+    if (panel) panel.remove();
   }
 
-  // Управление режимом: включение/выключение, показ/скрытие панели
+  // Включение/выключение режима
   function setAccessibilityMode(enabled) {
     isAccessibilityMode = enabled;
     if (enabled) {
+      createAccessibilityPanel();
       applyAccessibilityStyles();
-      showAccessibilityPanel();
-      // Если голос был включён в настройках, автоматически запускаем
-      if (accessibilitySettings.speechEnabled) {
-        speechSynthesisEnabled = true;
-        startSpeaking();
-      }
+      if (window.speechSynthesis) loadVoices();
+      toggleSpeech(accessibilitySettings.speechEnabled); // перепривяжет события и установит диктор
     } else {
       resetAccessibilityStyles();
       hideAccessibilityPanel();
-      if (speechSynthesisEnabled) {
-        stopSpeaking();
-        speechSynthesisEnabled = false;
-        accessibilitySettings.speechEnabled = false;
-        localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
-      }
+      toggleSpeech(false);
     }
     localStorage.setItem(ACCESSIBILITY_KEY, enabled);
   }
@@ -810,25 +774,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const themeDropdown = selectGroup.querySelector('.theme-dropdown');
-    if (themeDropdown) {
-      selectGroup.insertBefore(btn, themeDropdown);
-    } else {
-      selectGroup.prepend(btn);
-    }
+    if (themeDropdown) selectGroup.insertBefore(btn, themeDropdown);
+    else selectGroup.prepend(btn);
+  }
+
+  // Загрузка голосов (некоторые браузеры загружают асинхронно)
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => { loadVoices(); };
+    loadVoices();
   }
 
   // Инициализация
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      if (isAccessibilityMode) {
-        setAccessibilityMode(true);
-      }
+      if (isAccessibilityMode) setAccessibilityMode(true);
       addAccessibilityButton();
     });
   } else {
-    if (isAccessibilityMode) {
-      setAccessibilityMode(true);
-    }
+    if (isAccessibilityMode) setAccessibilityMode(true);
     addAccessibilityButton();
   }
 })();
