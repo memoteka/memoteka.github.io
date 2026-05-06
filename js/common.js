@@ -402,139 +402,375 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('wheel', onWheel, { passive: false });
 })();
 
-// ========== ВЕРСИЯ ДЛЯ СЛАБОВИДЯЩИХ ==========
+// ========== ВЕРСИЯ ДЛЯ СЛАБОВИДЯЩИХ С РАСШИРЕННЫМИ НАСТРОЙКАМИ ==========
 (function() {
   const ACCESSIBILITY_KEY = 'accessibilityMode';
   let isAccessibilityMode = localStorage.getItem(ACCESSIBILITY_KEY) === 'true';
 
-  // Добавляем стили для режима слабовидящих и для тултипа кнопки
-  const styleId = 'accessibility-styles';
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style');
-    style.id = styleId;
-    style.textContent = `
-      /* Режим слабовидящих */
-      body.accessibility-mode {
-        font-size: 1.2rem !important;
-        line-height: 1.6 !important;
-        letter-spacing: 0.05em !important;
-      }
-      body.accessibility-mode * {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        background-blend-mode: normal !important;
-      }
-      body.accessibility-mode .glass-nav,
-      body.accessibility-mode .card-bg,
-      body.accessibility-mode .feature-card,
-      body.accessibility-mode .howto-steps,
-      body.accessibility-mode .testimonial-card,
-      body.accessibility-mode .faq-item,
-      body.accessibility-mode .random-meme-card,
-      body.accessibility-mode .stat-card,
-      body.accessibility-mode .category-card {
-        backdrop-filter: none !important;
-        background: #ffffff !important;
-        color: #000000 !important;
-        border: 2px solid #000 !important;
-        box-shadow: none !important;
-      }
-      body.accessibility-mode a,
-      body.accessibility-mode button,
-      body.accessibility-mode .btn-primary,
-      body.accessibility-mode .btn-secondary {
-        background: #000 !important;
-        color: #fff !important;
-        border: 2px solid #fff !important;
-        text-decoration: underline !important;
-      }
-      body.accessibility-mode .logo,
-      body.accessibility-mode .gradient-text {
-        background: none !important;
-        color: #000 !important;
-        -webkit-background-clip: unset !important;
-        background-clip: unset !important;
-      }
-      body.accessibility-mode .stat-card,
-      body.accessibility-mode .category-card {
-        animation: none !important;
-        border-color: #000 !important;
-      }
-      body.accessibility-mode .lightbox {
-        background: #000 !important;
-        backdrop-filter: none !important;
-      }
-      body.accessibility-mode .lightbox .close-lightbox {
-        color: #fff !important;
-        background: #000 !important;
-        border: 2px solid #fff !important;
-      }
-      body.accessibility-mode input,
-      body.accessibility-mode select,
-      body.accessibility-mode textarea {
-        background: #fff !important;
-        color: #000 !important;
-        border: 2px solid #000 !important;
-      }
+  // Настройки по умолчанию
+  let accessibilitySettings = {
+    fontFamily: 'sans',        // 'sans' или 'serif'
+    fontSize: 'medium',        // 'small', 'medium', 'large'
+    letterSpacing: 'normal',   // 'normal', 'wide', 'extra-wide'
+    colorScheme: 'bw',         // 'bw', 'by', 'bc', 'yw', 'wb'
+    speechEnabled: false
+  };
 
-      /* Тултип для кнопки слабовидящих */
-      .accessibility-btn {
-        position: relative;
-      }
-      .accessibility-btn::before {
-        content: attr(data-tooltip);
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-8px);
-        background: rgba(0, 0, 0, 0.75);
-        backdrop-filter: blur(8px);
-        color: white;
-        font-size: 0.75rem;
-        font-weight: 500;
-        padding: 0.25rem 0.6rem;
-        border-radius: 0.5rem;
-        white-space: nowrap;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-        z-index: 250;
-        font-family: inherit;
-        letter-spacing: 0.3px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-      .accessibility-btn:hover::before {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-      [data-theme="dark"] .accessibility-btn::before {
-        background: rgba(255, 255, 255, 0.85);
-        color: #1f2937;
-        border-color: rgba(0, 0, 0, 0.2);
-      }
-      [data-theme="light"] .accessibility-btn::before {
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-      }
-      @media (max-width: 768px) {
-        .accessibility-btn::before {
-          display: none;
-        }
-      }
-    `;
-    document.head.appendChild(style);
+  // Загрузка сохранённых настроек
+  const savedSettings = localStorage.getItem('accessibilitySettings');
+  if (savedSettings) {
+    try {
+      const parsed = JSON.parse(savedSettings);
+      accessibilitySettings = { ...accessibilitySettings, ...parsed };
+    } catch(e) {}
   }
 
-  function setAccessibilityMode(enabled) {
-    if (enabled) {
-      document.body.classList.add('accessibility-mode');
+  // Функция применения всех стилей и речевых возможностей
+  function applyAccessibilityStyles() {
+    if (!isAccessibilityMode) return;
+
+    const root = document.documentElement;
+    let body = document.body;
+
+    // Базовые стили (увеличиваем контраст, убираем блюр)
+    body.classList.add('accessibility-mode');
+
+    // Шрифт
+    if (accessibilitySettings.fontFamily === 'serif') {
+      body.style.fontFamily = "'Times New Roman', Times, serif";
     } else {
-      document.body.classList.remove('accessibility-mode');
+      body.style.fontFamily = "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+    }
+
+    // Размер шрифта
+    switch (accessibilitySettings.fontSize) {
+      case 'small':
+        body.style.fontSize = '1rem';
+        break;
+      case 'medium':
+        body.style.fontSize = '1.2rem';
+        break;
+      case 'large':
+        body.style.fontSize = '1.5rem';
+        break;
+      default: body.style.fontSize = '1.2rem';
+    }
+
+    // Межбуквенный интервал
+    switch (accessibilitySettings.letterSpacing) {
+      case 'normal':
+        body.style.letterSpacing = 'normal';
+        break;
+      case 'wide':
+        body.style.letterSpacing = '0.1em';
+        break;
+      case 'extra-wide':
+        body.style.letterSpacing = '0.2em';
+        break;
+      default: body.style.letterSpacing = 'normal';
+    }
+
+    // Цветовая схема (переопределяем CSS-переменные)
+    switch (accessibilitySettings.colorScheme) {
+      case 'bw': // чёрный текст на белом фоне
+        root.style.setProperty('--bg-gradient', 'none');
+        root.style.setProperty('--surface', '#ffffff');
+        root.style.setProperty('--surface-glass', '#ffffff');
+        root.style.setProperty('--text-primary', '#000000');
+        root.style.setProperty('--text-secondary', '#000000');
+        root.style.setProperty('--card-bg', '#ffffff');
+        root.style.setProperty('--border', '#000000');
+        root.style.setProperty('--accent', '#0000ff');
+        root.style.setProperty('--accent-hover', '#0000cc');
+        break;
+      case 'by': // чёрный на жёлтом
+        root.style.setProperty('--bg-gradient', 'none');
+        root.style.setProperty('--surface', '#ffff00');
+        root.style.setProperty('--surface-glass', '#ffff00');
+        root.style.setProperty('--text-primary', '#000000');
+        root.style.setProperty('--text-secondary', '#000000');
+        root.style.setProperty('--card-bg', '#ffff00');
+        root.style.setProperty('--border', '#000000');
+        root.style.setProperty('--accent', '#0000ff');
+        break;
+      case 'bc': // белый на чёрном
+        root.style.setProperty('--bg-gradient', 'none');
+        root.style.setProperty('--surface', '#000000');
+        root.style.setProperty('--surface-glass', '#000000');
+        root.style.setProperty('--text-primary', '#ffffff');
+        root.style.setProperty('--text-secondary', '#ffffff');
+        root.style.setProperty('--card-bg', '#000000');
+        root.style.setProperty('--border', '#ffffff');
+        root.style.setProperty('--accent', '#ffff00');
+        break;
+      case 'yw': // жёлтый на чёрном
+        root.style.setProperty('--bg-gradient', 'none');
+        root.style.setProperty('--surface', '#000000');
+        root.style.setProperty('--surface-glass', '#000000');
+        root.style.setProperty('--text-primary', '#ffff00');
+        root.style.setProperty('--text-secondary', '#ffff00');
+        root.style.setProperty('--card-bg', '#000000');
+        root.style.setProperty('--border', '#ffff00');
+        root.style.setProperty('--accent', '#ffffff');
+        break;
+      case 'wb': // белый на синем
+        root.style.setProperty('--bg-gradient', 'none');
+        root.style.setProperty('--surface', '#0000aa');
+        root.style.setProperty('--surface-glass', '#0000aa');
+        root.style.setProperty('--text-primary', '#ffffff');
+        root.style.setProperty('--text-secondary', '#ffffff');
+        root.style.setProperty('--card-bg', '#0000aa');
+        root.style.setProperty('--border', '#ffffff');
+        root.style.setProperty('--accent', '#ffff00');
+        break;
+      default: // fallback to bw
+        root.style.setProperty('--bg-gradient', 'none');
+        root.style.setProperty('--surface', '#ffffff');
+        root.style.setProperty('--text-primary', '#000000');
+        root.style.setProperty('--card-bg', '#ffffff');
+        root.style.setProperty('--border', '#000000');
+    }
+
+    // Дополнительно: убираем все анимации и тени
+    const styleOverride = document.getElementById('a11y-dynamic-styles');
+    if (!styleOverride) {
+      const s = document.createElement('style');
+      s.id = 'a11y-dynamic-styles';
+      s.textContent = `
+        .accessibility-mode * {
+          animation: none !important;
+          transition: none !important;
+          box-shadow: none !important;
+          text-shadow: none !important;
+          backdrop-filter: none !important;
+        }
+        .accessibility-mode .stat-card,
+        .accessibility-mode .category-card {
+          border: 2px solid var(--border) !important;
+        }
+        .accessibility-mode a, .accessibility-mode button {
+          text-decoration: underline !important;
+        }
+      `;
+      document.head.appendChild(s);
+    }
+  }
+
+  // Сброс стилей при выключении режима
+  function resetAccessibilityStyles() {
+    document.body.classList.remove('accessibility-mode');
+    const root = document.documentElement;
+    // Возвращаем исходные CSS-переменные (удаляем инлайн-стили)
+    root.style.removeProperty('--bg-gradient');
+    root.style.removeProperty('--surface');
+    root.style.removeProperty('--surface-glass');
+    root.style.removeProperty('--text-primary');
+    root.style.removeProperty('--text-secondary');
+    root.style.removeProperty('--card-bg');
+    root.style.removeProperty('--border');
+    root.style.removeProperty('--accent');
+    root.style.removeProperty('--accent-hover');
+    document.body.style.fontFamily = '';
+    document.body.style.fontSize = '';
+    document.body.style.letterSpacing = '';
+    const dynStyle = document.getElementById('a11y-dynamic-styles');
+    if (dynStyle) dynStyle.remove();
+  }
+
+  // Включение/выключение голосового чтения (синтез речи)
+  let speechSynthesisEnabled = false;
+  let currentUtterance = null;
+
+  function stopSpeaking() {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    if (currentUtterance) {
+      currentUtterance = null;
+    }
+  }
+
+  function startSpeaking() {
+    if (!window.speechSynthesis) {
+      alert('Ваш браузер не поддерживает синтез речи.');
+      return;
+    }
+    stopSpeaking();
+    // Собираем текст со страницы: заголовки, параграфы, ссылки, тексты карточек
+    const elements = document.querySelectorAll('h1, h2, h3, h4, p, a, .meme-title, .faq-question, .testimonial-card');
+    let text = '';
+    elements.forEach(el => {
+      let txt = el.innerText || el.textContent;
+      if (txt && txt.trim()) text += txt + '. ';
+    });
+    if (!text.trim()) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = document.documentElement.lang === 'ru' ? 'ru-RU' : 'en-US';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+    currentUtterance = utterance;
+    utterance.onend = () => { currentUtterance = null; };
+  }
+
+  function toggleSpeech() {
+    if (!window.speechSynthesis) {
+      alert('Синтез речи не поддерживается');
+      return;
+    }
+    if (speechSynthesisEnabled) {
+      stopSpeaking();
+      speechSynthesisEnabled = false;
+    } else {
+      startSpeaking();
+      speechSynthesisEnabled = true;
+    }
+    // Сохраняем в настройках
+    accessibilitySettings.speechEnabled = speechSynthesisEnabled;
+    localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+    // Обновляем вид кнопки в панели, если панель существует
+    const speechBtn = document.getElementById('a11y-speech-btn');
+    if (speechBtn) {
+      speechBtn.textContent = speechSynthesisEnabled ? '🔊 Диктор выкл' : '🔇 Диктор вкл';
+    }
+  }
+
+  // Создание выезжающей панели управления
+  function createAccessibilityPanel() {
+    if (document.getElementById('accessibility-panel')) return;
+
+    const panel = document.createElement('div');
+    panel.id = 'accessibility-panel';
+    panel.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-bottom: 2px solid #000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10000;
+      padding: 12px 20px;
+      font-family: sans-serif;
+      transition: transform 0.3s ease;
+      transform: translateY(-100%);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      background-color: #f0f0f0;
+      color: #000;
+    `;
+    panel.innerHTML = `
+      <button id="a11y-close-panel" style="background:#000; color:#fff; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">✖ Закрыть</button>
+      <div><label>Шрифт:</label>
+        <select id="a11y-font-family">
+          <option value="sans">Без засечек</option>
+          <option value="serif">С засечками</option>
+        </select>
+      </div>
+      <div><label>Размер:</label>
+        <select id="a11y-font-size">
+          <option value="small">Маленький</option>
+          <option value="medium">Средний</option>
+          <option value="large">Большой</option>
+        </select>
+      </div>
+      <div><label>Интервал:</label>
+        <select id="a11y-letter-spacing">
+          <option value="normal">Обычный</option>
+          <option value="wide">Широкий</option>
+          <option value="extra-wide">Очень широкий</option>
+        </select>
+      </div>
+      <div><label>Цветовая схема:</label>
+        <select id="a11y-color-scheme">
+          <option value="bw">Чёрный на белом</option>
+          <option value="by">Чёрный на жёлтом</option>
+          <option value="bc">Белый на чёрном</option>
+          <option value="yw">Жёлтый на чёрном</option>
+          <option value="wb">Белый на синем</option>
+        </select>
+      </div>
+      <button id="a11y-speech-btn" style="background:#000; color:#fff; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">${accessibilitySettings.speechEnabled ? '🔊 Диктор выкл' : '🔇 Диктор вкл'}</button>
+    `;
+    document.body.appendChild(panel);
+
+    // Установка значений select в соответствии с сохранёнными настройками
+    document.getElementById('a11y-font-family').value = accessibilitySettings.fontFamily;
+    document.getElementById('a11y-font-size').value = accessibilitySettings.fontSize;
+    document.getElementById('a11y-letter-spacing').value = accessibilitySettings.letterSpacing;
+    document.getElementById('a11y-color-scheme').value = accessibilitySettings.colorScheme;
+
+    // Обработчики
+    document.getElementById('a11y-font-family').addEventListener('change', (e) => {
+      accessibilitySettings.fontFamily = e.target.value;
+      localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+      applyAccessibilityStyles();
+    });
+    document.getElementById('a11y-font-size').addEventListener('change', (e) => {
+      accessibilitySettings.fontSize = e.target.value;
+      localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+      applyAccessibilityStyles();
+    });
+    document.getElementById('a11y-letter-spacing').addEventListener('change', (e) => {
+      accessibilitySettings.letterSpacing = e.target.value;
+      localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+      applyAccessibilityStyles();
+    });
+    document.getElementById('a11y-color-scheme').addEventListener('change', (e) => {
+      accessibilitySettings.colorScheme = e.target.value;
+      localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+      applyAccessibilityStyles();
+    });
+    const speechBtn = document.getElementById('a11y-speech-btn');
+    speechBtn.addEventListener('click', () => {
+      toggleSpeech();
+    });
+    document.getElementById('a11y-close-panel').addEventListener('click', () => {
+      panel.style.transform = 'translateY(-100%)';
+    });
+    return panel;
+  }
+
+  function showAccessibilityPanel() {
+    const panel = document.getElementById('accessibility-panel') || createAccessibilityPanel();
+    setTimeout(() => {
+      panel.style.transform = 'translateY(0)';
+    }, 10);
+  }
+
+  function hideAccessibilityPanel() {
+    const panel = document.getElementById('accessibility-panel');
+    if (panel) panel.style.transform = 'translateY(-100%)';
+  }
+
+  // Управление режимом: включение/выключение, показ/скрытие панели
+  function setAccessibilityMode(enabled) {
+    isAccessibilityMode = enabled;
+    if (enabled) {
+      applyAccessibilityStyles();
+      showAccessibilityPanel();
+      // Если голос был включён в настройках, автоматически запускаем
+      if (accessibilitySettings.speechEnabled) {
+        speechSynthesisEnabled = true;
+        startSpeaking();
+      }
+    } else {
+      resetAccessibilityStyles();
+      hideAccessibilityPanel();
+      if (speechSynthesisEnabled) {
+        stopSpeaking();
+        speechSynthesisEnabled = false;
+        accessibilitySettings.speechEnabled = false;
+        localStorage.setItem('accessibilitySettings', JSON.stringify(accessibilitySettings));
+      }
     }
     localStorage.setItem(ACCESSIBILITY_KEY, enabled);
   }
 
-  // Создаём кнопку и вставляем перед theme-dropdown
+  // Добавление кнопки в навигацию
   function addAccessibilityButton() {
     const selectGroup = document.querySelector('.glass-nav .select-group');
     if (!selectGroup) return;
@@ -560,21 +796,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const updateBtnColor = () => {
       const theme = document.documentElement.getAttribute('data-theme');
-      if (theme === 'dark') {
-        btn.style.color = '#fff';
-      } else {
-        btn.style.color = '#E2241C';
-      }
+      btn.style.color = (theme === 'dark') ? '#fff' : '#E2241C';
     };
     updateBtnColor();
     const observer = new MutationObserver(updateBtnColor);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     btn.addEventListener('click', () => {
-      isAccessibilityMode = !isAccessibilityMode;
-      setAccessibilityMode(isAccessibilityMode);
+      const newState = !isAccessibilityMode;
+      setAccessibilityMode(newState);
       btn.style.transform = 'scale(0.95)';
-      setTimeout(() => { btn.style.transform = ''; }, 150);
+      setTimeout(() => btn.style.transform = '', 150);
     });
 
     const themeDropdown = selectGroup.querySelector('.theme-dropdown');
@@ -585,13 +817,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Инициализация
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      setAccessibilityMode(isAccessibilityMode);
+      if (isAccessibilityMode) {
+        setAccessibilityMode(true);
+      }
       addAccessibilityButton();
     });
   } else {
-    setAccessibilityMode(isAccessibilityMode);
+    if (isAccessibilityMode) {
+      setAccessibilityMode(true);
+    }
     addAccessibilityButton();
   }
 })();
