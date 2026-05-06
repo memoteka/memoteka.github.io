@@ -971,27 +971,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ========== МОБИЛЬНАЯ ВЕРСИЯ (гамбургер, нижняя панель, модальные настройки) ==========
 (function() {
-  // Проверка, является ли устройство мобильным по ширине экрана
   let isMobileLayout = window.innerWidth <= 768;
   let mobileElementsCreated = false;
-  let modalCreated = false;
 
-  // Функции для работы с темой, языком и слабовидящими – они уже определены глобально
-  // Используем их: window.setTheme, переключение языка через window.location, и window.setAccessibilityMode (из нашего блока)
-
-  // Создаём гамбургер-кнопку и мобильную навигацию
+  // Создаём гамбургер-меню
   function createMobileNav() {
     const glassNav = document.querySelector('.glass-nav');
     if (!glassNav) return;
-
-    // Если бургер уже есть, не создаём повторно
     if (document.querySelector('.burger-btn')) return;
 
-    // Скрываем десктопные навигационные ссылки и дропдауны (оставляем только логотип)
     const navLinks = glassNav.querySelector('.nav-links');
     if (navLinks) navLinks.style.display = 'none';
 
-    // Создаём бургер-кнопку
     const burger = document.createElement('div');
     burger.className = 'burger-btn';
     burger.innerHTML = '<span></span><span></span><span></span>';
@@ -1016,7 +1007,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     glassNav.appendChild(burger);
 
-    // Создаём выезжающее мобильное меню (слева или справа)
     const mobileMenu = document.createElement('div');
     mobileMenu.className = 'mobile-menu';
     mobileMenu.style.cssText = `
@@ -1036,7 +1026,6 @@ document.addEventListener('DOMContentLoaded', () => {
       flex-direction: column;
       gap: 1.5rem;
     `;
-    // Копируем ссылки из .nav-links
     if (navLinks) {
       const links = navLinks.querySelectorAll('a:not(.logo)');
       links.forEach(link => {
@@ -1053,7 +1042,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenu.appendChild(a);
       });
     }
-    // Добавляем кнопку "Настройки"
     const settingsBtn = document.createElement('button');
     settingsBtn.textContent = '⚙️ Настройки';
     settingsBtn.style.cssText = `
@@ -1071,66 +1059,70 @@ document.addEventListener('DOMContentLoaded', () => {
       closeMobileMenu();
     };
     mobileMenu.appendChild(settingsBtn);
-
     document.body.appendChild(mobileMenu);
 
-    // Обработчик бургера
+    function closeMobileMenu() {
+      mobileMenu.style.left = '-80%';
+      burger.classList.remove('active');
+      const spans = burger.querySelectorAll('span');
+      if (spans[0]) spans[0].style.transform = 'none';
+      if (spans[1]) spans[1].style.opacity = '1';
+      if (spans[2]) spans[2].style.transform = 'none';
+    }
+
     burger.addEventListener('click', (e) => {
       e.stopPropagation();
       const isOpen = mobileMenu.style.left === '0%';
       mobileMenu.style.left = isOpen ? '-80%' : '0%';
       burger.classList.toggle('active');
-      // Анимация крестика
       if (!isOpen) {
-        burger.querySelectorAll('span').forEach((span, idx) => {
-          span.style.position = 'absolute';
-          span.style.width = '28px';
-        });
         const spans = burger.querySelectorAll('span');
+        spans[0].style.position = 'absolute';
+        spans[0].style.width = '28px';
         spans[0].style.transform = 'rotate(45deg)';
         spans[1].style.opacity = '0';
+        spans[2].style.position = 'absolute';
+        spans[2].style.width = '28px';
         spans[2].style.transform = 'rotate(-45deg)';
       } else {
-        burger.querySelectorAll('span').forEach(span => {
-          span.style.position = 'relative';
-          span.style.transform = 'none';
-          span.style.opacity = '1';
-        });
+        const spans = burger.querySelectorAll('span');
+        spans[0].style.position = 'relative';
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.position = 'relative';
+        spans[2].style.transform = 'none';
       }
     });
 
-    // Закрытие меню при клике вне
     document.addEventListener('click', (e) => {
       if (mobileMenu.style.left === '0%' && !burger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.style.left = '-80%';
-        burger.classList.remove('active');
-        const spans = burger.querySelectorAll('span');
-        if (spans[0]) spans[0].style.transform = 'none';
-        if (spans[1]) spans[1].style.opacity = '1';
-        if (spans[2]) spans[2].style.transform = 'none';
+        closeMobileMenu();
       }
     });
   }
 
-  // Создаём нижнюю панель (таб-бар)
+  // Создаём нижнюю панель (закруглённая, подвешенная, закреплённая)
   function createBottomNav() {
     if (document.querySelector('.bottom-nav')) return;
     const bottomBar = document.createElement('div');
     bottomBar.className = 'bottom-nav';
     bottomBar.style.cssText = `
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      width: calc(100% - 24px);
       background: var(--surface-glass);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      border-radius: 32px;
+      border: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 0.6rem 0.5rem;
+      padding: 0.5rem 0.5rem;
       z-index: 900;
       box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     `;
     const items = [
       { name: '🏠', text: 'Главная', url: `/${document.documentElement.lang}/` },
@@ -1158,25 +1150,26 @@ document.addEventListener('DOMContentLoaded', () => {
         justify-content: center;
         background: transparent;
         color: var(--text-primary);
-        font-size: 1.5rem;
-        padding: 0.2rem 0.8rem;
+        font-size: 1.4rem;
+        padding: 0.2rem 0.6rem;
         border-radius: 2rem;
         transition: 0.2s;
         font-family: inherit;
+        flex: 1;
+        text-align: center;
       `;
       const span = document.createElement('span');
       span.textContent = item.text;
-      span.style.fontSize = '0.7rem';
+      span.style.fontSize = '0.65rem';
       span.style.marginTop = '2px';
       btn.appendChild(span);
       bottomBar.appendChild(btn);
     });
     document.body.appendChild(bottomBar);
-    // Сдвигаем контент, чтобы не перекрывался нижней панелью
-    document.body.style.paddingBottom = '70px';
+    document.body.style.paddingBottom = '80px';
   }
 
-  // Модальное окно настроек (тема, язык, слабовидящие)
+  // Модальное окно настроек (повыше, с прокруткой)
   function createSettingsModal() {
     if (document.getElementById('settings-modal')) return;
     const modal = document.createElement('div');
@@ -1187,8 +1180,8 @@ document.addEventListener('DOMContentLoaded', () => {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -1198,50 +1191,47 @@ document.addEventListener('DOMContentLoaded', () => {
     modalContent.style.cssText = `
       background: var(--surface);
       border-radius: 2rem;
-      padding: 1.5rem;
+      padding: 1.8rem;
       width: 85%;
-      max-width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      max-width: 360px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.3);
       text-align: center;
       color: var(--text-primary);
     `;
     modalContent.innerHTML = `
-      <h3 style="margin-bottom: 1rem;">⚙️ Настройки</h3>
-      <div class="modal-setting" style="margin-bottom: 1rem;">
-        <label>🎨 Тема:</label>
-        <div class="theme-options" style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
-          <button data-theme="light">🌞 Светлая</button>
-          <button data-theme="dark">🌙 Тёмная</button>
-          <button data-theme="system">🖥️ Системная</button>
+      <h3 style="margin-bottom: 1.5rem; font-size: 1.6rem;">⚙️ Настройки</h3>
+      <div class="modal-setting" style="margin-bottom: 1.8rem;">
+        <label style="display: block; margin-bottom: 0.6rem; font-weight: 600;">🎨 Тема оформления</label>
+        <div class="theme-options" style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+          <button data-theme="light" style="background: #fff; color: #000; border: 1px solid #ccc; padding: 0.5rem 1rem; border-radius: 2rem;">🌞 Светлая</button>
+          <button data-theme="dark" style="background: #000; color: #fff; border: 1px solid #ccc; padding: 0.5rem 1rem; border-radius: 2rem;">🌙 Тёмная</button>
+          <button data-theme="system" style="background: #888; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 2rem;">🖥️ Системная</button>
         </div>
       </div>
-      <div class="modal-setting" style="margin-bottom: 1rem;">
-        <label>🌐 Язык:</label>
-        <div class="lang-options" style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
-          <button data-lang="ru">🇷🇺 Русский</button>
-          <button data-lang="en">🇬🇧 English</button>
+      <div class="modal-setting" style="margin-bottom: 1.8rem;">
+        <label style="display: block; margin-bottom: 0.6rem; font-weight: 600;">🌐 Язык интерфейса</label>
+        <div class="lang-options" style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+          <button data-lang="ru" style="background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 2rem;">🇷🇺 Русский</button>
+          <button data-lang="en" style="background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 2rem;">🇬🇧 English</button>
         </div>
       </div>
-      <div class="modal-setting" style="margin-bottom: 1rem;">
-        <label>👁️ Версия для слабовидящих:</label>
-        <div style="margin-top: 0.5rem;">
-          <button id="modal-accessibility-toggle" style="background: var(--accent); color: white; border: none; padding: 0.4rem 1rem; border-radius: 2rem;">Включить</button>
-        </div>
+      <div class="modal-setting" style="margin-bottom: 1.8rem;">
+        <label style="display: block; margin-bottom: 0.6rem; font-weight: 600;">👁️ Режим для слабовидящих</label>
+        <button id="modal-accessibility-toggle" style="background: var(--accent); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 2rem; font-size: 1rem;">Включить</button>
       </div>
-      <button id="modal-close" style="margin-top: 1rem; background: #ccc; border: none; padding: 0.4rem 1.5rem; border-radius: 2rem;">Закрыть</button>
+      <button id="modal-close" style="margin-top: 1rem; background: #aaa; color: #000; border: none; padding: 0.5rem 1.8rem; border-radius: 2rem; font-size: 1rem;">Закрыть</button>
     `;
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
-    // Обработчики кнопок темы
     modalContent.querySelectorAll('[data-theme]').forEach(btn => {
       btn.addEventListener('click', () => {
         const theme = btn.getAttribute('data-theme');
         if (typeof setTheme === 'function') setTheme(theme);
-        else console.warn('setTheme not found');
       });
     });
-    // Обработчики языка
     modalContent.querySelectorAll('[data-lang]').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.getAttribute('data-lang');
@@ -1255,25 +1245,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
-    // Кнопка слабовидящих
     const a11yToggle = document.getElementById('modal-accessibility-toggle');
     a11yToggle.addEventListener('click', () => {
       if (typeof window.setAccessibilityMode === 'function') {
-        // Проверяем текущее состояние
         const isOn = localStorage.getItem('accessibilityMode') === 'true';
         window.setAccessibilityMode(!isOn);
         a11yToggle.textContent = !isOn ? 'Выключить' : 'Включить';
-      } else {
-        console.warn('setAccessibilityMode not found');
       }
     });
-    // Закрытие
     document.getElementById('modal-close').addEventListener('click', closeSettingsModal);
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeSettingsModal();
     });
-    // Обновляем текст кнопки при открытии
-    modalCreated = true;
   }
 
   function openSettingsModal() {
@@ -1281,7 +1264,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!modal) createSettingsModal();
     const modalElem = document.getElementById('settings-modal');
     if (modalElem) {
-      // Обновляем состояние кнопки слабовидящих
       const a11yToggle = document.getElementById('modal-accessibility-toggle');
       if (a11yToggle) {
         const isOn = localStorage.getItem('accessibilityMode') === 'true';
@@ -1296,7 +1278,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modal) modal.style.display = 'none';
   }
 
-  // Функция очистки мобильных элементов при переходе на десктоп
   function removeMobileElements() {
     const burger = document.querySelector('.burger-btn');
     const mobileMenu = document.querySelector('.mobile-menu');
@@ -1304,28 +1285,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (burger) burger.remove();
     if (mobileMenu) mobileMenu.remove();
     if (bottomNav) bottomNav.remove();
-    // Показать десктопную навигацию
     const glassNav = document.querySelector('.glass-nav');
     if (glassNav) {
       const navLinks = glassNav.querySelector('.nav-links');
       if (navLinks) navLinks.style.display = '';
+      const selectGroup = glassNav.querySelector('.select-group');
+      if (selectGroup) selectGroup.style.display = '';
     }
     document.body.style.paddingBottom = '';
-    // Удаляем модалку (чтобы потом создать заново при необходимости)
     const modal = document.getElementById('settings-modal');
     if (modal) modal.remove();
     mobileElementsCreated = false;
-    modalCreated = false;
   }
 
-  // Инициализация мобильной версии
   function initMobileLayout() {
     if (isMobileLayout) {
       if (!mobileElementsCreated) {
         createMobileNav();
         createBottomNav();
-        createSettingsModal(); // создаём модалку, но не показываем
-        // Скрываем десктопные дропдауны темы и языка в навбаре
+        createSettingsModal();
         const selectGroup = document.querySelector('.glass-nav .select-group');
         if (selectGroup) selectGroup.style.display = 'none';
         mobileElementsCreated = true;
@@ -1333,14 +1311,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       if (mobileElementsCreated) {
         removeMobileElements();
-        // Показываем десктопные дропдауны
-        const selectGroup = document.querySelector('.glass-nav .select-group');
-        if (selectGroup) selectGroup.style.display = '';
       }
     }
   }
 
-  // Слушаем ресайз
   window.addEventListener('resize', () => {
     const newIsMobile = window.innerWidth <= 768;
     if (newIsMobile !== isMobileLayout) {
@@ -1349,10 +1323,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Глобально делаем функции открытия настроек доступными (для нижней панели)
   window.openSettingsModal = openSettingsModal;
 
-  // Старт после загрузки DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initMobileLayout);
   } else {
