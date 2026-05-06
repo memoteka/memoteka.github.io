@@ -1350,8 +1350,15 @@ select {
     text-align: center;
   }
   
-  .bottom-nav {
+/* Жёсткая фиксация нижней панели */
+.bottom-nav {
   position: fixed !important;
   bottom: 12px !important;
-  z-index: 9999 !important;
+  left: 12px !important;
+  right: 12px !important;
+  top: auto !important;
+  width: auto !important;
+  z-index: 2147483647 !important;
+  transform: none !important;
+  will-change: auto !important;
 }
