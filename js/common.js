@@ -968,3 +968,63 @@ document.addEventListener('DOMContentLoaded', () => {
     observeLangChange();
   }
 })();
+
+// ========== МОБИЛЬНОЕ МЕНЮ (ГАМБУРГЕР) ==========
+(function() {
+  function createHamburger() {
+    const nav = document.querySelector('.glass-nav');
+    if (!nav) return;
+    // Проверяем, не добавлена ли уже кнопка
+    if (document.querySelector('.hamburger')) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'hamburger';
+    btn.setAttribute('aria-label', 'Меню');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`;
+    
+    // Вставляем перед .nav-links
+    const navLinks = document.querySelector('.glass-nav .nav-links');
+    if (navLinks) {
+      nav.insertBefore(btn, navLinks);
+    } else {
+      nav.appendChild(btn);
+    }
+
+    btn.addEventListener('click', () => {
+      const links = document.querySelector('.glass-nav .nav-links');
+      if (links) {
+        links.classList.toggle('open');
+        // Меняем иконку (крестик)
+        if (links.classList.contains('open')) {
+          btn.innerHTML = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        } else {
+          btn.innerHTML = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`;
+        }
+      }
+    });
+  }
+
+  // Закрывать меню при клике вне
+  function closeMenuOnOutsideClick() {
+    document.addEventListener('click', (e) => {
+      const navLinks = document.querySelector('.glass-nav .nav-links');
+      const hamburger = document.querySelector('.hamburger');
+      if (navLinks && navLinks.classList.contains('open') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        navLinks.classList.remove('open');
+        if (hamburger) {
+          hamburger.innerHTML = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`;
+        }
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      createHamburger();
+      closeMenuOnOutsideClick();
+    });
+  } else {
+    createHamburger();
+    closeMenuOnOutsideClick();
+  }
+})();

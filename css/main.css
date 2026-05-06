@@ -1349,3 +1349,206 @@ select {
   .footer-col {
     text-align: center;
   }
+  
+  /* ========== МОБИЛЬНАЯ ВЕРСИЯ (ГАМБУРГЕР, КОМПАКТНО) ========== */
+
+/* Гамбургер-кнопка (видна только на мобилах) */
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 200;
+}
+
+.hamburger svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--text-primary);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Планшеты и телефоны (до 992px) */
+@media (max-width: 992px) {
+  .glass-nav {
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    margin-top: 0.5rem;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-links a, 
+  .nav-links .select-group {
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 0.5rem;
+  }
+  .select-group {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .accessibility-btn {
+    margin-left: 0;
+  }
+}
+
+/* Телефоны (до 768px) */
+@media (max-width: 768px) {
+  /* Уменьшаем панель слабовидящих */
+  #accessibility-panel {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  #accessibility-panel div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  #accessibility-panel label {
+    min-width: 70px;
+    font-weight: bold;
+  }
+  #accessibility-panel select,
+  #accessibility-panel button {
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+  /* Галерея: 2 колонки */
+  .memes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+  .meme-title {
+    font-size: 0.8rem;
+  }
+  .meme-type {
+    font-size: 0.7rem;
+  }
+  /* Статистика: сетка в 2 строки по 2 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  /* Тренды и свежие: горизонтальный скролл */
+  .trending-slider {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .slider-track {
+    display: inline-flex;
+    gap: 0.8rem;
+    transform: none !important;
+  }
+  .trend-card {
+    min-width: 200px;
+  }
+  .slider-btn {
+    display: none;
+  }
+  .recent-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .categories-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .category-card {
+    min-width: 80px;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .testimonials-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+  }
+  .testimonial-card {
+    min-width: 260px;
+  }
+  /* Футер */
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-col {
+    align-items: center;
+  }
+  /* Лайтбокс на телефоне */
+  .lightbox-content {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  .lightbox-player-container {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  .lightbox-controls {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+  }
+  .lightbox-controls button {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  .lightbox-progress {
+    min-width: 60px;
+  }
+  .lightbox-volume-slider {
+    width: 50px;
+  }
+}
+
+/* Очень маленькие экраны (до 480px) */
+@media (max-width: 480px) {
+  .memes-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .recent-grid {
+    grid-template-columns: 1fr;
+  }
+  .category-card {
+    min-width: 70px;
+  }
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  .btn-primary, .btn-secondary {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
