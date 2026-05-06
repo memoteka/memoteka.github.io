@@ -969,11 +969,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// Пацанская мобильная навигация
+// Полноценный мобильный обвес: Таббар + Бургер-меню
 (function() {
     if (window.innerWidth > 768) return;
 
     const isEn = window.location.pathname.includes('/en/');
+    const labels = isEn 
+        ? { home: 'Home', memes: 'Memes', donate: 'Donate', menu: 'Menu', close: 'Close' }
+        : { home: 'Главная', memes: 'Мемы', donate: 'Донат', menu: 'Меню', close: 'Закрыть' };
+
     const paths = {
         home: isEn ? '/en/' : '/ru/',
         memes: isEn ? '/en/memes/' : '/ru/memes/',
@@ -981,27 +985,90 @@ document.addEventListener('DOMContentLoaded', () => {
         donate: isEn ? '/en/donate/' : '/ru/donate/'
     };
 
-    // Создаем нижний бар
+    // Втыкаем стили прямо в head, чтоб всё было в одном месте
+    const style = document.createElement('style');
+    style.textContent = `
+        .mobile-tabbar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 65px;
+            background: rgba(15, 15, 15, 0.95); backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.1); display: flex;
+            justify-content: space-around; align-items: center; z-index: 9999;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .tab-item {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            color: #8e8e8e; text-decoration: none; font-size: 11px; border: none; background: none;
+        }
+        .tab-item.active { color: #fff; }
+        .tab-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
+        
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 10000; display: none; opacity: 0; transition: 0.3s;
+        }
+        .mobile-menu-sheet {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: #1c1c1c; border-radius: 20px 20px 0 0; padding: 20px;
+            z-index: 10001; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        .mobile-menu-sheet.open { bottom: 0; }
+        .menu-link {
+            display: block; padding: 15px; color: #fff; text-decoration: none;
+            font-size: 18px; border-bottom: 1px solid #333;
+        }
+        body { padding-bottom: 70px !important; }
+    `;
+    document.head.appendChild(style);
+
+    // Рисуем Таббар
     const tabbar = document.createElement('div');
     tabbar.className = 'mobile-tabbar';
     tabbar.innerHTML = `
         <a href="${paths.home}" class="tab-item ${window.location.pathname.endsWith(paths.home) ? 'active' : ''}">
-            <img src="/cdn/icons/bolt.svg" alt=""><span>${isEn ? 'Home' : 'Главная'}</span>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>${labels.home}</span>
         </a>
         <a href="${paths.memes}" class="tab-item ${window.location.pathname.includes('memes') ? 'active' : ''}">
-            <img src="/cdn/icons/meme.svg" alt=""><span>${isEn ? 'Memes' : 'Мемы'}</span>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M7 19h10V10H7v9zm-1-8h12v8H6v-8zm-2 0h1v8H4v-8zm15 0h1v8h-1v-8z"/></svg>
+            <span>${labels.memes}</span>
         </a>
         <a href="${paths.donate}" class="tab-item ${window.location.pathname.includes('donate') ? 'active' : ''}">
-            <img src="/cdn/icons/heart.svg" alt=""><span>${isEn ? 'Donate' : 'Донат'}</span>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>${labels.donate}</span>
         </a>
-        <button class="tab-item burger-btn" id="openMobileMenu">
-            <span>☰</span><span>${isEn ? 'Menu' : 'Меню'}</span>
+        <button class="tab-item" id="burgerBtn">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            <span>${labels.menu}</span>
         </button>
     `;
     document.body.appendChild(tabbar);
 
-    // Обработка клика по гамбургеру (можно вызывать модалку или меню)
-    document.getElementById('openMobileMenu')?.addEventListener('click', () => {
-        alert(isEn ? 'Full menu coming soon!' : 'Полное меню в разработке, не кипишуй!');
-    });
+    // Рисуем вылетающее Меню
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    const sheet = document.createElement('div');
+    sheet.className = 'mobile-menu-sheet';
+    sheet.innerHTML = `
+        <a href="${paths.about}" class="menu-link">${isEn ? 'About' : 'О нас'}</a>
+        <a href="/en/socials/" class="menu-link">${isEn ? 'Socials' : 'Соцсети'}</a>
+        <a href="/en/faq/" class="menu-link">${isEn ? 'FAQ' : 'Вопросы'}</a>
+        <button class="menu-link" style="width:100%; text-align:left; color:#ff4444;" id="closeMenu">${labels.close}</button>
+    `;
+    document.body.appendChild(overlay);
+    document.body.appendChild(sheet);
+
+    // Логика открытия/закрытия
+    const openMenu = () => {
+        overlay.style.display = 'block';
+        setTimeout(() => { overlay.style.opacity = '1'; sheet.classList.add('open'); }, 10);
+    };
+    const closeMenu = () => {
+        overlay.style.opacity = '0';
+        sheet.classList.remove('open');
+        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+    };
+
+    document.getElementById('burgerBtn').onclick = openMenu;
+    document.getElementById('closeMenu').onclick = closeMenu;
+    overlay.onclick = closeMenu;
 })();
