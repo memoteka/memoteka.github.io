@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ACCESSIBILITY_KEY = 'accessibilityMode';
   let isAccessibilityMode = localStorage.getItem(ACCESSIBILITY_KEY) === 'true';
 
-  // Добавляем стили для режима слабовидящих
+  // Добавляем стили для режима слабовидящих и для тултипа кнопки
   const styleId = 'accessibility-styles';
   if (!document.getElementById(styleId)) {
     const style = document.createElement('style');
@@ -476,6 +476,51 @@ document.addEventListener('DOMContentLoaded', () => {
         color: #000 !important;
         border: 2px solid #000 !important;
       }
+
+      /* Тултип для кнопки слабовидящих */
+      .accessibility-btn {
+        position: relative;
+      }
+      .accessibility-btn::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-8px);
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(8px);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.5rem;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 250;
+        font-family: inherit;
+        letter-spacing: 0.3px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .accessibility-btn:hover::before {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      [data-theme="dark"] .accessibility-btn::before {
+        background: rgba(255, 255, 255, 0.85);
+        color: #1f2937;
+        border-color: rgba(0, 0, 0, 0.2);
+      }
+      [data-theme="light"] .accessibility-btn::before {
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+      }
+      @media (max-width: 768px) {
+        .accessibility-btn::before {
+          display: none;
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -493,12 +538,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function addAccessibilityButton() {
     const selectGroup = document.querySelector('.glass-nav .select-group');
     if (!selectGroup) return;
-    // Если кнопка уже есть, не добавляем повторно
     if (selectGroup.querySelector('.accessibility-btn')) return;
 
     const btn = document.createElement('button');
     btn.className = 'accessibility-btn';
     btn.setAttribute('aria-label', 'Версия для слабовидящих');
+    btn.setAttribute('data-tooltip', 'Версия для слабовидящих');
     btn.style.cssText = `
       background: transparent;
       border: none;
@@ -513,7 +558,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 41 41" width="24" height="24"><circle cx="31.5" cy="19.5" r="7.5" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19.5" r="7.5" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" d="M15 15c3.333-4 6.667-4 10 0"/></svg>`;
     
-    // Цвет иконки подстраиваем под тему
     const updateBtnColor = () => {
       const theme = document.documentElement.getAttribute('data-theme');
       if (theme === 'dark') {
@@ -529,12 +573,10 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       isAccessibilityMode = !isAccessibilityMode;
       setAccessibilityMode(isAccessibilityMode);
-      // Визуальная обратная связь
       btn.style.transform = 'scale(0.95)';
       setTimeout(() => { btn.style.transform = ''; }, 150);
     });
 
-    // Вставляем перед .theme-dropdown
     const themeDropdown = selectGroup.querySelector('.theme-dropdown');
     if (themeDropdown) {
       selectGroup.insertBefore(btn, themeDropdown);
@@ -543,7 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Инициализация после загрузки DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       setAccessibilityMode(isAccessibilityMode);
