@@ -362,15 +362,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// ========== ПЛАВНЫЙ СКРОЛЛ (ИНЕРЦИЯ) ==========
+// ========== ПЛАВНЫЙ СКРОЛЛ ТОЛЬКО ДЛЯ ДЕСКТОПА (БЕЗ МОБИЛОК) ==========
 (function() {
+  // Определяем устройство с тач-экраном
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (isTouchDevice) return; // на мобилках не трогаем
+
   let targetScroll = window.scrollY;
   let currentScroll = window.scrollY;
   let animationId = null;
   let isScrolling = false;
 
   function smoothScrollLoop() {
-    currentScroll += (targetScroll - currentScroll) * 0.12; // 0.12 – плавность, можно менять
+    currentScroll += (targetScroll - currentScroll) * 0.12;
     if (Math.abs(targetScroll - currentScroll) < 0.5) {
       currentScroll = targetScroll;
       window.scrollTo(0, targetScroll);
@@ -384,11 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function onWheel(e) {
-    e.preventDefault(); // отключаем родную резкую прокрутку
-
-    const delta = e.deltaY || e.deltaX; // нормализуем дельту (колёсико или тачпад)
-    targetScroll += delta * 0.8; // множитель чувствительности
-    // ограничиваем границами документа
+    e.preventDefault();
+    const delta = e.deltaY || e.deltaX;
+    targetScroll += delta * 0.8;
     targetScroll = Math.min(Math.max(targetScroll, 0), document.body.scrollHeight - window.innerHeight);
     
     if (!isScrolling) {
