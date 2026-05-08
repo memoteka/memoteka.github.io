@@ -1374,7 +1374,7 @@ select {
     }
 
     /* 3. Кнопки в панели - никаких белых рамок! */
-    .mobile-bottom-bar button {
+	.mobile-bottom-bar button {
         background: none !important;
         border: none !important;
         color: #fff !important;
@@ -1382,9 +1382,32 @@ select {
         flex-direction: column !important;
         align-items: center !important;
         flex: 1 !important;
-        font-size: 10px !important;
+        font-size: 12px !important; /* Текст чуть крупнее */
+        font-weight: 600 !important;
         text-transform: uppercase;
+        gap: 2px !important; /* Расстояние между иконкой и текстом */
     }
+
+    /* Сами иконки/эмодзи в панели - теперь реально крупные */
+    .mobile-bottom-bar .emoji {
+        font-size: 28px !important; /* Увеличил с 20px до 28px */
+        line-height: 1 !important;
+        display: block !important;
+    }
+
+    /* Иконки в выезжающем меню (Бургер) */
+    .drawer-links a {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
+        font-size: 1.3rem !important;
+        text-align: left !important; /* Чёбы иконка была слева от текста */
+    }
+
+    .drawer-links a .emoji {
+        font-size: 24px !important; /* Крупные иконки в списке */
+    }
+}
 
     .mobile-bottom-bar i, .mobile-bottom-bar span.emoji {
         font-size: 20px !important;
