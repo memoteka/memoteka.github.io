@@ -969,135 +969,62 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== СОЗДАНИЕ МОБИЛЬНОЙ НИЖНЕЙ ПАНЕЛИ (TABBAR) с принудительными стилями ==========
+// ========== СОЗДАНИЕ НИЖНЕЙ ФИКСИРОВАННОЙ ПАНЕЛИ (МОБИЛЬНАЯ) ==========
 (function() {
   function isMobile() {
     return window.innerWidth <= 768;
   }
 
-  function createMobileTabbar() {
-    const existing = document.querySelector('.mobile-tabbar');
-    if (existing) existing.remove();
+  function createMobileBar() {
+    // Удаляем старую панель, если есть
+    let old = document.querySelector('.mobile-tabbar');
+    if (old) old.remove();
 
-    const tabbar = document.createElement('div');
-    tabbar.className = 'mobile-tabbar';
-    
-    // Прямое назначение стилей, чтобы гарантировать fixed-позиционирование
-    tabbar.style.cssText = `
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      background: var(--surface-glass, rgba(255,255,255,0.85));
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border, rgba(0,0,0,0.1));
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 8px 12px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
-      z-index: 10000 !important;
-      font-size: 12px;
-      box-sizing: border-box;
-    `;
+    if (!isMobile()) return;
 
-    const items = [
-      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L3 10l2 2h1v7h5v-5h2v5h5v-7h1l2-2-9-7z"/></svg>' },
-      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' },
-      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>' },
-      { name: 'Поддержать', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
+    const bar = document.createElement('div');
+    bar.className = 'mobile-tabbar';
+
+    const links = [
+      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24"><path d="M12 3L3 10l2 2h1v7h5v-5h2v5h5v-7h1l2-2-9-7z"/></svg>' },
+      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' },
+      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24"><path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>' },
+      { name: 'Поддержать', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
     ];
 
-    items.forEach(item => {
+    links.forEach(link => {
       const a = document.createElement('a');
-      a.href = item.href;
+      a.href = link.href;
       a.className = 'mobile-tabbar-item';
-      a.style.cssText = `
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        color: var(--text-secondary, #4b5563);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s;
-        flex: 1;
-        text-align: center;
-        padding: 4px 0;
-        border-radius: 12px;
-      `;
-      a.innerHTML = `${item.icon}<span style="font-size: 11px;">${item.name}</span>`;
-      
-      if (window.location.pathname === item.href || (item.href !== '/' && window.location.pathname.startsWith(item.href))) {
-        a.style.color = 'var(--accent, #3b82f6)';
+      a.innerHTML = `${link.icon}<span>${link.name}</span>`;
+      if (window.location.pathname === link.href || (link.href !== '/' && window.location.pathname.startsWith(link.href))) {
+        a.classList.add('active');
       }
-      tabbar.appendChild(a);
+      bar.appendChild(a);
     });
 
-    document.body.appendChild(tabbar);
-    
-    // Дополнительно убедимся, что body имеет отступ снизу, чтобы контент не перекрывался
+    document.body.appendChild(bar);
     document.body.style.paddingBottom = '70px';
   }
 
-  function handleResize() {
-    if (isMobile()) {
-      if (!document.querySelector('.mobile-tabbar')) createMobileTabbar();
-    } else {
-      const tabbar = document.querySelector('.mobile-tabbar');
-      if (tabbar) tabbar.remove();
-      document.body.style.paddingBottom = '';
-    }
-  }
-
+  // При загрузке и при изменении размера окна
+  window.addEventListener('resize', function() {
+    createMobileBar();
+  });
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      handleResize();
-      window.addEventListener('resize', handleResize);
-    });
+    document.addEventListener('DOMContentLoaded', createMobileBar);
   } else {
-    handleResize();
-    window.addEventListener('resize', handleResize);
+    createMobileBar();
   }
-})();
 
-// ========== ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ (на основе футера) ==========
-(function() {
-  function fixFooterOnMobile() {
-    const footer = document.querySelector('.footer');
-    if (!footer) return;
-
-    if (window.innerWidth <= 768) {
-      // Делаем футер фиксированным
-      footer.style.position = 'fixed';
-      footer.style.bottom = '0';
-      footer.style.left = '0';
-      footer.style.right = '0';
-      footer.style.zIndex = '1000';
-      footer.style.marginTop = '0';
-      // Добавляем отступ снизу для body, чтобы контент не перекрывался
-      document.body.style.paddingBottom = footer.offsetHeight + 'px';
-      
-      // Дополнительно: добавим фон и размытие как в Fonbet (опционально)
-      footer.style.background = 'var(--surface-glass, rgba(255,255,255,0.85))';
-      footer.style.backdropFilter = 'blur(20px)';
-      footer.style.borderTop = '1px solid var(--border, rgba(0,0,0,0.1))';
-    } else {
-      // Возвращаем футеру обычное поведение на десктопе
-      footer.style.position = '';
-      footer.style.bottom = '';
-      footer.style.left = '';
-      footer.style.right = '';
-      footer.style.zIndex = '';
-      footer.style.marginTop = '';
-      footer.style.background = '';
-      footer.style.backdropFilter = '';
-      footer.style.borderTop = '';
-      document.body.style.paddingBottom = '';
+  // Обновляем активный пункт при кликах (чтобы подсветка менялась)
+  document.body.addEventListener('click', function(e) {
+    const link = e.target.closest('.mobile-tabbar-item');
+    if (link) {
+      setTimeout(() => {
+        document.querySelectorAll('.mobile-tabbar-item').forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+      }, 50);
     }
-  }
-
-  // Запускаем при загрузке и при изменении размера окна
-  window.addEventListener('resize', fixFooterOnMobile);
-  fixFooterOnMobile();
+  });
 })();

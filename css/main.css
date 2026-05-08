@@ -1350,237 +1350,92 @@ select {
     text-align: center;
   }
   
-/* =============================================
-   МОБИЛЬНАЯ ВЕРСИЯ (адаптация под пример Fonbet)
-   ============================================= */
-
-/* Фикс для body на мобилках – добавляем отступ снизу для нижней панели */
-body {
-  padding-bottom: 70px;
-}
-
-/* Нижняя навигационная панель (таб‑бар) – будет создана через JS */
-.mobile-tabbar {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  background: var(--surface-glass);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 8px 12px;
-  padding-bottom: max(8px, env(safe-area-inset-bottom));
-  z-index: 1000 !important;
-  font-size: 12px;
-  transition: background 0.2s;
-}
-
-.mobile-tabbar-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-  flex: 1;
-  text-align: center;
-  padding: 4px 0;
-  border-radius: 12px;
-}
-
-.mobile-tabbar-item.active {
-  color: var(--accent);
-}
-
-.mobile-tabbar-item svg {
-  width: 24px;
-  height: 24px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-}
-
-.mobile-tabbar-item span {
-  font-size: 11px;
-}
-
-/* Адаптация блоков под горизонтальную прокрутку (как в Fonbet) */
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ (адаптация до 768px) ========== */
 @media (max-width: 768px) {
-  /* Убираем лишние отступы */
-  .container {
-    padding: 0.8rem;
+  body {
+    padding-bottom: 70px !important;
   }
-
-  /* Горизонтальная прокрутка для статистики */
-  .stats-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 12px;
-    justify-content: flex-start;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 8px;
+  .stats-grid, .categories-grid, .testimonials-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    justify-content: flex-start !important;
+    scroll-snap-type: x mandatory !important;
+    padding-bottom: 8px !important;
   }
-  .stat-card {
-    min-width: 110px;
-    scroll-snap-align: start;
+  .stat-card, .category-card, .testimonial-card {
+    min-width: 110px !important;
+    scroll-snap-align: start !important;
   }
-
-  /* Горизонтальная прокрутка для трендов (отключаем кнопки, используем нативный скролл) */
   .trending-slider {
-    overflow-x: auto;
-    white-space: nowrap;
-    scroll-snap-type: x mandatory;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
   }
   .slider-track {
-    display: inline-flex;
-    gap: 12px;
+    display: inline-flex !important;
     transform: none !important;
-    white-space: normal;
+    gap: 12px !important;
   }
   .trend-card {
-    min-width: 220px;
-    scroll-snap-align: start;
+    min-width: 200px !important;
   }
   .slider-btn {
-    display: none;
+    display: none !important;
   }
-
-  /* Горизонтальная прокрутка для категорий */
-  .categories-grid {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    gap: 12px;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 8px;
-  }
-  .category-card {
-    min-width: 100px;
-    scroll-snap-align: start;
-  }
-
-  /* Горизонтальная прокрутка для отзывов */
-  .testimonials-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 16px;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 8px;
-  }
-  .testimonial-card {
-    min-width: 260px;
-    scroll-snap-align: start;
-    flex-shrink: 0;
-  }
-
-  /* Свежачок – две колонки */
   .recent-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
   }
-
-  /* Преимущества – одна колонка */
   .features-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr !important;
   }
-
-  /* Инструкция – компактнее */
-  .howto-steps {
-    padding: 1rem;
-  }
-
-  /* Футер – колонки в столбец */
   .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
+    flex-direction: column !important;
+    text-align: center !important;
   }
-
-  /* Скрываем часть ссылок в верхней навигации (можно оставить только соцсети?) */
-  /* Но оставим как есть, просто уменьшим отступы */
-  .glass-nav {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0.6rem 1rem;
+  /* нижняя фиксированная панель */
+  .mobile-tabbar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: var(--surface-glass, rgba(255,255,255,0.85)) !important;
+    backdrop-filter: blur(20px) !important;
+    border-top: 1px solid var(--border, rgba(0,0,0,0.1)) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding: 8px 12px !important;
+    padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    z-index: 10000 !important;
   }
-  .logo {
-    font-size: 1.2rem;
+  .mobile-tabbar-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: var(--text-secondary, #4b5563) !important;
+    text-decoration: none !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 4px 0 !important;
   }
-  .logo-icon {
-    width: 1.3rem;
-    height: 1.3rem;
+  .mobile-tabbar-item.active {
+    color: var(--accent, #3b82f6) !important;
   }
-  .nav-links {
-    gap: 0.6rem;
-  }
-  .nav-links a {
-    font-size: 0.75rem;
-  }
-
-  /* Дропдауны компактнее */
-  .dropdown-trigger {
-    padding: 0.2rem 1rem 0.2rem 0.4rem;
-    font-size: 0.7rem;
-  }
-
-  /* Герой-секция */
-  .hero h1 {
-    font-size: 1.6rem;
-  }
-  .hero-subtitle {
-    font-size: 0.9rem;
-  }
-
-  /* Кнопки на всю ширину на мобилках? Не обязательно, но сделаем чуть меньше */
-  .btn-primary, .btn-secondary {
-    padding: 0.5rem 1.2rem;
-    font-size: 0.9rem;
-  }
-
-  /* Случайный мем – адаптив */
-  .random-meme-card {
-    max-width: 100%;
-  }
-
-  /* Обработка лайтбокса на мобилках – увеличиваем кнопку закрытия */
-  .close-lightbox {
-    top: 10px;
-    right: 20px;
-    font-size: 2rem;
+  .mobile-tabbar-item svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 2 !important;
   }
 }
-
-/* Дополнительные улучшения для очень маленьких экранов (до 480px) */
 @media (max-width: 480px) {
-  .stat-card {
-    min-width: 90px;
-    padding: 0.6rem;
-  }
-  .stat-number {
-    font-size: 1.2rem;
-  }
-  .recent-grid {
-    grid-template-columns: 1fr;
-  }
-  .trend-card {
-    min-width: 180px;
-  }
-  .testimonial-card {
-    min-width: 220px;
-  }
-  .category-card {
-    min-width: 80px;
-    padding: 0.5rem;
-  }
-  .meme-title {
-    font-size: 0.8rem;
-  }
+  .recent-grid { grid-template-columns: 1fr !important; }
+  .stat-card { min-width: 90px !important; }
+  .trend-card { min-width: 180px !important; }
 }
