@@ -1350,73 +1350,78 @@ select {
     text-align: center;
   }
   
-(function() {
-    if (window.innerWidth > 768) return;
+@media (max-width: 768px) {
+    /* 1. Грохаем мусор */
+    .share-button, .share-btn, #fixed-share-link, .glass-nav .nav-links, .glass-nav .select-group {
+        display: none !important;
+    }
 
-    // 1. Создаём панель
-    const bottomBar = document.createElement('div');
-    bottomBar.className = 'mobile-bottom-bar';
-    bottomBar.innerHTML = `
-        <button id="openBurgerBtn">☰<span>Меню</span></button>
-        <button id="shareSiteBtn">🔗<span>Репост</span></button>
-        <button id="openSettingsBtn">⚙️<span>Опции</span></button>
-    `;
-    document.body.appendChild(bottomBar);
+    /* 2. Панель - стильное темное стекло */
+    .mobile-bottom-bar {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 65px !important;
+        background: rgba(15, 15, 15, 0.95) !important;
+        backdrop-filter: blur(10px);
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        z-index: 1000000 !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0 !important;
+    }
 
-    // 2. Создаём Бургер
-    const burgerMenu = document.createElement('div');
-    burgerMenu.className = 'burger-drawer';
-    burgerMenu.innerHTML = `
-        <nav class="drawer-links">
-            <a href="/">Главная</a>
-            <a href="/memes/">Мемы</a>
-            <a href="/map/">Карта сайта</a>
-            <a href="/about/">О проекте</a>
-            <a href="/support/">Поддержать 🍪</a>
-        </nav>
-    `;
-    document.body.appendChild(burgerMenu);
+    /* 3. Кнопки в панели - никаких белых рамок! */
+    .mobile-bottom-bar button {
+        background: none !important;
+        border: none !important;
+        color: #fff !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        flex: 1 !important;
+        font-size: 10px !important;
+        text-transform: uppercase;
+    }
 
-    // 3. Создаём Настройки
-    const settingsScreen = document.createElement('div');
-    settingsScreen.className = 'settings-screen';
-    settingsScreen.innerHTML = `
-        <div style="margin-bottom: 25px;">
-            <button id="mobileA11yBtn" class="a11y-main-btn">♿ Режим слабовидящих: <span>ВЫКЛ</span></button>
-        </div>
-        <div class="setting-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-            <button class="sub-btn" onclick="setTheme('dark')">Dark</button>
-            <button class="sub-btn" onclick="setTheme('light')">Light</button>
-            <button class="sub-btn" onclick="setTheme('system')">Auto</button>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-            <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
-            <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
-        </div>
-    `;
-    document.body.appendChild(settingsScreen);
+    .mobile-bottom-bar i, .mobile-bottom-bar span.emoji {
+        font-size: 20px !important;
+        margin-bottom: 4px;
+    }
 
-    // ЛОГИКА (закрытие по клику вне меню)
-    const toggle = (el, force) => el.classList.toggle('active', force);
-    
-    document.getElementById('openBurgerBtn').onclick = (e) => { e.stopPropagation(); toggle(burgerMenu, true); toggle(settingsScreen, false); };
-    document.getElementById('openSettingsBtn').onclick = (e) => { e.stopPropagation(); toggle(settingsScreen, true); toggle(burgerMenu, false); };
-    
-    document.addEventListener('click', () => { toggle(burgerMenu, false); toggle(settingsScreen, false); });
-    [burgerMenu, settingsScreen].forEach(el => el.onclick = (e) => e.stopPropagation());
+    /* 4. Шторки меню - черные и ровные */
+    .burger-drawer, .settings-screen {
+        position: fixed !important;
+        bottom: -110%;
+        left: 0;
+        width: 100%;
+        background: #0f0f0f !important;
+        z-index: 1000001 !important;
+        transition: bottom 0.3s ease;
+        padding: 25px 15px;
+        border-radius: 20px 20px 0 0;
+        box-sizing: border-box;
+        color: #fff;
+    }
 
-    // Шаринг
-    document.getElementById('shareSiteBtn').onclick = () => {
-        if (navigator.share) navigator.share({ title: 'Мемотека', url: window.location.href });
-        else alert('Скопируй ссылку, бро!');
-    };
+    .burger-drawer.active, .settings-screen.active { bottom: 0; }
 
-    // Твой движок слабовидящих
-    const a11yBtn = document.getElementById('mobileA11yBtn');
-    a11yBtn.onclick = function() {
-        const state = localStorage.getItem('accessibilityMode') !== 'true';
-        if (window.setAccessibilityMode) window.setAccessibilityMode(state);
-        this.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
-        this.classList.toggle('active', state);
-    };
-})();
+    /* 5. Кнопки внутри меню - чёбы не как у бомжа */
+    .drawer-links a, .sub-btn, .a11y-main-btn {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 10px;
+        background: #1a1a1a !important;
+        color: #fff !important;
+        text-decoration: none;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .a11y-main-btn.active { border-color: #E2241C !important; color: #E2241C !important; }
+}
