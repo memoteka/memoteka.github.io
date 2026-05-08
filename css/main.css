@@ -1350,28 +1350,32 @@ select {
     text-align: center;
   }
   
-/* ========== МОБИЛЬНАЯ ВЕРСИЯ В СТИЛЕ ФОНБЕТ ========== */
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ В СТИЛЕ FON.BET ========== */
 @media (max-width: 768px) {
-  /* Базовые переменные */
+  /* ----- ОСНОВНЫЕ ПЕРЕМЕННЫЕ ----- */
+  :root {
+    --mobile-tabbar-height: 56px;
+    --mobile-header-height: 56px;
+    --mobile-card-radius: 16px;
+  }
+
   body {
-    padding-bottom: 70px;
-    background: var(--schemeCloudyFillBg, #121416);
+    padding-bottom: var(--mobile-tabbar-height);
+    background: var(--bg-gradient);
   }
 
-  /* Гамбургер-меню скрываем, навигацию переделываем */
-  .hamburger, .menu-overlay {
-    display: none !important;
-  }
-
-  /* Верхняя панель как у Фонбет */
+  /* ----- ВЕРХНЯЯ ПАНЕЛЬ (GLASS-NAV) ----- */
   .glass-nav {
-    background: var(--schemeCloudyFillBg, #121416);
-    backdrop-filter: none;
-    padding: 0.6rem 1rem;
-    border-bottom: 1px solid var(--schemeCloudyStroke100, #32373e);
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-header-height);
+    padding: 0 16px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
     z-index: 100;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1383,255 +1387,277 @@ select {
     align-items: center;
     gap: 6px;
   }
-
   .logo-icon {
     width: 28px;
     height: 28px;
   }
 
-  /* Блок кнопок справа (тема/язык/донат) */
+  /* Скрываем старую навигацию */
   .glass-nav .nav-links {
-    position: static !important;
-    display: flex !important;
-    flex-direction: row !important;
-    width: auto !important;
-    height: auto !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    padding: 0 !important;
-    gap: 8px !important;
-    transform: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    align-items: center !important;
+    display: none;
   }
 
-  .glass-nav .nav-links a {
-    display: none; /* скрываем обычные ссылки, они будут в таббаре */
-  }
-
-  .select-group {
+  /* Кнопка гамбургер */
+  .hamburger {
     display: flex;
-    flex-direction: row !important;
-    gap: 6px;
-    margin-left: auto;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+  }
+  .hamburger span {
+    width: 100%;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
   }
 
-  .custom-dropdown .dropdown-trigger {
-    background: var(--transparentWhite8, rgba(255,255,255,0.08));
-    border-radius: 20px;
-    padding: 6px 10px;
-    min-height: 36px;
+  /* ----- BOTTOM SHEET МЕНЮ (выезжает снизу) ----- */
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface-glass);
+    backdrop-filter: blur(30px);
+    border-radius: 24px 24px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    z-index: 200;
+    padding: 20px 20px 30px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    border-top: 0.5px solid var(--border);
+  }
+  .bottom-sheet.open {
+    transform: translateY(0);
+  }
+  .bottom-sheet .menu-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bottom-sheet a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .bottom-sheet a:last-child {
+    border-bottom: none;
+  }
+  .bottom-sheet a svg {
+    width: 24px;
+    height: 24px;
   }
 
-  /* Нижний таббар как у Фонбет */
+  /* Оверлей для затемнения */
+  .sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 199;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+  }
+  .sheet-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* ----- НИЖНИЙ ТАБ-БАР ----- */
   .mobile-tabbar {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--schemeCloudyFill100, #292d32);
+    height: var(--mobile-tabbar-height);
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(20px);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
-    z-index: 1000;
-    border-top: 1px solid var(--schemeCloudyStroke100, #32373e);
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+    z-index: 99;
+    padding-bottom: env(safe-area-inset-bottom);
   }
-
   .tab-item {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 4px;
-    background: none;
-    border: none;
-    color: var(--icon300, #a3a3a3);
-    font-size: 10px;
-    font-weight: 500;
-    padding: 4px 12px;
-    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
     transition: color 0.2s;
+    cursor: pointer;
   }
-
   .tab-item.active {
-    color: var(--accentKey600, #f6f6f6);
+    color: var(--accent);
   }
-
-  .tab-icon {
+  .tab-item svg {
     width: 24px;
     height: 24px;
-    fill: currentColor;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+  }
+  .tab-item.active svg {
+    fill: var(--accent);
+    stroke: var(--accent);
   }
 
-  /* Адаптация контента */
-  .container {
-    padding: 12px;
-  }
-
-  /* Статистика — как карточки коэффициентов */
-  .stats-grid {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-  }
-  .stat-card {
-    min-width: 100px;
-    background: var(--transparentWhite8, rgba(255,255,255,0.08));
-    border: none;
-    border-radius: 12px;
-    padding: 12px 8px;
-    text-align: center;
-    animation: none;
-    backdrop-filter: blur(0);
-  }
-  .stat-number {
-    font-size: 1.8rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  /* Топ категорий — горизонтальный скролл */
-  .categories-grid {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-  .category-card {
-    min-width: 90px;
-    background: var(--transparentWhite8, rgba(255,255,255,0.08));
-    border-radius: 16px;
-    animation: none;
-    padding: 10px 6px;
-  }
-
-  /* Карточки мемов как карточки событий */
+  /* ----- КАРТОЧКИ МЕМОВ (как в приложении) ----- */
   .memes-grid {
-    grid-template-columns: 1fr;
+    margin-top: calc(var(--mobile-header-height) + 16px);
     gap: 12px;
+    padding-bottom: 12px;
   }
   .meme-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    background: var(--schemeCloudyFill100, #292d32);
-    border-radius: 12px;
-    padding: 8px;
+    background: var(--card-bg);
+    border-radius: var(--mobile-card-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.2s;
     cursor: pointer;
   }
-  .meme-card:hover {
-    transform: none;
+  .meme-card:active {
+    transform: scale(0.98);
   }
   .meme-preview {
-    width: 80px;
-    aspect-ratio: 1;
-    border-radius: 8px;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
   }
   .meme-info {
-    flex: 1;
-    padding: 0;
+    padding: 12px;
   }
   .meme-title {
-    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .meme-type {
-    font-size: 0.7rem;
-    color: var(--text300, #b3b3b3);
-  }
-
-  /* Случайный мем */
-  .random-meme-card {
-    background: var(--schemeCloudyFill100, #292d32);
-    border-radius: 16px;
-    padding: 16px;
-    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* Преимущества — сетка в 2 столбца */
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .feature-card {
-    padding: 12px;
-    text-align: center;
-  }
-  .feature-card h3 {
-    font-size: 1rem;
-  }
-
-  /* Блок howto */
-  .howto-steps {
-    padding: 16px;
-    background: var(--schemeCloudyFill100, #292d32);
-    border: none;
-    animation: none;
-  }
-
-  /* Отзывы — горизонтальный скролл */
-  .testimonials-grid {
-    display: flex;
-    gap: 12px;
+  /* ----- ГОРИЗОНТАЛЬНЫЕ СЛАЙДЕРЫ ----- */
+  .trending-slider,
+  .recent-grid,
+  .testimonials-grid,
+  .categories-grid {
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding-bottom: 8px;
   }
-  .testimonial-card {
-    min-width: 260px;
-    background: var(--schemeCloudyFill100, #292d32);
+  .trend-card,
+  .recent-card,
+  .testimonial-card,
+  .category-card {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    width: 260px;
+    background: var(--card-bg);
     border-radius: 16px;
-    padding: 16px;
+    padding: 12px;
   }
-
-  /* Футер скрываем, ссылки переносим в таббар */
-  .footer {
+  .trend-card img,
+  .recent-card img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .slider-btn {
     display: none;
   }
-
-  /* Кнопка шаринга — поднимаем выше таббара */
-  .share-fab {
-    bottom: 80px;
-    right: 16px;
+  .stats-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+  .stat-card {
+    flex: 0 0 auto;
+    min-width: 100px;
   }
 
-  /* Коррекция лайтбокса */
+  /* ----- ЛАЙТБОКС ДЛЯ МОБИЛОК ----- */
   .lightbox {
-    z-index: 2000;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
   }
   .close-lightbox {
     top: 16px;
     right: 16px;
-    background: rgba(0,0,0,0.6);
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
   }
-}
+  .lightbox-controls button {
+    width: 48px;
+    height: 48px;
+  }
 
-/* Темная тема по умолчанию как у Фонбет */
-[data-theme="dark"] {
-  --schemeCloudyFillBg: #121416;
-  --schemeCloudyFill100: #292d32;
-  --schemeCloudyStroke100: #32373e;
-  --transparentWhite8: rgba(255,255,255,0.08);
-  --icon300: #a3a3a3;
-  --accentKey600: #f6f6f6;
-  --text300: #b3b3b3;
-}
+  /* ----- ХЕРО-БЛОК ----- */
+  .hero {
+    margin-top: var(--mobile-header-height);
+    padding: 20px 0;
+  }
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
 
-[data-theme="light"] {
-  --schemeCloudyFillBg: #f5f7fa;
-  --schemeCloudyFill100: #ffffff;
-  --schemeCloudyStroke100: #e2e8f0;
-  --transparentWhite8: rgba(0,0,0,0.05);
-  --icon300: #666;
-  --accentKey600: #3b82f6;
-  --text300: #6b7280;
+  /* ----- ОБЩИЕ ПОПРАВКИ ----- */
+  .container {
+    padding: 0 16px;
+  }
+  .section-title {
+    font-size: 1.3rem;
+    margin: 20px 0 12px;
+  }
+  body.menu-open {
+    overflow: hidden;
+  }
 }

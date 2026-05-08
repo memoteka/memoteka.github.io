@@ -969,78 +969,163 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== МОБИЛЬНАЯ ВЕРСИЯ В СТИЛЕ ФОНБЕТ (ТАББАР) ==========
+// ========== МОБИЛЬНАЯ ВЕРСИЯ С ТАБ-БАРОМ И BOTTOM SHEET ==========
 (function() {
-  const isMobile = window.innerWidth <= 768;
-  if (!isMobile) return;
+  if (window.innerWidth > 768) return;
 
-  // Удаляем гамбургер-меню, если оно было создано ранее
-  const existingHamburger = document.querySelector('.hamburger');
-  if (existingHamburger) existingHamburger.remove();
-  const existingOverlay = document.querySelector('.menu-overlay');
-  if (existingOverlay) existingOverlay.remove();
+  // Удаляем старый гамбургер, если был создан (чтобы избежать конфликта)
+  const oldHamburger = document.querySelector('.hamburger');
+  if (oldHamburger) oldHamburger.remove();
+  const oldOverlay = document.querySelector('.menu-overlay');
+  if (oldOverlay) oldOverlay.remove();
 
-  // Создаём нижний таббар
-  const tabbar = document.createElement('div');
-  tabbar.className = 'mobile-tabbar';
+  // Создаём кнопку гамбургера в .glass-nav
+  const glassNav = document.querySelector('.glass-nav');
+  if (glassNav && !glassNav.querySelector('.hamburger')) {
+    const hamburger = document.createElement('button');
+    hamburger.className = 'hamburger';
+    hamburger.setAttribute('aria-label', 'Меню');
+    hamburger.innerHTML = '<span></span><span></span><span></span>';
+    // Вставляем справа от лого
+    const logo = glassNav.querySelector('.logo');
+    if (logo) logo.insertAdjacentElement('afterend', hamburger);
+    else glassNav.appendChild(hamburger);
+  }
 
-  const tabs = [
-    { id: 'home', label: 'Главная', icon: '<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-8H7v8H5a2 2 0 0 1-2-2z"/></svg>', href: '/ru/' },
-    { id: 'memes', label: 'Мемы', icon: '<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>', href: '/ru/memes/' },
-    { id: 'donate', label: 'Поддержать', icon: '<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v8H4v-8M12 2v12m-4-4l4 4 4-4"/></svg>', href: '/ru/donate/' },
-    { id: 'profile', label: 'Профиль', icon: '<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>', href: '/ru/about/' }
-  ];
+  // Bottom sheet (выезжающее меню)
+  let bottomSheet = document.querySelector('.bottom-sheet');
+  let sheetOverlay = document.querySelector('.sheet-overlay');
+  if (!bottomSheet) {
+    bottomSheet = document.createElement('div');
+    bottomSheet.className = 'bottom-sheet';
+    bottomSheet.innerHTML = `
+      <div class="menu-header">Меню</div>
+      <a href="/ru/"><span>🏠</span> Главная</a>
+      <a href="/ru/memes/"><span>🎭</span> Мемы</a>
+      <a href="/ru/about/"><span>ℹ️</span> О проекте</a>
+      <a href="/ru/donate/"><span>🍪</span> Поддержать</a>
+      <a href="/ru/socials/"><span>📱</span> Соцсети</a>
+    `;
+    document.body.appendChild(bottomSheet);
+  }
+  if (!sheetOverlay) {
+    sheetOverlay = document.createElement('div');
+    sheetOverlay.className = 'sheet-overlay';
+    document.body.appendChild(sheetOverlay);
+  }
 
-  tabs.forEach(tab => {
-    const btn = document.createElement('button');
-    btn.className = 'tab-item';
-    btn.innerHTML = `${tab.icon}<span>${tab.label}</span>`;
-    btn.addEventListener('click', () => {
-      window.location.href = tab.href;
+  // Функции открытия/закрытия bottom sheet
+  function openSheet() {
+    bottomSheet.classList.add('open');
+    sheetOverlay.classList.add('active');
+    document.body.classList.add('menu-open');
+  }
+  function closeSheet() {
+    bottomSheet.classList.remove('open');
+    sheetOverlay.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  }
+
+  // Обработчик гамбургера
+  const hamburgerBtn = document.querySelector('.hamburger');
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (bottomSheet.classList.contains('open')) closeSheet();
+      else openSheet();
     });
-    tabbar.appendChild(btn);
+  }
+  sheetOverlay.addEventListener('click', closeSheet);
+  // Закрытие при выборе пункта меню
+  bottomSheet.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      setTimeout(closeSheet, 150);
+    });
   });
 
-  document.body.appendChild(tabbar);
+  // ----- СОЗДАЁМ НИЖНИЙ ТАБ-БАР -----
+  let tabbar = document.querySelector('.mobile-tabbar');
+  if (!tabbar) {
+    tabbar = document.createElement('div');
+    tabbar.className = 'mobile-tabbar';
+    tabbar.innerHTML = `
+      <a class="tab-item" data-tab="home" href="/ru/">
+        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Главная</span>
+      </a>
+      <a class="tab-item" data-tab="memes" href="/ru/memes/">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4V4z M8 8h8v8H8V8z"/><circle cx="12" cy="12" r="2"/></svg>
+        <span>Мемы</span>
+      </a>
+      <a class="tab-item" data-tab="favorites" href="#" id="favorites-tab">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <span>Избранное</span>
+      </a>
+      <a class="tab-item" data-tab="menu" href="#" id="menu-tab">
+        <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        <span>Меню</span>
+      </a>
+    `;
+    document.body.appendChild(tabbar);
+  }
 
   // Подсветка активного таба по текущему URL
-  function highlightActiveTab() {
-    const currentPath = window.location.pathname;
-    const items = document.querySelectorAll('.tab-item');
-    items.forEach((item, idx) => {
-      const tab = tabs[idx];
-      if (tab && currentPath.startsWith(tab.href.replace(/\/$/, ''))) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
+  const currentPath = window.location.pathname;
+  const tabs = document.querySelectorAll('.tab-item');
+  tabs.forEach(tab => {
+    const href = tab.getAttribute('href');
+    if (href && href !== '#' && currentPath.startsWith(href)) {
+      tab.classList.add('active');
+    } else if (href === '#' && tab.id === 'favorites-tab') {
+      // избранное пока заглушка
+    } else if (href === '#' && tab.id === 'menu-tab') {
+      // кнопка меню открывает bottom sheet
+    } else {
+      tab.classList.remove('active');
+    }
+  });
+
+  // Обработка таба "Меню" — открываем bottom sheet
+  const menuTab = document.getElementById('menu-tab');
+  if (menuTab) {
+    menuTab.addEventListener('click', (e) => {
+      e.preventDefault();
+      openSheet();
+    });
+  }
+
+  // Избранное — пока просто алерт (можно потом реализовать localStorage)
+  const favTab = document.getElementById('favorites-tab');
+  if (favTab) {
+    favTab.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('⭐ Избранное — здесь будут сохранённые мемы (функция в разработке)');
+    });
+  }
+
+  // ----- УЛУЧШЕНИЯ ДЛЯ ЛАЙТБОКСА: СВАЙП ВНИЗ ДЛЯ ЗАКРЫТИЯ -----
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) {
+    let touchStartY = 0;
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    lightbox.addEventListener('touchend', (e) => {
+      const deltaY = e.changedTouches[0].screenY - touchStartY;
+      if (deltaY > 70 && lightbox.classList.contains('active')) {
+        if (typeof closeLightbox === 'function') closeLightbox();
+        else lightbox.classList.remove('active');
       }
     });
   }
-  highlightActiveTab();
 
-  // Корректировка хедера: показываем только кнопки темы/языка и донат
-  const navLinks = document.querySelector('.glass-nav .nav-links');
-  if (navLinks) {
-    // Скрываем текстовые ссылки, кроме возможных кнопок доната (можно оставить, но они не нужны)
-    const links = navLinks.querySelectorAll('a');
-    links.forEach(link => {
-      if (!link.closest('.select-group')) {
-        link.style.display = 'none';
-      }
-    });
-  }
+  // ----- АДАПТАЦИЯ ГАЛЕРЕИ: ВИДЕО НЕ ДОЛЖНЫ АВТОЗАПУСКАТЬСЯ ПРИ ПРОКРУТКЕ -----
+  document.querySelectorAll('.meme-card video').forEach(vid => {
+    vid.setAttribute('playsinline', 'true');
+    vid.preload = 'metadata';
+  });
 
-  // Добавляем кнопку доната в хедер, если её нет
-  const selectGroup = document.querySelector('.glass-nav .select-group');
-  if (selectGroup && !selectGroup.querySelector('.donate-mobile-btn')) {
-    const donateBtn = document.createElement('a');
-    donateBtn.href = '/ru/donate/';
-    donateBtn.className = 'donate-mobile-btn';
-    donateBtn.style.cssText = 'background: var(--accent, #3b82f6); color: white; border-radius: 20px; padding: 6px 12px; font-size: 0.8rem; text-decoration: none; margin-left: 8px;';
-    donateBtn.textContent = '🍪';
-    selectGroup.appendChild(donateBtn);
-  }
-
-  // Переопределяем поведение карточек мемов: они уже работают через лайтбокс
-  // Дополнительно можно добавить анимацию
+  // ----- УДАЛЯЕМ СТАРЫЙ КОД ГАМБУРГЕРА (если был в window) -----
+  // Просто перезаписываем — старые обработчики больше не активны, так как элементы удалены.
+  console.log('Мобильная версия в стиле FON.BET активирована');
 })();
