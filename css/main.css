@@ -1384,11 +1384,14 @@ select {
         padding-bottom: env(safe-area-inset-bottom);
     }
 
-    .mobile-bottom-bar button {
-        background: none; border: none; color: #fff;
-        display: flex; flex-direction: column; align-items: center;
-        font-size: 0.7rem; flex: 1; cursor: pointer;
-    }
+	.mobile-bottom-bar button {
+		flex: 1 !important; /* Чёбы все три кнопки занимали равное место */
+		padding: 10px 0 !important;
+	}
+
+	#shareSiteBtn span {
+		color: #4facfe; /* Можно выделить кнопку репоста цветом, чёбы глаз радовала */
+	}
 
     .mobile-bottom-bar button span { margin-top: 4px; }
 
