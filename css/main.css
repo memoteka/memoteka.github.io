@@ -1350,95 +1350,79 @@ select {
     text-align: center;
   }
   
-(function() {
-    if (window.innerWidth > 768) return;
-
-    // 1. Создаём нижнюю панель
-    const bottomBar = document.createElement('div');
-    bottomBar.className = 'mobile-bottom-bar';
-    bottomBar.innerHTML = `
-        <button id="openBurgerBtn">☰<span>Меню</span></button>
-        <button id="openSettingsBtn">⚙️<span>Настройки</span></button>
-    `;
-    document.documentElement.appendChild(bottomBar);
-
-    // 2. Создаём Меню (Бургер)
-    const burgerMenu = document.createElement('div');
-    burgerMenu.className = 'burger-drawer';
-    burgerMenu.innerHTML = `
-        <div class="drawer-header">
-            <h3 style="color:#fff; margin:0;">Навигация</h3>
-            <button id="closeBurgerBtn" style="background:none; border:none; color:#fff; font-size:2rem;">&times;</button>
-        </div>
-        <nav class="drawer-links">
-            <a href="/">🏠 Главная</a>
-            <a href="/memes/">🖼️ Мемы</a>
-            <a href="/map/">🗺️ Карта сайта</a>
-            <a href="/support/">💰 Поддержать</a>
-        </nav>
-    `;
-    document.documentElement.appendChild(burgerMenu);
-
-    // 3. Создаём Настройки (с системной темой!)
-    const settingsScreen = document.createElement('div');
-    settingsScreen.className = 'settings-screen';
-    settingsScreen.innerHTML = `
-        <div class="drawer-header">
-            <h3 style="color:#fff; margin:0;">Настройки</h3>
-            <button id="closeSettingsBtn" style="background:none; border:none; color:#fff; font-size:2rem;">&times;</button>
-        </div>
-        
-        <button id="mobileA11yBtn" class="a11y-main-btn">
-            ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
-        </button>
-
-        <p style="color:#aaa; font-size:0.9rem; margin-bottom:10px;">Тема оформления</p>
-        <div class="setting-grid">
-            <button onclick="setTheme('light')">☀️ Светлая</button>
-            <button onclick="setTheme('dark')">🌙 Тёмная</button>
-            <button onclick="setTheme('system')" style="grid-column: span 2;">💻 Системная тема</button>
-        </div>
-
-        <p style="color:#aaa; font-size:0.9rem; margin-bottom:10px;">Выбор языка</p>
-        <div class="setting-grid">
-            <button onclick="location.href='/ru/'">🇷🇺 Русский</button>
-            <button onclick="location.href='/en/'">🇺🇸 English</button>
-        </div>
-    `;
-    document.documentElement.appendChild(settingsScreen);
-
-    // УПРАВЛЕНИЕ
-    const elements = {
-        burgerBtn: document.getElementById('openBurgerBtn'),
-        closeBurger: document.getElementById('closeBurgerBtn'),
-        settingsBtn: document.getElementById('openSettingsBtn'),
-        closeSettings: document.getElementById('closeSettingsBtn'),
-        a11yBtn: document.getElementById('mobileA11yBtn')
-    };
-
-    elements.burgerBtn.onclick = () => burgerMenu.classList.add('active');
-    elements.closeBurger.onclick = () => burgerMenu.classList.remove('active');
-    
-    elements.settingsBtn.onclick = () => settingsScreen.classList.add('active');
-    elements.closeSettings.onclick = () => settingsScreen.classList.remove('active');
-
-    // Кнопка для слабовидящих (твоя функция должна быть в window)
-    elements.a11yBtn.onclick = function() {
-        if (typeof window.setAccessibilityMode === 'function') {
-            const isAct = localStorage.getItem('accessibilityMode') === 'true';
-            window.setAccessibilityMode(!isAct);
-            updateA11yUI(!isAct);
-            if (!isAct) setTimeout(() => settingsScreen.classList.remove('active'), 500);
-        }
-    };
-
-    function updateA11yUI(state) {
-        elements.a11yBtn.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
-        elements.a11yBtn.classList.toggle('active', state);
+@media (max-width: 768px) {
+    /* Панель внизу */
+    .mobile-bottom-bar {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 60px !important;
+        background: #000 !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        z-index: 99999 !important;
+        border-top: 1px solid #222;
+        padding-bottom: env(safe-area-inset-bottom);
     }
 
-    // Инициализация при загрузке
-    if (localStorage.getItem('accessibilityMode') === 'true') updateA11yUI(true);
+    .mobile-bottom-bar button {
+        background: none; border: none; color: #fff;
+        display: flex; flex-direction: column; align-items: center;
+        font-size: 0.7rem; flex: 1; cursor: pointer;
+    }
 
-    // Закрытие по клику на оверлей (вне шторки) — по желанию
-})();
+    .mobile-bottom-bar button span { margin-top: 4px; }
+
+    /* Выезжающее меню (Бургер) и Настройки */
+    .burger-drawer, .settings-screen {
+        position: fixed;
+        bottom: -100%; /* Прячем вниз */
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 80vh; /* Не на весь экран, чёбы стильно было */
+        background: #111;
+        z-index: 100000;
+        transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 20px;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        box-sizing: border-box;
+    }
+
+    .burger-drawer.active, .settings-screen.active {
+        bottom: 0; /* Выезжаем! */
+    }
+
+    .drawer-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;
+    }
+
+    .drawer-header h3 { margin: 0; color: #fff; }
+    .drawer-header button { background: none; border: none; color: #fff; font-size: 2rem; }
+
+    .drawer-links { display: flex; flex-direction: column; gap: 15px; }
+    .drawer-links a {
+        color: #fff; text-decoration: none; font-size: 1.2rem;
+        padding: 10px; border-radius: 10px; background: #1a1a1a;
+    }
+
+    /* Сетка кнопок в настройках */
+    .setting-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
+    }
+    .setting-grid button {
+        background: #222; border: 1px solid #444; color: #fff; padding: 12px; border-radius: 10px;
+    }
+
+    .a11y-main-btn {
+        width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #E2241C;
+        background: transparent; color: #fff; font-weight: bold;
+    }
+    .a11y-main-btn.active { background: #E2241C; }
+
+    body { padding-bottom: 70px !important; }
+}
