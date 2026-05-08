@@ -967,212 +967,85 @@ document.addEventListener('DOMContentLoaded', () => {
     addAccessibilityButton();
     observeLangChange();
   }
+  // Добавь это в конец своего огромного скрипта для слабовидящих:
+	window.setAccessibilityMode = setAccessibilityMode;
 })();
 
-// ========== MOBILE FIRST: ГАМБУРГЕР, НИЖНЯЯ ПАНЕЛЬ, МОДАЛЬНЫЕ НАСТРОЙКИ ==========
 (function() {
-  // Проверяем, мобильное ли устройство по ширине
-  let isMobile = window.innerWidth <= 768;
-  let mobileElementsCreated = false;
+    if (window.innerWidth > 768) return;
 
-  // Функция обновления активного состояния настроек в модальном окне
-  function updateSettingsModalUI() {
-    const modal = document.getElementById('settingsOverlay');
-    if (!modal) return;
-    const theme = localStorage.getItem('memotekaTheme') || 'system';
-    const lang = localStorage.getItem('memotekaLang') || 'ru';
-    const a11y = localStorage.getItem('accessibilityMode') === 'true';
-
-    // Обновляем текст кнопки слабовидящих
-    const a11yBtn = modal.querySelector('.a11y-toggle');
-    if (a11yBtn) a11yBtn.textContent = a11y ? 'Выключить' : 'Включить';
-    // Можно также выделить активную тему/язык, но для простоты оставляем как есть
-  }
-
-  // Создание модального окна настроек (один раз)
-  function createSettingsModal() {
-    if (document.getElementById('settingsOverlay')) return;
-    const overlay = document.createElement('div');
-    overlay.id = 'settingsOverlay';
-    overlay.className = 'settings-overlay';
-    overlay.innerHTML = `
-      <div class="settings-modal">
-        <h3>⚙️ Настройки</h3>
-        <div class="setting-group">
-          <label>🎨 Тема</label>
-          <div class="theme-buttons">
-            <button data-theme="light">Светлая</button>
-            <button data-theme="dark">Тёмная</button>
-            <button data-theme="system">Системная</button>
-          </div>
-        </div>
-        <div class="setting-group">
-          <label>🌐 Язык</label>
-          <div class="lang-buttons">
-            <button data-lang="ru">Русский</button>
-            <button data-lang="en">English</button>
-          </div>
-        </div>
-        <div class="setting-group">
-          <label>👁️ Режим для слабовидящих</label>
-          <button class="a11y-toggle">Включить</button>
-        </div>
-        <button class="close-settings">Закрыть</button>
-      </div>
+    // 1. Создаём нижнюю панель (как в ВК)
+    const bottomBar = document.createElement('div');
+    bottomBar.className = 'mobile-bottom-bar';
+    bottomBar.innerHTML = `
+        <a href="/">🏠<span>Главная</span></a>
+        <a href="/memes/">🖼️<span>Мемы</span></a>
+        <a href="/map/">🗺️<span>Карта</span></a>
+        <button id="openSettingsBtn">⚙️<span>Настройки</span></button>
     `;
-    document.body.appendChild(overlay);
+    document.documentElement.appendChild(bottomBar);
 
-    // Обработчики кнопок темы
-    overlay.querySelectorAll('[data-theme]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const theme = btn.getAttribute('data-theme');
-        if (typeof setTheme === 'function') setTheme(theme);
-      });
-    });
-    // Обработчики языка
-    overlay.querySelectorAll('[data-lang]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.getAttribute('data-lang');
-        if (lang) {
-          localStorage.setItem('memotekaLang', lang);
-          let path = window.location.pathname;
-          if (path.startsWith('/ru/')) path = path.replace('/ru/', `/${lang}/`);
-          else if (path.startsWith('/en/')) path = path.replace('/en/', `/${lang}/`);
-          else path = `/${lang}/`;
-          window.location.href = path;
+    // 2. Создаём экран настроек (Settings Modal)
+    const settingsScreen = document.createElement('div');
+    settingsScreen.className = 'settings-screen';
+    settingsScreen.innerHTML = `
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; color:#fff;">⚙️ Настройки</h2>
+            <button id="closeSettingsBtn" style="font-size:2.5rem; background:none; border:none; color:#fff; cursor:pointer;">&times;</button>
+        </div>
+        
+        <div class="setting-item">
+            <p style="color:#aaa; margin-bottom:10px;">Специальные возможности</p>
+            <button id="mobileA11yBtn" class="a11y-main-btn">
+                ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
+            </button>
+        </div>
+
+        <div class="setting-item" style="margin-top:30px;">
+            <p style="color:#aaa; margin-bottom:10px;">Внешний вид и язык</p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
+                <button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
+                <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
+                <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
+            </div>
+        </div>
+    `;
+    document.documentElement.appendChild(settingsScreen);
+
+    // Логика открытия/закрытия
+    const openBtn = document.getElementById('openSettingsBtn');
+    const closeBtn = document.getElementById('closeSettingsBtn');
+    const a11yBtn = document.getElementById('mobileA11yBtn');
+
+    openBtn.onclick = () => settingsScreen.classList.add('active');
+    closeBtn.onclick = () => settingsScreen.classList.remove('active');
+
+    // ГЛАВНОЕ: Врубаем твой режим
+    a11yBtn.onclick = function() {
+        if (typeof window.setAccessibilityMode === 'function') {
+            const isNowActive = localStorage.getItem('accessibilityMode') === 'true';
+            const newState = !isNowActive;
+            
+            // Вызываем ТВОЮ функцию
+            window.setAccessibilityMode(newState);
+            
+            // Обновляем текст на кнопке
+            this.querySelector('span').innerText = newState ? 'ВКЛ' : 'ВЫКЛ';
+            this.classList.toggle('active', newState);
+            
+            // Если включили — закрываем настройки, чтобы увидеть панель управления (твою)
+            if (newState) {
+                setTimeout(() => settingsScreen.classList.remove('active'), 500);
+            }
+        } else {
+            alert('Братан, движок слабовидящих ещё не подвезли!');
         }
-      });
-    });
-    // Кнопка слабовидящих
-    const a11yBtn = overlay.querySelector('.a11y-toggle');
-    a11yBtn.addEventListener('click', () => {
-      if (typeof window.setAccessibilityMode === 'function') {
-        const isOn = localStorage.getItem('accessibilityMode') === 'true';
-        window.setAccessibilityMode(!isOn);
-        a11yBtn.textContent = !isOn ? 'Выключить' : 'Включить';
-      } else {
-        console.warn('setAccessibilityMode not found');
-      }
-    });
-    // Закрытие окна
-    overlay.querySelector('.close-settings').addEventListener('click', () => {
-      overlay.classList.remove('active');
-    });
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.classList.remove('active');
-    });
-  }
+    };
 
-  function openSettings() {
-    const overlay = document.getElementById('settingsOverlay');
-    if (!overlay) createSettingsModal();
-    const modal = document.getElementById('settingsOverlay');
-    if (modal) {
-      updateSettingsModalUI();
-      modal.classList.add('active');
+    // Проверка статуса при загрузке
+    if (localStorage.getItem('accessibilityMode') === 'true') {
+        a11yBtn.querySelector('span').innerText = 'ВКЛ';
+        a11yBtn.classList.add('active');
     }
-  }
-
-  // Создание мобильных элементов (гамбургер, меню, нижняя панель)
-  function createMobileElements() {
-    if (mobileElementsCreated) return;
-
-    // 1. Гамбургер-кнопка
-    const glassNav = document.querySelector('.glass-nav');
-    if (!glassNav) return;
-    // Удаляем старые, если есть
-    if (document.querySelector('.hamburger')) return;
-
-    const hamburger = document.createElement('div');
-    hamburger.className = 'hamburger';
-    hamburger.innerHTML = '<span></span><span></span><span></span>';
-    glassNav.prepend(hamburger);
-
-    // 2. Мобильное меню (выезжающее)
-    const mobileMenu = document.createElement('div');
-    mobileMenu.className = 'mobile-menu';
-    // Копируем ссылки из .nav-links
-    const navLinks = document.querySelector('.nav-links');
-    if (navLinks) {
-      const links = navLinks.querySelectorAll('a');
-      links.forEach(link => {
-        const a = document.createElement('a');
-        a.href = link.href;
-        a.textContent = link.textContent;
-        mobileMenu.appendChild(a);
-      });
-    }
-    document.body.appendChild(mobileMenu);
-
-    // 3. Нижняя панель
-    const bottomNav = document.createElement('div');
-    bottomNav.className = 'bottom-nav';
-    const langPrefix = document.documentElement.lang === 'ru' ? 'ru' : 'en';
-    const items = [
-      { icon: '🏠', label: langPrefix === 'ru' ? 'Главная' : 'Home', url: `/${langPrefix}/` },
-      { icon: '🖼️', label: langPrefix === 'ru' ? 'Мемы' : 'Memes', url: `/${langPrefix}/memes/` },
-      { icon: '🗺️', label: langPrefix === 'ru' ? 'Карта' : 'Sitemap', url: `/${langPrefix}/sitemap/` },
-      { icon: '⚙️', label: langPrefix === 'ru' ? 'Настройки' : 'Settings', action: openSettings }
-    ];
-    items.forEach(item => {
-      const btn = item.url ? document.createElement('a') : document.createElement('button');
-      if (item.url) {
-        btn.href = item.url;
-      } else {
-        btn.onclick = item.action;
-      }
-      btn.innerHTML = `${item.icon}<span>${item.label}</span>`;
-      bottomNav.appendChild(btn);
-    });
-    document.body.appendChild(bottomNav);
-
-    // Обработчик гамбургера
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      mobileMenu.classList.toggle('open');
-    });
-    // Закрытие меню при клике вне
-    document.addEventListener('click', (e) => {
-      if (mobileMenu.classList.contains('open') && !hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.classList.remove('open');
-        hamburger.classList.remove('active');
-      }
-    });
-
-    // Скрываем десктопные дропдауны, чтобы не мешали
-    const selectGroup = glassNav.querySelector('.select-group');
-    if (selectGroup) selectGroup.style.display = 'none';
-
-    mobileElementsCreated = true;
-  }
-
-  function removeMobileElements() {
-    const hamburger = document.querySelector('.hamburger');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const bottomNav = document.querySelector('.bottom-nav');
-    if (hamburger) hamburger.remove();
-    if (mobileMenu) mobileMenu.remove();
-    if (bottomNav) bottomNav.remove();
-    const glassNav = document.querySelector('.glass-nav');
-    if (glassNav) {
-      const selectGroup = glassNav.querySelector('.select-group');
-      if (selectGroup) selectGroup.style.display = '';
-    }
-    mobileElementsCreated = false;
-  }
-
-  function initMobileLayout() {
-    const nowMobile = window.innerWidth <= 768;
-    if (nowMobile && !mobileElementsCreated) {
-      createMobileElements();
-    } else if (!nowMobile && mobileElementsCreated) {
-      removeMobileElements();
-    }
-  }
-
-  window.addEventListener('resize', initMobileLayout);
-  document.addEventListener('DOMContentLoaded', () => {
-    createSettingsModal(); // создаём модалку один раз
-    initMobileLayout();
-  });
 })();
