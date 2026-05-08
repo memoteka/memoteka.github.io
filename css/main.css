@@ -1350,314 +1350,237 @@ select {
     text-align: center;
   }
   
-/* ========== МОБИЛЬНАЯ ВЕРСИЯ В СТИЛЕ FON.BET ========== */
+/* =============================================
+   МОБИЛЬНАЯ ВЕРСИЯ (адаптация под пример Fonbet)
+   ============================================= */
+
+/* Фикс для body на мобилках – добавляем отступ снизу для нижней панели */
+body {
+  padding-bottom: 70px;
+}
+
+/* Нижняя навигационная панель (таб‑бар) – будет создана через JS */
+.mobile-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 12px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  z-index: 1000;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.mobile-tabbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  flex: 1;
+  text-align: center;
+  padding: 4px 0;
+  border-radius: 12px;
+}
+
+.mobile-tabbar-item.active {
+  color: var(--accent);
+}
+
+.mobile-tabbar-item svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.mobile-tabbar-item span {
+  font-size: 11px;
+}
+
+/* Адаптация блоков под горизонтальную прокрутку (как в Fonbet) */
 @media (max-width: 768px) {
-  /* ----- ОСНОВНЫЕ ПЕРЕМЕННЫЕ ----- */
-  :root {
-    --mobile-tabbar-height: 56px;
-    --mobile-header-height: 56px;
-    --mobile-card-radius: 16px;
+  /* Убираем лишние отступы */
+  .container {
+    padding: 0.8rem;
   }
 
-  body {
-    padding-bottom: var(--mobile-tabbar-height);
-    background: var(--bg-gradient);
-  }
-
-  /* ----- ВЕРХНЯЯ ПАНЕЛЬ (GLASS-NAV) ----- */
-  .glass-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--mobile-header-height);
-    padding: 0 16px;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(20px);
-    z-index: 100;
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .logo-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  /* Скрываем старую навигацию */
-  .glass-nav .nav-links {
-    display: none;
-  }
-
-  /* Кнопка гамбургер */
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 24px;
-    height: 18px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 101;
-  }
-  .hamburger span {
-    width: 100%;
-    height: 2px;
-    background: var(--text-primary);
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
-  .hamburger.open span:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-  }
-  .hamburger.open span:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.open span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
-
-  /* ----- BOTTOM SHEET МЕНЮ (выезжает снизу) ----- */
-  .bottom-sheet {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--surface-glass);
-    backdrop-filter: blur(30px);
-    border-radius: 24px 24px 0 0;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    z-index: 200;
-    padding: 20px 20px 30px;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-    border-top: 0.5px solid var(--border);
-  }
-  .bottom-sheet.open {
-    transform: translateY(0);
-  }
-  .bottom-sheet .menu-header {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-  .bottom-sheet a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 0;
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    text-decoration: none;
-    border-bottom: 0.5px solid var(--border);
-  }
-  .bottom-sheet a:last-child {
-    border-bottom: none;
-  }
-  .bottom-sheet a svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* Оверлей для затемнения */
-  .sheet-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 199;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s;
-  }
-  .sheet-overlay.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  /* ----- НИЖНИЙ ТАБ-БАР ----- */
-  .mobile-tabbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: var(--mobile-tabbar-height);
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 0.5px solid rgba(255, 255, 255, 0.1);
-    z-index: 99;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .tab-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    text-decoration: none;
-    color: var(--text-secondary);
-    font-size: 0.7rem;
-    transition: color 0.2s;
-    cursor: pointer;
-  }
-  .tab-item.active {
-    color: var(--accent);
-  }
-  .tab-item svg {
-    width: 24px;
-    height: 24px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.5;
-  }
-  .tab-item.active svg {
-    fill: var(--accent);
-    stroke: var(--accent);
-  }
-
-  /* ----- КАРТОЧКИ МЕМОВ (как в приложении) ----- */
-  .memes-grid {
-    margin-top: calc(var(--mobile-header-height) + 16px);
-    gap: 12px;
-    padding-bottom: 12px;
-  }
-  .meme-card {
-    background: var(--card-bg);
-    border-radius: var(--mobile-card-radius);
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.15s ease, box-shadow 0.2s;
-    cursor: pointer;
-  }
-  .meme-card:active {
-    transform: scale(0.98);
-  }
-  .meme-preview {
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-  }
-  .meme-info {
-    padding: 12px;
-  }
-  .meme-title {
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* ----- ГОРИЗОНТАЛЬНЫЕ СЛАЙДЕРЫ ----- */
-  .trending-slider,
-  .recent-grid,
-  .testimonials-grid,
-  .categories-grid {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+  /* Горизонтальная прокрутка для статистики */
+  .stats-grid {
     display: flex;
     flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 12px;
+    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
     padding-bottom: 8px;
   }
-  .trend-card,
-  .recent-card,
-  .testimonial-card,
-  .category-card {
+  .stat-card {
+    min-width: 110px;
     scroll-snap-align: start;
-    flex: 0 0 auto;
-    width: 260px;
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 12px;
   }
-  .trend-card img,
-  .recent-card img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 12px;
+
+  /* Горизонтальная прокрутка для трендов (отключаем кнопки, используем нативный скролл) */
+  .trending-slider {
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-snap-type: x mandatory;
+  }
+  .slider-track {
+    display: inline-flex;
+    gap: 12px;
+    transform: none !important;
+    white-space: normal;
+  }
+  .trend-card {
+    min-width: 220px;
+    scroll-snap-align: start;
   }
   .slider-btn {
     display: none;
   }
-  .stats-grid {
-    display: flex;
+
+  /* Горизонтальная прокрутка для категорий */
+  .categories-grid {
+    flex-wrap: nowrap;
     overflow-x: auto;
+    justify-content: flex-start;
     gap: 12px;
+    scroll-snap-type: x mandatory;
     padding-bottom: 8px;
   }
-  .stat-card {
-    flex: 0 0 auto;
+  .category-card {
     min-width: 100px;
+    scroll-snap-align: start;
   }
 
-  /* ----- ЛАЙТБОКС ДЛЯ МОБИЛОК ----- */
-  .lightbox {
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
-  }
-  .close-lightbox {
-    top: 16px;
-    right: 16px;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
+  /* Горизонтальная прокрутка для отзывов */
+  .testimonials-grid {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
   }
-  .lightbox-controls button {
-    width: 48px;
-    height: 48px;
+  .testimonial-card {
+    min-width: 260px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
   }
 
-  /* ----- ХЕРО-БЛОК ----- */
-  .hero {
-    margin-top: var(--mobile-header-height);
-    padding: 20px 0;
-  }
-  .hero h1 {
-    font-size: 1.8rem;
-  }
-  .hero-buttons {
-    flex-direction: column;
+  /* Свежачок – две колонки */
+  .recent-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-  .btn-primary, .btn-secondary {
-    width: 100%;
-    text-align: center;
+
+  /* Преимущества – одна колонка */
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  /* ----- ОБЩИЕ ПОПРАВКИ ----- */
-  .container {
-    padding: 0 16px;
+  /* Инструкция – компактнее */
+  .howto-steps {
+    padding: 1rem;
   }
-  .section-title {
-    font-size: 1.3rem;
-    margin: 20px 0 12px;
+
+  /* Футер – колонки в столбец */
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
   }
-  body.menu-open {
-    overflow: hidden;
+
+  /* Скрываем часть ссылок в верхней навигации (можно оставить только соцсети?) */
+  /* Но оставим как есть, просто уменьшим отступы */
+  .glass-nav {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+  }
+  .logo-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .nav-links {
+    gap: 0.6rem;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+  }
+
+  /* Дропдауны компактнее */
+  .dropdown-trigger {
+    padding: 0.2rem 1rem 0.2rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  /* Герой-секция */
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  /* Кнопки на всю ширину на мобилках? Не обязательно, но сделаем чуть меньше */
+  .btn-primary, .btn-secondary {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Случайный мем – адаптив */
+  .random-meme-card {
+    max-width: 100%;
+  }
+
+  /* Обработка лайтбокса на мобилках – увеличиваем кнопку закрытия */
+  .close-lightbox {
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+  }
+}
+
+/* Дополнительные улучшения для очень маленьких экранов (до 480px) */
+@media (max-width: 480px) {
+  .stat-card {
+    min-width: 90px;
+    padding: 0.6rem;
+  }
+  .stat-number {
+    font-size: 1.2rem;
+  }
+  .recent-grid {
+    grid-template-columns: 1fr;
+  }
+  .trend-card {
+    min-width: 180px;
+  }
+  .testimonial-card {
+    min-width: 220px;
+  }
+  .category-card {
+    min-width: 80px;
+    padding: 0.5rem;
+  }
+  .meme-title {
+    font-size: 0.8rem;
   }
 }
