@@ -1361,10 +1361,10 @@ body {
 
 /* Нижняя навигационная панель (таб‑бар) – будет создана через JS */
 .mobile-tabbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   background: var(--surface-glass);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
@@ -1373,7 +1373,7 @@ body {
   align-items: center;
   padding: 8px 12px;
   padding-bottom: max(8px, env(safe-area-inset-bottom));
-  z-index: 1000;
+  z-index: 1000 !important;
   font-size: 12px;
   transition: background 0.2s;
 }
