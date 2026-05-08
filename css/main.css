@@ -1422,22 +1422,21 @@ select {
 
   /* Нижняя панель навигации */
   .bottom-nav {
-		position: fixed !important; /* Класть на все другие правила */
-		bottom: 0 !important;
-		left: 0 !important;
-		right: 0 !important;
-		width: 100vw; /* На всю ширину экрана */
-		height: 60px; /* Фиксированная высота */
-		background: var(--surface-glass, #111); /* Если переменная не подгрузилась, будет тёмным */
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px); /* Для Сафари, чёбы не лагало */
-		border-top: 1px solid var(--border, #333);
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-		z-index: 9999; /* Чёбы была выше любого мусора на сайте */
-		padding-bottom: env(safe-area-inset-bottom); /* Фикс для айфонов с "челками" снизу */
-		box-sizing: border-box;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 65px !important;
+    background: rgba(10, 10, 10, 0.8) !important; /* Полупрозрачный фон */
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    z-index: 99999 !important; /* Максимальный приоритет */
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    margin: 0 !important;
 	}
   .bottom-nav button, .bottom-nav a {
     background: none;
