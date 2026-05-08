@@ -970,48 +970,61 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 (function() {
-  function isMobile() {
-    return window.innerWidth <= 768;
-  }
-
   function createMobileBar() {
-    // Если уже есть — не плодим сущности
-    if (document.querySelector('.mobile-tabbar')) {
-      // Просто чекаем видимость
-      document.querySelector('.mobile-tabbar').style.display = isMobile() ? 'flex' : 'none';
+    // 1. Убиваем старье, если оно есть
+    let oldBar = document.querySelector('.mobile-tabbar');
+    if (oldBar) oldBar.remove();
+
+    // 2. Проверка на мобилку (до 768px)
+    if (window.innerWidth > 768) {
+      document.body.style.paddingBottom = '0';
       return;
     }
 
-    if (!isMobile()) return;
-
+    // 3. Создаем таббар
     const bar = document.createElement('div');
     bar.className = 'mobile-tabbar';
-    // Явно задаем стиль прямо тут для страховки, если CSS тупит
-    bar.style.position = 'fixed';
-    bar.style.bottom = '0';
-    bar.style.left = '0';
-    bar.style.right = '0';
+
+    // 4. ЖЕСТКИЕ СТИЛИ (чтобы точно фиксировался внизу экрана)
+    Object.assign(bar.style, {
+      position: 'fixed',
+      bottom: '0',
+      left: '0',
+      right: '0',
+      height: '60px',
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      background: 'rgba(255, 255, 255, 0.9)', // Как у тебя было, стекло
+      backdropFilter: 'blur(20px)',
+      borderTop: '1px solid rgba(0,0,0,0.1)',
+      zIndex: '2147483647', // Максимальный z-index в браузере
+      paddingBottom: 'env(safe-area-inset-bottom)' // Отступ для айфонов
+    });
 
     const links = [
-      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24"><path d="M12 3L3 10l2 2h1v7h5v-5h2v5h5v-7h1l2-2-9-7z"/></svg>' },
-      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' },
-      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24"><path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>' },
-      { name: 'Поддержать', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
+      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' },
+      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>' },
+      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>' },
+      { name: 'Донат', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' }
     ];
 
     bar.innerHTML = links.map(link => {
-      const isActive = window.location.pathname === link.href ? 'active' : '';
-      return `<a href="${link.href}" class="mobile-tabbar-item ${isActive}">
-                ${link.icon}<span>${link.name}</span>
-              </a>`;
+      const isActive = window.location.pathname === link.href ? 'color: #3b82f6;' : 'color: #4b5563;';
+      return `
+        <a href="${link.href}" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; ${isActive} flex: 1;">
+          ${link.icon}
+          <span style="font-size: 10px; font-weight: 500;">${link.name}</span>
+        </a>
+      `;
     }).join('');
 
-    document.body.appendChild(bar);
+    // 5. Прячем в самый корень body, чтобы никакие контейнеры не мешали
+    document.body.insertAdjacentElement('beforeend', bar);
+    document.body.style.paddingBottom = '70px';
   }
 
-  // Запуск без тормозов
+  // Запуск
   window.addEventListener('resize', createMobileBar);
-  window.addEventListener('DOMContentLoaded', createMobileBar);
-  // Если скрипт грузится после DOM
-  if (document.readyState !== 'loading') createMobileBar();
+  createMobileBar();
 })();
