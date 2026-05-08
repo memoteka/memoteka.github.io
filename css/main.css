@@ -1350,104 +1350,73 @@ select {
     text-align: center;
   }
   
-@media (max-width: 768px) {
-	.share-button, 
-    [class*="share-btn"], 
-    #fixed-share-link { 
-        display: none !important; 
-    }
-	/* Скрываем навигацию и кнопки в хедере */
-    .glass-nav .nav-links, 
-    .glass-nav .select-group,
-    .glass-nav .accessibility-btn { 
-        display: none !important; 
-    }
+(function() {
+    if (window.innerWidth > 768) return;
 
-    /* Растягиваем логотип или центрируем, если надо */
-    .glass-nav {
-        justify-content: center !important; /* Лого будет по центру, так стильнее */
-        padding: 10px 0 !important;
-    }
-    /* Панель внизу */
-    .mobile-bottom-bar {
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 60px !important;
-        background: #000 !important;
-        display: flex !important;
-        justify-content: space-around !important;
-        align-items: center !important;
-        z-index: 99999 !important;
-        border-top: 1px solid #222;
-        padding-bottom: env(safe-area-inset-bottom);
-    }
+    // 1. Создаём панель
+    const bottomBar = document.createElement('div');
+    bottomBar.className = 'mobile-bottom-bar';
+    bottomBar.innerHTML = `
+        <button id="openBurgerBtn">☰<span>Меню</span></button>
+        <button id="shareSiteBtn">🔗<span>Репост</span></button>
+        <button id="openSettingsBtn">⚙️<span>Опции</span></button>
+    `;
+    document.body.appendChild(bottomBar);
 
-	.mobile-bottom-bar button {
-		flex: 1 !important; /* Чёбы все три кнопки занимали равное место */
-		padding: 10px 0 !important;
-	}
+    // 2. Создаём Бургер
+    const burgerMenu = document.createElement('div');
+    burgerMenu.className = 'burger-drawer';
+    burgerMenu.innerHTML = `
+        <nav class="drawer-links">
+            <a href="/">Главная</a>
+            <a href="/memes/">Мемы</a>
+            <a href="/map/">Карта сайта</a>
+            <a href="/about/">О проекте</a>
+            <a href="/support/">Поддержать 🍪</a>
+        </nav>
+    `;
+    document.body.appendChild(burgerMenu);
 
-	#shareSiteBtn span {
-		color: #4facfe; /* Можно выделить кнопку репоста цветом, чёбы глаз радовала */
-	}
+    // 3. Создаём Настройки
+    const settingsScreen = document.createElement('div');
+    settingsScreen.className = 'settings-screen';
+    settingsScreen.innerHTML = `
+        <div style="margin-bottom: 25px;">
+            <button id="mobileA11yBtn" class="a11y-main-btn">♿ Режим слабовидящих: <span>ВЫКЛ</span></button>
+        </div>
+        <div class="setting-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <button class="sub-btn" onclick="setTheme('dark')">Dark</button>
+            <button class="sub-btn" onclick="setTheme('light')">Light</button>
+            <button class="sub-btn" onclick="setTheme('system')">Auto</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+            <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
+            <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
+        </div>
+    `;
+    document.body.appendChild(settingsScreen);
 
-    .mobile-bottom-bar button span { margin-top: 4px; }
+    // ЛОГИКА (закрытие по клику вне меню)
+    const toggle = (el, force) => el.classList.toggle('active', force);
+    
+    document.getElementById('openBurgerBtn').onclick = (e) => { e.stopPropagation(); toggle(burgerMenu, true); toggle(settingsScreen, false); };
+    document.getElementById('openSettingsBtn').onclick = (e) => { e.stopPropagation(); toggle(settingsScreen, true); toggle(burgerMenu, false); };
+    
+    document.addEventListener('click', () => { toggle(burgerMenu, false); toggle(settingsScreen, false); });
+    [burgerMenu, settingsScreen].forEach(el => el.onclick = (e) => e.stopPropagation());
 
-    /* Выезжающее меню (Бургер) и Настройки */
-    .burger-drawer, .settings-screen {
-        position: fixed;
-        bottom: -100%; /* Прячем вниз */
-        left: 0;
-        width: 100%;
-        height: auto;
-        max-height: 80vh; /* Не на весь экран, чёбы стильно было */
-        background: #111;
-        z-index: 100000;
-        transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 20px;
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
-        box-sizing: border-box;
-    }
+    // Шаринг
+    document.getElementById('shareSiteBtn').onclick = () => {
+        if (navigator.share) navigator.share({ title: 'Мемотека', url: window.location.href });
+        else alert('Скопируй ссылку, бро!');
+    };
 
-    .burger-drawer.active, .settings-screen.active {
-        bottom: 0; /* Выезжаем! */
-    }
-
-    .drawer-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;
-    }
-
-    .drawer-header h3 { margin: 0; color: #fff; }
-    .drawer-header button { background: none; border: none; color: #fff; font-size: 2rem; }
-
-    .drawer-links { display: flex; flex-direction: column; gap: 15px; }
-    .drawer-links a {
-        color: #fff; text-decoration: none; font-size: 1.2rem;
-        padding: 10px; border-radius: 10px; background: #1a1a1a;
-    }
-
-    /* Сетка кнопок в настройках */
-    .setting-grid {
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr !important; /* Три колонки под темы */
-    gap: 8px !important; 
-    margin-top: 20px;
-	}
-
-	.setting-grid button {
-		font-size: 0.8rem !important; /* Чуть уменьшил, чтобы "Системная" влезла */
-		padding: 10px 5px !important;
-	}
-
-    .a11y-main-btn {
-        width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #E2241C;
-        background: transparent; color: #fff; font-weight: bold;
-    }
-    .a11y-main-btn.active { background: #E2241C; }
-
-    body { padding-bottom: 70px !important; }
-}
+    // Твой движок слабовидящих
+    const a11yBtn = document.getElementById('mobileA11yBtn');
+    a11yBtn.onclick = function() {
+        const state = localStorage.getItem('accessibilityMode') !== 'true';
+        if (window.setAccessibilityMode) window.setAccessibilityMode(state);
+        this.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
+        this.classList.toggle('active', state);
+    };
+})();
