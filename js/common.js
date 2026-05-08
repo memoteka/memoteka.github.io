@@ -969,21 +969,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== СОЗДАНИЕ НИЖНЕЙ ФИКСИРОВАННОЙ ПАНЕЛИ (МОБИЛЬНАЯ) ==========
 (function() {
   function isMobile() {
     return window.innerWidth <= 768;
   }
 
   function createMobileBar() {
-    // Удаляем старую панель, если есть
-    let old = document.querySelector('.mobile-tabbar');
-    if (old) old.remove();
+    // Если уже есть — не плодим сущности
+    if (document.querySelector('.mobile-tabbar')) {
+      // Просто чекаем видимость
+      document.querySelector('.mobile-tabbar').style.display = isMobile() ? 'flex' : 'none';
+      return;
+    }
 
     if (!isMobile()) return;
 
     const bar = document.createElement('div');
     bar.className = 'mobile-tabbar';
+    // Явно задаем стиль прямо тут для страховки, если CSS тупит
+    bar.style.position = 'fixed';
+    bar.style.bottom = '0';
+    bar.style.left = '0';
+    bar.style.right = '0';
 
     const links = [
       { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24"><path d="M12 3L3 10l2 2h1v7h5v-5h2v5h5v-7h1l2-2-9-7z"/></svg>' },
@@ -992,39 +999,19 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Поддержать', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
     ];
 
-    links.forEach(link => {
-      const a = document.createElement('a');
-      a.href = link.href;
-      a.className = 'mobile-tabbar-item';
-      a.innerHTML = `${link.icon}<span>${link.name}</span>`;
-      if (window.location.pathname === link.href || (link.href !== '/' && window.location.pathname.startsWith(link.href))) {
-        a.classList.add('active');
-      }
-      bar.appendChild(a);
-    });
+    bar.innerHTML = links.map(link => {
+      const isActive = window.location.pathname === link.href ? 'active' : '';
+      return `<a href="${link.href}" class="mobile-tabbar-item ${isActive}">
+                ${link.icon}<span>${link.name}</span>
+              </a>`;
+    }).join('');
 
     document.body.appendChild(bar);
-    document.body.style.paddingBottom = '70px';
   }
 
-  // При загрузке и при изменении размера окна
-  window.addEventListener('resize', function() {
-    createMobileBar();
-  });
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createMobileBar);
-  } else {
-    createMobileBar();
-  }
-
-  // Обновляем активный пункт при кликах (чтобы подсветка менялась)
-  document.body.addEventListener('click', function(e) {
-    const link = e.target.closest('.mobile-tabbar-item');
-    if (link) {
-      setTimeout(() => {
-        document.querySelectorAll('.mobile-tabbar-item').forEach(item => item.classList.remove('active'));
-        link.classList.add('active');
-      }, 50);
-    }
-  });
+  // Запуск без тормозов
+  window.addEventListener('resize', createMobileBar);
+  window.addEventListener('DOMContentLoaded', createMobileBar);
+  // Если скрипт грузится после DOM
+  if (document.readyState !== 'loading') createMobileBar();
 })();
