@@ -969,144 +969,94 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== СОЗДАНИЕ МОБИЛЬНОЙ НИЖНЕЙ ПАНЕЛИ (TABBAR) ==========
+// ========== СОЗДАНИЕ МОБИЛЬНОЙ НИЖНЕЙ ПАНЕЛИ (TABBAR) с принудительными стилями ==========
 (function() {
-  // Проверяем, нужно ли добавлять таббар (только для мобильных устройств по ширине)
   function isMobile() {
     return window.innerWidth <= 768;
   }
 
   function createMobileTabbar() {
-    // Если таббар уже существует – удаляем старый
     const existing = document.querySelector('.mobile-tabbar');
     if (existing) existing.remove();
 
     const tabbar = document.createElement('div');
     tabbar.className = 'mobile-tabbar';
+    
+    // Прямое назначение стилей, чтобы гарантировать fixed-позиционирование
+    tabbar.style.cssText = `
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: var(--surface-glass, rgba(255,255,255,0.85));
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border, rgba(0,0,0,0.1));
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+      z-index: 10000 !important;
+      font-size: 12px;
+      box-sizing: border-box;
+    `;
 
-    // Ссылки и иконки
     const items = [
-      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24"><path d="M12 3L3 10l2 2h1v7h5v-5h2v5h5v-7h1l2-2-9-7z"/></svg>' },
-      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' },
-      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24"><path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>' },
-      { name: 'Поддержать', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
+      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L3 10l2 2h1v7h5v-5h2v5h5v-7h1l2-2-9-7z"/></svg>' },
+      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' },
+      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>' },
+      { name: 'Поддержать', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
     ];
 
     items.forEach(item => {
       const a = document.createElement('a');
       a.href = item.href;
       a.className = 'mobile-tabbar-item';
-      a.innerHTML = `${item.icon}<span>${item.name}</span>`;
-      // Активный пункт – если текущий URL содержит href
+      a.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: var(--text-secondary, #4b5563);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+        flex: 1;
+        text-align: center;
+        padding: 4px 0;
+        border-radius: 12px;
+      `;
+      a.innerHTML = `${item.icon}<span style="font-size: 11px;">${item.name}</span>`;
+      
       if (window.location.pathname === item.href || (item.href !== '/' && window.location.pathname.startsWith(item.href))) {
-        a.classList.add('active');
+        a.style.color = 'var(--accent, #3b82f6)';
       }
       tabbar.appendChild(a);
     });
 
     document.body.appendChild(tabbar);
+    
+    // Дополнительно убедимся, что body имеет отступ снизу, чтобы контент не перекрывался
+    document.body.style.paddingBottom = '70px';
   }
 
-  // Функция для обновления активного пункта при смене страницы (SPA нет, но на случай перехода по ссылкам)
-  function updateActiveTab() {
-    const items = document.querySelectorAll('.mobile-tabbar-item');
-    if (!items.length) return;
-    const currentPath = window.location.pathname;
-    items.forEach(item => {
-      const href = item.getAttribute('href');
-      if (href === currentPath || (href !== '/' && currentPath.startsWith(href))) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
-      }
-    });
-  }
-
-  // Следим за изменением размера окна – при переходе с мобилки на десктоп убираем таббар
   function handleResize() {
     if (isMobile()) {
       if (!document.querySelector('.mobile-tabbar')) createMobileTabbar();
     } else {
       const tabbar = document.querySelector('.mobile-tabbar');
       if (tabbar) tabbar.remove();
-      // Убираем лишний padding-bottom на десктопе
       document.body.style.paddingBottom = '';
     }
   }
 
-  // Инициализация
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       handleResize();
       window.addEventListener('resize', handleResize);
-      // Обновляем активный пункт при кликах (для навигации)
-      document.body.addEventListener('click', e => {
-        const link = e.target.closest('.mobile-tabbar-item');
-        if (link) {
-          setTimeout(updateActiveTab, 100);
-        }
-      });
     });
   } else {
     handleResize();
     window.addEventListener('resize', handleResize);
-    document.body.addEventListener('click', e => {
-      const link = e.target.closest('.mobile-tabbar-item');
-      if (link) setTimeout(updateActiveTab, 100);
-    });
-  }
-})();
-
-// ========== УЛУЧШЕННАЯ АДАПТАЦИЯ СЛАЙДЕРОВ (горизонтальный скролл) ==========
-// Дополнительно инициализируем поведение для блоков, которые могут некорректно отображаться после загрузки
-(function() {
-  function fixSlidersOnMobile() {
-    if (window.innerWidth > 768) return;
-
-    // Для трендового слайдера: удаляем transform, если он был от кнопок
-    const sliderTrack = document.getElementById('sliderTrack');
-    if (sliderTrack) {
-      sliderTrack.style.transform = 'none';
-    }
-
-    // Для всех контейнеров с горизонтальным скроллом добавляем плавный скролл (опционально)
-    const scrollContainers = document.querySelectorAll('.stats-grid, .trending-slider, .categories-grid, .testimonials-grid');
-    scrollContainers.forEach(container => {
-      container.style.scrollBehavior = 'smooth';
-    });
-  }
-
-  // Запускаем после загрузки DOM
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fixSlidersOnMobile);
-  } else {
-    fixSlidersOnMobile();
-  }
-})();
-
-// ========== УЛУЧШЕНИЕ ДЛЯ ТЕМНОЙ/СВЕТЛОЙ ТЕМЫ НА МОБИЛЬНОЙ ПАНЕЛИ ==========
-// Обеспечиваем правильную смену цвета таббара при изменении темы
-(function() {
-  function updateTabbarTheme() {
-    const tabbar = document.querySelector('.mobile-tabbar');
-    if (!tabbar) return;
-    const theme = document.documentElement.getAttribute('data-theme');
-    if (theme === 'dark') {
-      tabbar.style.background = 'rgba(0,0,0,0.85)';
-      tabbar.style.borderTopColor = 'rgba(255,255,255,0.1)';
-    } else {
-      tabbar.style.background = 'rgba(255,255,255,0.85)';
-      tabbar.style.borderTopColor = 'rgba(0,0,0,0.1)';
-    }
-  }
-
-  // Наблюдатель за изменением темы
-  const observer = new MutationObserver(() => updateTabbarTheme());
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateTabbarTheme);
-  } else {
-    updateTabbarTheme();
   }
 })();
