@@ -1350,13 +1350,14 @@ select {
     text-align: center;
   }
   
+/* Подключать только если ширина <= 768px */
 @media (max-width: 768px) {
-    /* 1. Грохаем мусор */
+    /* Скрываем старый мусор */
     .share-button, .share-btn, #fixed-share-link, .glass-nav .nav-links, .glass-nav .select-group {
         display: none !important;
     }
 
-    /* 2. Панель - стильное темное стекло */
+    /* Нижняя панель */
     .mobile-bottom-bar {
         position: fixed !important;
         bottom: 0 !important;
@@ -1372,9 +1373,7 @@ select {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         padding: 0 !important;
     }
-
-    /* 3. Кнопки в панели - никаких белых рамок! */
-	.mobile-bottom-bar button {
+    .mobile-bottom-bar button {
         background: none !important;
         border: none !important;
         color: #fff !important;
@@ -1382,39 +1381,86 @@ select {
         flex-direction: column !important;
         align-items: center !important;
         flex: 1 !important;
-        font-size: 12px !important; /* Текст чуть крупнее */
+        font-size: 12px !important;
         font-weight: 600 !important;
         text-transform: uppercase;
-        gap: 2px !important; /* Расстояние между иконкой и текстом */
+        gap: 4px !important;
+    }
+    .mobile-bottom-bar button span {
+        font-size: 10px;
     }
 
-    /* Сами иконки/эмодзи в панели - теперь реально крупные */
-    .mobile-bottom-bar .emoji {
-        font-size: 28px !important; /* Увеличил с 20px до 28px */
-        line-height: 1 !important;
-        display: block !important;
+    /* Кастомная панель шаринга (плавающая кнопка + выезжающие иконки) */
+    .mobile-share-fab {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        z-index: 1000001;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .mobile-share-trigger {
+        width: 56px;
+        height: 56px;
+        border-radius: 28px;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: 0.2s;
+    }
+    .mobile-share-trigger svg {
+        width: 28px;
+        height: 28px;
+    }
+    .mobile-share-panel {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        background: #1a1a1a;
+        border-radius: 20px;
+        padding: 12px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 260px;
+        backdrop-filter: blur(8px);
+        border: 1px solid #333;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: 0.2s ease;
+    }
+    .mobile-share-panel.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    .share-icon-btn {
+        width: 48px;
+        height: 48px;
+        background: #2a2a2a;
+        border: none;
+        border-radius: 24px;
+        font-size: 26px;
+        cursor: pointer;
+        transition: 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .share-icon-btn:active {
+        transform: scale(0.96);
+        background: #3a3a3a;
     }
 
-    /* Иконки в выезжающем меню (Бургер) */
-    .drawer-links a {
-        display: flex !important;
-        align-items: center !important;
-        gap: 15px !important;
-        font-size: 1.3rem !important;
-        text-align: left !important; /* Чёбы иконка была слева от текста */
-    }
-
-    .drawer-links a .emoji {
-        font-size: 24px !important; /* Крупные иконки в списке */
-    }
-}
-
-    .mobile-bottom-bar i, .mobile-bottom-bar span.emoji {
-        font-size: 20px !important;
-        margin-bottom: 4px;
-    }
-
-    /* 4. Шторки меню - черные и ровные */
+    /* Бургер и настройки (выезжающие снизу) */
     .burger-drawer, .settings-screen {
         position: fixed !important;
         bottom: -110%;
@@ -1428,23 +1474,58 @@ select {
         box-sizing: border-box;
         color: #fff;
     }
-
-    .burger-drawer.active, .settings-screen.active { bottom: 0; }
-
-    /* 5. Кнопки внутри меню - чёбы не как у бомжа */
-    .drawer-links a, .sub-btn, .a11y-main-btn {
-        display: block;
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 10px;
-        background: #1a1a1a !important;
-        color: #fff !important;
-        text-decoration: none;
-        border-radius: 12px;
-        border: 1px solid #333 !important;
-        text-align: center;
-        box-sizing: border-box;
+    .burger-drawer.active, .settings-screen.active {
+        bottom: 0;
     }
-
-    .a11y-main-btn.active { border-color: #E2241C !important; color: #E2241C !important; }
+    .drawer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+    .drawer-header button {
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: white;
+        cursor: pointer;
+    }
+    .drawer-links a {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 14px 20px;
+        background: #1a1a1a;
+        border-radius: 14px;
+        margin-bottom: 12px;
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
+        border: 1px solid #333;
+    }
+    .setting-grid, .lang-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 20px 0;
+    }
+    .lang-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .sub-btn, .a11y-main-btn {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        color: white;
+        padding: 12px;
+        border-radius: 14px;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+    }
+    .a11y-main-btn.active {
+        border-color: #E2241C;
+        color: #E2241C;
+    }
 }

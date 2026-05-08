@@ -972,80 +972,179 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 (function() {
-    if (window.innerWidth > 768) return;
+    if (window.innerWidth > 768) return; // только для мобильных
 
-    // 1. СОЗДАЁМ нижнюю панель (сначала создаём переменную, потом пишем внутрь!)
+    // ------------------- ОПРЕДЕЛЕНИЕ ТЕКУЩЕГО ЯЗЫКА -------------------
+    function getCurrentLang() {
+        // По HTML-атрибуту lang или по URL
+        const htmlLang = document.documentElement.lang || '';
+        if (htmlLang.startsWith('en')) return 'en';
+        if (location.pathname.startsWith('/en/')) return 'en';
+        return 'ru';
+    }
+    const currentLang = getCurrentLang();
+
+    // ------------------- ЛОКАЛИЗОВАННЫЕ ТЕКСТЫ -------------------
+    const langData = {
+        ru: {
+            menu: 'Меню',
+            repost: 'Репост',
+            settings: 'Настройки',
+            navTitle: 'Навигация',
+            links: [
+                { emoji: '🏠', text: 'Главная', href: '/' },
+                { emoji: '🖼️', text: 'Мемы', href: '/memes/' },
+                { emoji: '🗺️', text: 'Карта сайта', href: '/map/' },
+                { emoji: '📝', text: 'О проекте', href: '/about/' },
+                { emoji: '💰', text: 'Поддержать', href: '/support/' }
+            ],
+            settingsTitle: '⚙️ Настройки',
+            a11yLabel: '♿ Версия для слабовидящих:',
+            a11yOff: 'ВЫКЛ',
+            a11yOn: 'ВКЛ',
+            copyTooltip: 'Ссылка скопирована!'
+        },
+        en: {
+            menu: 'Menu',
+            repost: 'Share',
+            settings: 'Settings',
+            navTitle: 'Navigation',
+            links: [
+                { emoji: '🏠', text: 'Home', href: '/en/' },
+                { emoji: '🖼️', text: 'Memes', href: '/en/memes/' },
+                { emoji: '🗺️', text: 'Sitemap', href: '/en/map/' },
+                { emoji: '📝', text: 'About', href: '/en/about/' },
+                { emoji: '💰', text: 'Donate', href: '/en/support/' }
+            ],
+            settingsTitle: '⚙️ Settings',
+            a11yLabel: '♿ Accessibility mode:',
+            a11yOff: 'OFF',
+            a11yOn: 'ON',
+            copyTooltip: 'Link copied!'
+        }
+    };
+    const t = langData[currentLang];
+
+    // ------------------- СОЗДАНИЕ НИЖНЕЙ ПАНЕЛИ -------------------
     const bottomBar = document.createElement('div');
     bottomBar.className = 'mobile-bottom-bar';
     bottomBar.innerHTML = `
-        <button id="openBurgerBtn">☰<span>Меню</span></button>
-        <button id="shareSiteBtn">🔗<span>Репост</span></button>
-        <button id="openSettingsBtn">⚙️<span>Настройки</span></button>
+        <button id="openBurgerBtn">☰<span>${t.menu}</span></button>
+        <button id="shareSiteBtn">🔗<span>${t.repost}</span></button>
+        <button id="openSettingsBtn">⚙️<span>${t.settings}</span></button>
     `;
     document.documentElement.appendChild(bottomBar);
 
-    // Логика для кнопки шаринга
-    const shareBtn = document.getElementById('shareSiteBtn');
-    shareBtn.onclick = async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'Мемотека',
-                    text: 'Зацени ровные мемасы в Мемотеке!',
-                    url: window.location.href
-                });
-            } catch (err) {
-                console.log('Юзер передумал шарить');
-            }
-        } else {
-            alert('Твой браузер не вывозит шаринг. Просто скопируй ссылку из адресной строки, бро!');
-        }
-    };
+    // ------------------- КАСТОМНАЯ ПАНЕЛЬ ШАРИНГА -------------------
+    const shareFab = document.createElement('div');
+    shareFab.className = 'mobile-share-fab';
+    shareFab.innerHTML = `
+        <button class="mobile-share-trigger">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+        </button>
+        <div class="mobile-share-panel"></div>
+    `;
+    document.body.appendChild(shareFab);
 
-    // 2. Создаём выезжающее Бургер-меню
+    const shareTrigger = shareFab.querySelector('.mobile-share-trigger');
+    const sharePanel = shareFab.querySelector('.mobile-share-panel');
+
+    // Набор соцсетей (иконки используем emoji или реальные img – адаптируй пути)
+    const networks = [
+        { name: 'telegram', icon: '📩', url: (u,t) => `https://t.me/share/url?url=${encodeURIComponent(u)}&text=${encodeURIComponent(t)}` },
+        { name: 'whatsapp', icon: '💬', url: (u,t) => `https://api.whatsapp.com/send?text=${encodeURIComponent(t+' '+u)}` },
+        { name: 'vk', icon: '📢', url: (u,t) => `https://vk.com/share.php?url=${encodeURIComponent(u)}&title=${encodeURIComponent(t)}` },
+        { name: 'x', icon: '🐦', url: (u,t) => `https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}` },
+        { name: 'facebook', icon: '📘', url: (u) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(u)}` },
+        { name: 'viber', icon: '📱', url: (u,t) => `viber://forward?text=${encodeURIComponent(t+' '+u)}` },
+        { name: 'ok', icon: '👥', url: (u,t) => `https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=${encodeURIComponent(u)}&st.comments=${encodeURIComponent(t)}` }
+    ];
+
+    function buildSharePanel() {
+        sharePanel.innerHTML = '';
+        networks.forEach(net => {
+            const btn = document.createElement('button');
+            btn.className = 'share-icon-btn';
+            btn.innerHTML = `<span>${net.icon}</span>`;
+            btn.addEventListener('click', () => {
+                const url = window.location.href;
+                const title = document.title;
+                const shareUrl = net.url(url, title);
+                if (net.name === 'viber') {
+                    window.open(shareUrl, '_blank');
+                } else {
+                    window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+                }
+                sharePanel.classList.remove('show');
+            });
+            sharePanel.appendChild(btn);
+        });
+        // Кнопка копирования ссылки
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'share-icon-btn copy-btn';
+        copyBtn.innerHTML = `<span>🔗</span>`;
+        copyBtn.addEventListener('click', async () => {
+            await navigator.clipboard.writeText(window.location.href);
+            const originalTitle = shareTrigger.title;
+            shareTrigger.title = t.copyTooltip;
+            setTimeout(() => { shareTrigger.title = originalTitle; }, 1500);
+            sharePanel.classList.remove('show');
+        });
+        sharePanel.appendChild(copyBtn);
+    }
+    buildSharePanel();
+
+    shareTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sharePanel.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+        if (!shareFab.contains(e.target)) sharePanel.classList.remove('show');
+    });
+
+    // ------------------- БУРГЕР-МЕНЮ (локализованное) -------------------
     const burgerMenu = document.createElement('div');
     burgerMenu.className = 'burger-drawer';
+    const linksHtml = t.links.map(link => `<a href="${link.href}">${link.emoji} ${link.text}</a>`).join('');
     burgerMenu.innerHTML = `
         <div class="drawer-header">
-            <h3>Навигация</h3>
+            <h3>${t.navTitle}</h3>
             <button id="closeBurgerBtn">&times;</button>
         </div>
         <nav class="drawer-links">
-            <a href="/">🏠 Главная</a>
-            <a href="/memes/">🖼️ Мемы</a>
-            <a href="/map/">🗺️ Карта сайта</a>
-            <a href="/about/">📝 О проекте</a>
-            <a href="/support/">💰 Поддержать</a>
+            ${linksHtml}
         </nav>
     `;
     document.documentElement.appendChild(burgerMenu);
 
-    // 3. Экран настроек
+    // ------------------- ЭКРАН НАСТРОЕК -------------------
     const settingsScreen = document.createElement('div');
     settingsScreen.className = 'settings-screen';
     settingsScreen.innerHTML = `
         <div class="drawer-header">
-            <h3>⚙️ Настройки</h3>
+            <h3>${t.settingsTitle}</h3>
             <button id="closeSettingsBtn">&times;</button>
         </div>
         <div class="setting-item">
             <button id="mobileA11yBtn" class="a11y-main-btn">
-                ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
+                ${t.a11yLabel} <span>${localStorage.getItem('accessibilityMode') === 'true' ? t.a11yOn : t.a11yOff}</span>
             </button>
         </div>
-        <div class="setting-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 20px;">
-            <button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
-            <button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
-            <button class="sub-btn" onclick="if(window.setTheme) setTheme('system')">🖥️ Системная</button>
+        <div class="setting-grid">
+            <button class="sub-btn theme-btn" data-theme="dark">🌙 Тёмная</button>
+            <button class="sub-btn theme-btn" data-theme="light">☀️ Светлая</button>
+            <button class="sub-btn theme-btn" data-theme="system">🖥️ Системная</button>
         </div>
-        <div class="lang-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-            <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
-            <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
+        <div class="lang-grid">
+            <button class="sub-btn lang-btn" data-lang="ru">🇷🇺 RU</button>
+            <button class="sub-btn lang-btn" data-lang="en">🇺🇸 EN</button>
         </div>
     `;
     document.documentElement.appendChild(settingsScreen);
 
-    // --- ЛОГИКА ---
+    // ------------------- ЛОГИКА КНОПОК -------------------
     const burgerBtn = document.getElementById('openBurgerBtn');
     const closeBurger = document.getElementById('closeBurgerBtn');
     const settingsBtn = document.getElementById('openSettingsBtn');
@@ -1056,19 +1155,49 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsBtn.onclick = () => settingsScreen.classList.add('active');
     closeSettings.onclick = () => settingsScreen.classList.remove('active');
 
+    // Режим доступности
     const a11yBtn = document.getElementById('mobileA11yBtn');
-    a11yBtn.onclick = function() {
-        if (typeof window.setAccessibilityMode === 'function') {
-            const state = localStorage.getItem('accessibilityMode') !== 'true';
-            window.setAccessibilityMode(state);
-            this.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
-            this.classList.toggle('active', state);
-            if (state) setTimeout(() => settingsScreen.classList.remove('active'), 500);
-        }
-    };
-
-    if (localStorage.getItem('accessibilityMode') === 'true') {
-        a11yBtn.querySelector('span').innerText = 'ВКЛ';
-        a11yBtn.classList.add('active');
+    function updateA11yButton() {
+        const state = localStorage.getItem('accessibilityMode') === 'true';
+        const span = a11yBtn.querySelector('span');
+        if (span) span.innerText = state ? t.a11yOn : t.a11yOff;
+        a11yBtn.classList.toggle('active', state);
     }
+    a11yBtn.onclick = function() {
+        const newState = localStorage.getItem('accessibilityMode') !== 'true';
+        if (typeof window.setAccessibilityMode === 'function') {
+            window.setAccessibilityMode(newState);
+        } else {
+            localStorage.setItem('accessibilityMode', newState);
+            document.body.classList.toggle('accessibility-mode', newState);
+        }
+        updateA11yButton();
+        if (newState) setTimeout(() => settingsScreen.classList.remove('active'), 500);
+    };
+    updateA11yButton();
+
+    // Переключение темы (если есть глобальная функция)
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            if (typeof window.setTheme === 'function') window.setTheme(theme);
+            else localStorage.setItem('theme', theme);
+        });
+    });
+
+    // Умное переключение языка – сохраняем текущий путь, меняя префикс
+    function switchLanguage(newLang) {
+        let path = window.location.pathname;
+        if (currentLang === 'ru' && newLang === 'en') {
+            path = '/en' + (path === '/' ? '' : path);
+        } else if (currentLang === 'en' && newLang === 'ru') {
+            path = path.replace(/^\/en/, '') || '/';
+        } else {
+            return;
+        }
+        window.location.href = path + window.location.search + window.location.hash;
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
+    });
 })();
