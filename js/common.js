@@ -974,14 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
     if (window.innerWidth > 768) return;
 
-    // 1. ВЫПИЛИВАЕМ СТАРЬЁ ИЗ ХЕДЕРА
-    // Убираем старые ссылки, дропдауны и кнопки, которые теперь в бургере
-    const oldNav = document.querySelector('.glass-nav .nav-links');
-    const oldSelects = document.querySelector('.glass-nav .select-group');
-    if (oldNav) oldNav.remove();
-    if (oldSelects) oldSelects.remove();
-
-    // 2. СОЗДАЁМ НИЖНЮЮ ПАНЕЛЬ
+    // 1. Создаём нижнюю панель
     const bottomBar = document.createElement('div');
     bottomBar.className = 'mobile-bottom-bar';
     bottomBar.innerHTML = `
@@ -990,73 +983,83 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.documentElement.appendChild(bottomBar);
 
-    // 3. БУРГЕР-МЕНЮ
+    // 2. Создаём Меню (Бургер)
     const burgerMenu = document.createElement('div');
     burgerMenu.className = 'burger-drawer';
     burgerMenu.innerHTML = `
         <div class="drawer-header">
-            <h3>Меню</h3>
-            <button id="closeBurgerBtn">&times;</button>
+            <h3 style="color:#fff; margin:0;">Навигация</h3>
+            <button id="closeBurgerBtn" style="background:none; border:none; color:#fff; font-size:2rem;">&times;</button>
         </div>
         <nav class="drawer-links">
             <a href="/">🏠 Главная</a>
             <a href="/memes/">🖼️ Мемы</a>
-            <a href="/map/">🗺️ Карта</a>
-            <a href="/about/">📝 О проекте</a>
+            <a href="/map/">🗺️ Карта сайта</a>
+            <a href="/support/">💰 Поддержать</a>
         </nav>
     `;
     document.documentElement.appendChild(burgerMenu);
 
-    // 4. НАСТРОЙКИ (С СИСТЕМНОЙ ТЕМОЙ)
+    // 3. Создаём Настройки (с системной темой!)
     const settingsScreen = document.createElement('div');
     settingsScreen.className = 'settings-screen';
     settingsScreen.innerHTML = `
         <div class="drawer-header">
-            <h3>⚙️ Настройки</h3>
-            <button id="closeSettingsBtn">&times;</button>
+            <h3 style="color:#fff; margin:0;">Настройки</h3>
+            <button id="closeSettingsBtn" style="background:none; border:none; color:#fff; font-size:2rem;">&times;</button>
         </div>
-        <div class="setting-item">
-            <button id="mobileA11yBtn" class="a11y-main-btn">
-                ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
-            </button>
-        </div>
+        
+        <button id="mobileA11yBtn" class="a11y-main-btn">
+            ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
+        </button>
+
+        <p style="color:#aaa; font-size:0.9rem; margin-bottom:10px;">Тема оформления</p>
         <div class="setting-grid">
-            <p style="grid-column: 1/3; color: #aaa; margin: 10px 0 0;">🎨 Тема:</p>
-            <button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Свет</button>
-            <button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тьма</button>
-            <button class="sub-btn" style="grid-column: 1/3;" onclick="if(window.setTheme) setTheme('system')">🖥️ Системная</button>
-            
-            <p style="grid-column: 1/3; color: #aaa; margin: 10px 0 0;">🌐 Язык:</p>
-            <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
-            <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
+            <button onclick="setTheme('light')">☀️ Светлая</button>
+            <button onclick="setTheme('dark')">🌙 Тёмная</button>
+            <button onclick="setTheme('system')" style="grid-column: span 2;">💻 Системная тема</button>
+        </div>
+
+        <p style="color:#aaa; font-size:0.9rem; margin-bottom:10px;">Выбор языка</p>
+        <div class="setting-grid">
+            <button onclick="location.href='/ru/'">🇷🇺 Русский</button>
+            <button onclick="location.href='/en/'">🇺🇸 English</button>
         </div>
     `;
     document.documentElement.appendChild(settingsScreen);
 
-    // --- ЛОГИКА КНОПОК ---
-    const burgerBtn = document.getElementById('openBurgerBtn');
-    const closeBurger = document.getElementById('closeBurgerBtn');
-    const settingsBtn = document.getElementById('openSettingsBtn');
-    const closeSettings = document.getElementById('closeSettingsBtn');
+    // УПРАВЛЕНИЕ
+    const elements = {
+        burgerBtn: document.getElementById('openBurgerBtn'),
+        closeBurger: document.getElementById('closeBurgerBtn'),
+        settingsBtn: document.getElementById('openSettingsBtn'),
+        closeSettings: document.getElementById('closeSettingsBtn'),
+        a11yBtn: document.getElementById('mobileA11yBtn')
+    };
 
-    burgerBtn.onclick = () => burgerMenu.classList.add('active');
-    closeBurger.onclick = () => burgerMenu.classList.remove('active');
-    settingsBtn.onclick = () => settingsScreen.classList.add('active');
-    closeSettings.onclick = () => settingsScreen.classList.remove('active');
+    elements.burgerBtn.onclick = () => burgerMenu.classList.add('active');
+    elements.closeBurger.onclick = () => burgerMenu.classList.remove('active');
+    
+    elements.settingsBtn.onclick = () => settingsScreen.classList.add('active');
+    elements.closeSettings.onclick = () => settingsScreen.classList.remove('active');
 
-    // Кнопка слабовидящих
-    const a11yBtn = document.getElementById('mobileA11yBtn');
-    a11yBtn.onclick = function() {
+    // Кнопка для слабовидящих (твоя функция должна быть в window)
+    elements.a11yBtn.onclick = function() {
         if (typeof window.setAccessibilityMode === 'function') {
-            const state = localStorage.getItem('accessibilityMode') !== 'true';
-            window.setAccessibilityMode(state);
-            this.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
-            this.classList.toggle('active', state);
+            const isAct = localStorage.getItem('accessibilityMode') === 'true';
+            window.setAccessibilityMode(!isAct);
+            updateA11yUI(!isAct);
+            if (!isAct) setTimeout(() => settingsScreen.classList.remove('active'), 500);
         }
     };
 
-    if (localStorage.getItem('accessibilityMode') === 'true') {
-        a11yBtn.querySelector('span').innerText = 'ВКЛ';
-        a11yBtn.classList.add('active');
+    function updateA11yUI(state) {
+        elements.a11yBtn.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
+        elements.a11yBtn.classList.toggle('active', state);
     }
+
+    // Инициализация при загрузке
+    if (localStorage.getItem('accessibilityMode') === 'true') updateA11yUI(true);
+
+    // Закрытие по клику на оверлей (вне шторки) — по желанию
 })();
