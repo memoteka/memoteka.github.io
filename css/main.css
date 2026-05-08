@@ -1422,20 +1422,23 @@ select {
 
   /* Нижняя панель навигации */
   .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--surface-glass);
-    backdrop-filter: blur(16px);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0.5rem 0.5rem;
-    z-index: 100;
-    box-sizing: border-box;
-  }
+		position: fixed !important; /* Класть на все другие правила */
+		bottom: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: 100vw; /* На всю ширину экрана */
+		height: 60px; /* Фиксированная высота */
+		background: var(--surface-glass, #111); /* Если переменная не подгрузилась, будет тёмным */
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px); /* Для Сафари, чёбы не лагало */
+		border-top: 1px solid var(--border, #333);
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		z-index: 9999; /* Чёбы была выше любого мусора на сайте */
+		padding-bottom: env(safe-area-inset-bottom); /* Фикс для айфонов с "челками" снизу */
+		box-sizing: border-box;
+	}
   .bottom-nav button, .bottom-nav a {
     background: none;
     border: none;
@@ -1457,8 +1460,8 @@ select {
 
   /* Отступ для контента, чтобы не перекрывался нижней панелью */
   body {
-    padding-bottom: 70px;
-  }
+		padding-bottom: 80px !important; 
+	}
 }
 
 /* Десктопная версия: скрываем мобильные элементы */
