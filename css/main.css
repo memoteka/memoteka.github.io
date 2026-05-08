@@ -1351,6 +1351,11 @@ select {
   }
   
 @media (max-width: 768px) {
+	.share-button, 
+    [class*="share-btn"], 
+    #fixed-share-link { 
+        display: none !important; 
+    }
 	/* Скрываем навигацию и кнопки в хедере */
     .glass-nav .nav-links, 
     .glass-nav .select-group,

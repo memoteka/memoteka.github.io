@@ -975,13 +975,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth > 768) return;
 
     // 1. Создаём нижнюю панель всего с двумя кнопками
-    const bottomBar = document.createElement('div');
-    bottomBar.className = 'mobile-bottom-bar';
-    bottomBar.innerHTML = `
-        <button id="openBurgerBtn">☰<span>Меню</span></button>
-        <button id="openSettingsBtn">⚙️<span>Настройки</span></button>
-    `;
-    document.documentElement.appendChild(bottomBar);
+	// Находим место, где создаётся bottomBar, и обновляем innerHTML
+	bottomBar.innerHTML = `
+		<button id="openBurgerBtn">☰<span>Меню</span></button>
+		<button id="shareSiteBtn">🔗<span>Репост</span></button>
+		<button id="openSettingsBtn">⚙️<span>Настройки</span></button>
+	`;
+
+	// Добавляем логику для кнопки шаринга
+	const shareBtn = bottomBar.querySelector('#shareSiteBtn');
+	shareBtn.onclick = async () => {
+		if (navigator.share) {
+			try {
+				await navigator.share({
+					title: 'Мемотека',
+					text: 'Зацени ровные мемасы в Мемотеке!',
+					url: window.location.href
+				});
+			} catch (err) {
+				console.log('Юзер передумал шарить');
+			}
+		} else {
+			// Если браузер — древнее ведро и не умеет в share
+			alert('Твой браузер не вывозит шаринг. Просто скопируй ссылку из адресной строки, бро!');
+		}
+	};
 
     // 2. Создаём выезжающее Бургер-меню (Navigation Drawer)
     const burgerMenu = document.createElement('div');
