@@ -974,34 +974,35 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
     if (window.innerWidth > 768) return;
 
-    // 1. Создаём нижнюю панель всего с двумя кнопками
-	// Находим место, где создаётся bottomBar, и обновляем innerHTML
-	bottomBar.innerHTML = `
-		<button id="openBurgerBtn">☰<span>Меню</span></button>
-		<button id="shareSiteBtn">🔗<span>Репост</span></button>
-		<button id="openSettingsBtn">⚙️<span>Настройки</span></button>
-	`;
+    // 1. СОЗДАЁМ нижнюю панель (сначала создаём переменную, потом пишем внутрь!)
+    const bottomBar = document.createElement('div');
+    bottomBar.className = 'mobile-bottom-bar';
+    bottomBar.innerHTML = `
+        <button id="openBurgerBtn">☰<span>Меню</span></button>
+        <button id="shareSiteBtn">🔗<span>Репост</span></button>
+        <button id="openSettingsBtn">⚙️<span>Настройки</span></button>
+    `;
+    document.documentElement.appendChild(bottomBar);
 
-	// Добавляем логику для кнопки шаринга
-	const shareBtn = bottomBar.querySelector('#shareSiteBtn');
-	shareBtn.onclick = async () => {
-		if (navigator.share) {
-			try {
-				await navigator.share({
-					title: 'Мемотека',
-					text: 'Зацени ровные мемасы в Мемотеке!',
-					url: window.location.href
-				});
-			} catch (err) {
-				console.log('Юзер передумал шарить');
-			}
-		} else {
-			// Если браузер — древнее ведро и не умеет в share
-			alert('Твой браузер не вывозит шаринг. Просто скопируй ссылку из адресной строки, бро!');
-		}
-	};
+    // Логика для кнопки шаринга
+    const shareBtn = document.getElementById('shareSiteBtn');
+    shareBtn.onclick = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Мемотека',
+                    text: 'Зацени ровные мемасы в Мемотеке!',
+                    url: window.location.href
+                });
+            } catch (err) {
+                console.log('Юзер передумал шарить');
+            }
+        } else {
+            alert('Твой браузер не вывозит шаринг. Просто скопируй ссылку из адресной строки, бро!');
+        }
+    };
 
-    // 2. Создаём выезжающее Бургер-меню (Navigation Drawer)
+    // 2. Создаём выезжающее Бургер-меню
     const burgerMenu = document.createElement('div');
     burgerMenu.className = 'burger-drawer';
     burgerMenu.innerHTML = `
@@ -1019,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.documentElement.appendChild(burgerMenu);
 
-    // 3. Экран настроек (оставляем твой движок для слабовидящих)
+    // 3. Экран настроек
     const settingsScreen = document.createElement('div');
     settingsScreen.className = 'settings-screen';
     settingsScreen.innerHTML = `
@@ -1032,15 +1033,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
             </button>
         </div>
-			<div class="setting-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 20px;">
-			<button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
-			<button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
-			<button class="sub-btn" onclick="if(window.setTheme) setTheme('system')">🖥️ Системная</button>
-		</div>
-		<div class="lang-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-			<button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
-			<button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
-		</div>
+        <div class="setting-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 20px;">
+            <button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
+            <button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
+            <button class="sub-btn" onclick="if(window.setTheme) setTheme('system')">🖥️ Системная</button>
+        </div>
+        <div class="lang-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+            <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
+            <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
+        </div>
     `;
     document.documentElement.appendChild(settingsScreen);
 
@@ -1050,15 +1051,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsBtn = document.getElementById('openSettingsBtn');
     const closeSettings = document.getElementById('closeSettingsBtn');
 
-    // Открыть/закрыть бургер
     burgerBtn.onclick = () => burgerMenu.classList.add('active');
     closeBurger.onclick = () => burgerMenu.classList.remove('active');
-
-    // Открыть/закрыть настройки
     settingsBtn.onclick = () => settingsScreen.classList.add('active');
     closeSettings.onclick = () => settingsScreen.classList.remove('active');
 
-    // Кнопка слабовидящих (связь с твоим кодом)
     const a11yBtn = document.getElementById('mobileA11yBtn');
     a11yBtn.onclick = function() {
         if (typeof window.setAccessibilityMode === 'function') {
