@@ -969,130 +969,86 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ========== МОБИЛЬНЫЕ УЛУЧШЕНИЯ (свайпы, жесты, тач-события) ==========
+// ========== ГАМБУРГЕР-МЕНЮ ДЛЯ МОБИЛЬНЫХ ==========
 (function() {
-  // Определяем мобильное устройство по touch-событиям
-  const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent) || 
-                   ('ontouchstart' in window) || 
-                   (navigator.maxTouchPoints > 0);
-
+  const isMobile = window.innerWidth <= 768;
   if (!isMobile) return;
 
-  // 1. Добавляем закрытие лайтбокса свайпом вниз
-  const lightboxEl = document.getElementById('lightbox');
-  if (lightboxEl) {
-    let touchStartY = 0;
-    let touchEndY = 0;
+  const navLinks = document.querySelector('.glass-nav .nav-links');
+  const glassNav = document.querySelector('.glass-nav');
+  if (!navLinks) return;
 
-    lightboxEl.addEventListener('touchstart', (e) => {
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-
-    lightboxEl.addEventListener('touchend', (e) => {
-      touchEndY = e.changedTouches[0].screenY;
-      const deltaY = touchEndY - touchStartY;
-      // Если свайп вниз больше 70 пикселей – закрываем лайтбокс
-      if (deltaY > 70 && lightboxEl.classList.contains('active')) {
-        if (typeof closeLightbox === 'function') closeLightbox();
-        else {
-          // fallback
-          lightboxEl.classList.remove('active');
-          if (currentMedia) {
-            currentMedia.pause();
-            currentMedia.src = '';
-            currentMedia = null;
-          }
-          lightboxEl.innerHTML = '';
-          const closeBtn = document.createElement('button');
-          closeBtn.className = 'close-lightbox';
-          closeBtn.innerHTML = '&times;';
-          closeBtn.onclick = closeLightbox;
-          lightboxEl.appendChild(closeBtn);
-          lightboxEl.onclick = (e) => {
-            if (e.target === lightboxEl) closeLightbox();
-          };
-        }
-        e.preventDefault();
-      }
-    });
+  // Создаём кнопку-бургер
+  let hamburger = document.querySelector('.hamburger');
+  if (!hamburger) {
+    hamburger = document.createElement('button');
+    hamburger.className = 'hamburger';
+    hamburger.setAttribute('aria-label', 'Меню');
+    hamburger.innerHTML = '<span></span><span></span><span></span>';
+    // Вставляем перед .nav-links или после .logo
+    const logo = glassNav.querySelector('.logo');
+    if (logo) logo.insertAdjacentElement('afterend', hamburger);
+    else glassNav.appendChild(hamburger);
   }
 
-  // 2. Горизонтальный свайп для слайдера трендов (если есть стрелки – их скрыли CSS, но оставим логику для тех, кто не отключил)
-  const sliderTrack = document.getElementById('sliderTrack');
-  if (sliderTrack) {
-    let startX = 0;
-    let scrollLeft = 0;
-    let isDragging = false;
-
-    sliderTrack.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].pageX - sliderTrack.offsetLeft;
-      scrollLeft = sliderTrack.scrollLeft;
-      isDragging = true;
-    }, { passive: true });
-
-    sliderTrack.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      const x = e.touches[0].pageX - sliderTrack.offsetLeft;
-      const walk = (x - startX) * 1.5; // скорость скролла
-      sliderTrack.scrollLeft = scrollLeft - walk;
-      e.preventDefault();
-    }, { passive: false });
-
-    sliderTrack.addEventListener('touchend', () => {
-      isDragging = false;
-    });
+  // Создаём оверлей
+  let overlay = document.querySelector('.menu-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'menu-overlay';
+    document.body.appendChild(overlay);
   }
 
-  // 3. Предотвращаем случайное увеличение при двойном тапе на карточках мемов, но оставляем открытие лайтбокса
-  const memeCards = document.querySelectorAll('.meme-card');
-  memeCards.forEach(card => {
-    card.addEventListener('touchstart', (e) => {
-      // Просто чтобы не было задержки 300ms (современные браузеры уже решили, но на всякий случай)
-    }, { passive: true });
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  }
+
+  function openMenu() {
+    navLinks.classList.add('open');
+    hamburger.classList.add('open');
+    overlay.classList.add('active');
+    document.body.classList.add('menu-open');
+  }
+
+  // Тоггл по кнопке
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (navLinks.classList.contains('open')) closeMenu();
+    else openMenu();
   });
 
-  // 4. Улучшаем кастомные выпадающие списки для мобил: они должны закрываться при выборе и не перекрываться
-  const dropdowns = document.querySelectorAll('.custom-dropdown');
-  dropdowns.forEach(dropdown => {
-    const trigger = dropdown.querySelector('.dropdown-trigger');
-    const menu = dropdown.querySelector('.dropdown-menu');
-    if (!trigger || !menu) return;
+  // Закрытие по клику на оверлей
+  overlay.addEventListener('click', closeMenu);
 
-    // При клике на триггер – закрываем другие открытые дропдауны
-    trigger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdowns.forEach(d => {
-        const otherMenu = d.querySelector('.dropdown-menu');
-        if (otherMenu && otherMenu !== menu && otherMenu.classList.contains('show')) {
-          otherMenu.classList.remove('show');
-        }
-      });
-      menu.classList.toggle('show');
-    });
-
-    // Закрытие при клике вне – уже есть в lang-switcher, но продублируем для надёжности
-    document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target)) {
-        menu.classList.remove('show');
-      }
+  // Закрытие при клике на любую ссылку внутри меню
+  const allLinks = navLinks.querySelectorAll('a, .dropdown-item');
+  allLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Даём небольшую задержку, чтобы переход успел сработать
+      setTimeout(closeMenu, 100);
     });
   });
 
-  // 5. Фикс для видео в лайтбоксе на iOS (чтобы не уходило в полноэкранный режим)
-  if (typeof openLightbox === 'function') {
-    const originalOpen = openLightbox;
-    window.openLightbox = function(url, type) {
-      originalOpen(url, type);
-      if (type === 'video') {
-        setTimeout(() => {
-          const video = document.querySelector('#lightbox video');
-          if (video) video.setAttribute('playsinline', 'true');
-        }, 50);
-      }
-    };
-  }
+  // При изменении размера окна на десктоп — убираем мобильное меню
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      closeMenu();
+      if (hamburger) hamburger.style.display = 'none';
+      if (overlay) overlay.style.display = 'none';
+      if (navLinks) navLinks.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    } else {
+      if (hamburger) hamburger.style.display = 'flex';
+      if (overlay) overlay.style.display = '';
+    }
+  });
 
-  // 6. Добавляем обработку свайпа вверх/вниз для закрытия модальных окон при длинной прокрутке – не нужно, так как лайтбокс уже закрывается свайпом.
-
-  console.log('Мобильные улучшения активированы');
+  // Чтобы дропдауны внутри мобильного меню не закрывали само меню
+  const dropdowns = navLinks.querySelectorAll('.custom-dropdown');
+  dropdowns.forEach(dd => {
+    dd.addEventListener('click', (e) => e.stopPropagation());
+  });
 })();
