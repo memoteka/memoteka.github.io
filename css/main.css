@@ -1351,6 +1351,24 @@ select {
   }
   
 @media (max-width: 768px) {
+	/* Прячем старый мусор в хедере наглухо */
+    .glass-nav .nav-links, 
+    .glass-nav .select-group,
+    .glass-nav .accessibility-btn {
+        display: none !important;
+    }
+
+    /* Растягиваем системную кнопку на всю ширину сетки */
+    .setting-grid .sub-btn[onclick*="system"] {
+        grid-column: 1 / span 2;
+        background: #333;
+        border-color: #555;
+    }
+
+    .setting-grid p {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     /* Панель внизу */
     .mobile-bottom-bar {
         position: fixed !important;

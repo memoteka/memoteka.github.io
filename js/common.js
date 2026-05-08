@@ -974,7 +974,14 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
     if (window.innerWidth > 768) return;
 
-    // 1. Создаём нижнюю панель всего с двумя кнопками
+    // 1. ВЫПИЛИВАЕМ СТАРЬЁ ИЗ ХЕДЕРА
+    // Убираем старые ссылки, дропдауны и кнопки, которые теперь в бургере
+    const oldNav = document.querySelector('.glass-nav .nav-links');
+    const oldSelects = document.querySelector('.glass-nav .select-group');
+    if (oldNav) oldNav.remove();
+    if (oldSelects) oldSelects.remove();
+
+    // 2. СОЗДАЁМ НИЖНЮЮ ПАНЕЛЬ
     const bottomBar = document.createElement('div');
     bottomBar.className = 'mobile-bottom-bar';
     bottomBar.innerHTML = `
@@ -983,25 +990,24 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.documentElement.appendChild(bottomBar);
 
-    // 2. Создаём выезжающее Бургер-меню (Navigation Drawer)
+    // 3. БУРГЕР-МЕНЮ
     const burgerMenu = document.createElement('div');
     burgerMenu.className = 'burger-drawer';
     burgerMenu.innerHTML = `
         <div class="drawer-header">
-            <h3>Навигация</h3>
+            <h3>Меню</h3>
             <button id="closeBurgerBtn">&times;</button>
         </div>
         <nav class="drawer-links">
             <a href="/">🏠 Главная</a>
             <a href="/memes/">🖼️ Мемы</a>
-            <a href="/map/">🗺️ Карта сайта</a>
+            <a href="/map/">🗺️ Карта</a>
             <a href="/about/">📝 О проекте</a>
-            <a href="/support/">💰 Поддержать</a>
         </nav>
     `;
     document.documentElement.appendChild(burgerMenu);
 
-    // 3. Экран настроек (оставляем твой движок для слабовидящих)
+    // 4. НАСТРОЙКИ (С СИСТЕМНОЙ ТЕМОЙ)
     const settingsScreen = document.createElement('div');
     settingsScreen.className = 'settings-screen';
     settingsScreen.innerHTML = `
@@ -1015,29 +1021,30 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         </div>
         <div class="setting-grid">
-            <button onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
-            <button onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
-            <button onclick="location.href='/ru/'">🇷🇺 RU</button>
-            <button onclick="location.href='/en/'">🇺🇸 EN</button>
+            <p style="grid-column: 1/3; color: #aaa; margin: 10px 0 0;">🎨 Тема:</p>
+            <button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Свет</button>
+            <button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тьма</button>
+            <button class="sub-btn" style="grid-column: 1/3;" onclick="if(window.setTheme) setTheme('system')">🖥️ Системная</button>
+            
+            <p style="grid-column: 1/3; color: #aaa; margin: 10px 0 0;">🌐 Язык:</p>
+            <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
+            <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
         </div>
     `;
     document.documentElement.appendChild(settingsScreen);
 
-    // --- ЛОГИКА ---
+    // --- ЛОГИКА КНОПОК ---
     const burgerBtn = document.getElementById('openBurgerBtn');
     const closeBurger = document.getElementById('closeBurgerBtn');
     const settingsBtn = document.getElementById('openSettingsBtn');
     const closeSettings = document.getElementById('closeSettingsBtn');
 
-    // Открыть/закрыть бургер
     burgerBtn.onclick = () => burgerMenu.classList.add('active');
     closeBurger.onclick = () => burgerMenu.classList.remove('active');
-
-    // Открыть/закрыть настройки
     settingsBtn.onclick = () => settingsScreen.classList.add('active');
     closeSettings.onclick = () => settingsScreen.classList.remove('active');
 
-    // Кнопка слабовидящих (связь с твоим кодом)
+    // Кнопка слабовидящих
     const a11yBtn = document.getElementById('mobileA11yBtn');
     a11yBtn.onclick = function() {
         if (typeof window.setAccessibilityMode === 'function') {
@@ -1045,7 +1052,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.setAccessibilityMode(state);
             this.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
             this.classList.toggle('active', state);
-            if (state) setTimeout(() => settingsScreen.classList.remove('active'), 500);
         }
     };
 
