@@ -1014,12 +1014,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
             </button>
         </div>
-        <div class="setting-grid">
-            <button onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
-            <button onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
-            <button onclick="location.href='/ru/'">🇷🇺 RU</button>
-            <button onclick="location.href='/en/'">🇺🇸 EN</button>
-        </div>
+			<div class="setting-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 20px;">
+			<button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
+			<button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
+			<button class="sub-btn" onclick="if(window.setTheme) setTheme('system')">🖥️ Системная</button>
+		</div>
+		<div class="lang-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+			<button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
+			<button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
+		</div>
     `;
     document.documentElement.appendChild(settingsScreen);
 

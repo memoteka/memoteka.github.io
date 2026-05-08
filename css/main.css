@@ -1412,11 +1412,16 @@ select {
 
     /* Сетка кнопок в настройках */
     .setting-grid {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
-    }
-    .setting-grid button {
-        background: #222; border: 1px solid #444; color: #fff; padding: 12px; border-radius: 10px;
-    }
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr !important; /* Три колонки под темы */
+    gap: 8px !important; 
+    margin-top: 20px;
+	}
+
+	.setting-grid button {
+		font-size: 0.8rem !important; /* Чуть уменьшил, чтобы "Системная" влезла */
+		padding: 10px 5px !important;
+	}
 
     .a11y-main-btn {
         width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #E2241C;
