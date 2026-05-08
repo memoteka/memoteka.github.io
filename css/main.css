@@ -1350,100 +1350,79 @@ select {
     text-align: center;
   }
   
-/* Ультимативный мобильный фикс */
 @media (max-width: 768px) {
-    /* Фиксируем нижнюю панель намертво к ЭКРАНУ */
+    /* Панель внизу */
     .mobile-bottom-bar {
         position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        height: 65px !important;
-        background: rgba(15, 15, 15, 0.9) !important; /* Глухой тёмный фон с размытием */
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
+        height: 60px !important;
+        background: #000 !important;
         display: flex !important;
-        justify-content: space-around;
-        align-items: center;
-        z-index: 999999 !important; /* Выше всего на свете */
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        justify-content: space-around !important;
+        align-items: center !important;
+        z-index: 99999 !important;
+        border-top: 1px solid #222;
         padding-bottom: env(safe-area-inset-bottom);
-        box-sizing: border-box;
     }
 
-    .mobile-bottom-bar button, .mobile-bottom-bar a {
-        background: none;
-        border: none;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 0.7rem;
-        text-decoration: none;
-        flex: 1;
+    .mobile-bottom-bar button {
+        background: none; border: none; color: #fff;
+        display: flex; flex-direction: column; align-items: center;
+        font-size: 0.7rem; flex: 1; cursor: pointer;
     }
 
-    .mobile-bottom-bar i, .mobile-bottom-bar span.icon {
-        font-size: 1.5rem;
-        margin-bottom: 2px;
-    }
+    .mobile-bottom-bar button span { margin-top: 4px; }
 
-    /* Поднимаем кнопку репоста, чтобы не мешала */
-    .share-button, [class*="share"] {
-        bottom: 85px !important; 
-        z-index: 999998 !important;
-    }
-
-    /* Отступ для контента, чтобы не прятался за панелью */
-    body {
-        padding-bottom: 80px !important;
-    }
-
-    /* Модалка настроек (чистый экран) */
-    .settings-screen {
+    /* Выезжающее меню (Бургер) и Настройки */
+    .burger-drawer, .settings-screen {
         position: fixed;
-        top: 0;
+        bottom: -100%; /* Прячем вниз */
         left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: #000;
-        z-index: 1000000;
-        display: none;
-        flex-direction: column;
+        width: 100%;
+        height: auto;
+        max-height: 80vh; /* Не на весь экран, чёбы стильно было */
+        background: #111;
+        z-index: 100000;
+        transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         padding: 20px;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         box-sizing: border-box;
     }
 
-    .settings-screen.active {
-        display: flex;
+    .burger-drawer.active, .settings-screen.active {
+        bottom: 0; /* Выезжаем! */
     }
-}
 
-.a11y-main-btn {
-    width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    border: 2px solid #E2241C;
-    background: transparent;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.a11y-main-btn.active {
-    background: #E2241C;
-    box-shadow: 0 0 15px rgba(226, 36, 28, 0.5);
-}
-.sub-btn {
-    background: #222;
-    border: 1px solid #444;
-    color: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-}
-.setting-item {
-    text-align: left;
-    width: 100%;
+    .drawer-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;
+    }
+
+    .drawer-header h3 { margin: 0; color: #fff; }
+    .drawer-header button { background: none; border: none; color: #fff; font-size: 2rem; }
+
+    .drawer-links { display: flex; flex-direction: column; gap: 15px; }
+    .drawer-links a {
+        color: #fff; text-decoration: none; font-size: 1.2rem;
+        padding: 10px; border-radius: 10px; background: #1a1a1a;
+    }
+
+    /* Сетка кнопок в настройках */
+    .setting-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
+    }
+    .setting-grid button {
+        background: #222; border: 1px solid #444; color: #fff; padding: 12px; border-radius: 10px;
+    }
+
+    .a11y-main-btn {
+        width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #E2241C;
+        background: transparent; color: #fff; font-weight: bold;
+    }
+    .a11y-main-btn.active { background: #E2241C; }
+
+    body { padding-bottom: 70px !important; }
 }

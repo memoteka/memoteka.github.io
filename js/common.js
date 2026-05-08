@@ -974,76 +974,81 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
     if (window.innerWidth > 768) return;
 
-    // 1. Создаём нижнюю панель (как в ВК)
+    // 1. Создаём нижнюю панель всего с двумя кнопками
     const bottomBar = document.createElement('div');
     bottomBar.className = 'mobile-bottom-bar';
     bottomBar.innerHTML = `
-        <a href="/">🏠<span>Главная</span></a>
-        <a href="/memes/">🖼️<span>Мемы</span></a>
-        <a href="/map/">🗺️<span>Карта</span></a>
+        <button id="openBurgerBtn">☰<span>Меню</span></button>
         <button id="openSettingsBtn">⚙️<span>Настройки</span></button>
     `;
     document.documentElement.appendChild(bottomBar);
 
-    // 2. Создаём экран настроек (Settings Modal)
+    // 2. Создаём выезжающее Бургер-меню (Navigation Drawer)
+    const burgerMenu = document.createElement('div');
+    burgerMenu.className = 'burger-drawer';
+    burgerMenu.innerHTML = `
+        <div class="drawer-header">
+            <h3>Навигация</h3>
+            <button id="closeBurgerBtn">&times;</button>
+        </div>
+        <nav class="drawer-links">
+            <a href="/">🏠 Главная</a>
+            <a href="/memes/">🖼️ Мемы</a>
+            <a href="/map/">🗺️ Карта сайта</a>
+            <a href="/about/">📝 О проекте</a>
+            <a href="/support/">💰 Поддержать</a>
+        </nav>
+    `;
+    document.documentElement.appendChild(burgerMenu);
+
+    // 3. Экран настроек (оставляем твой движок для слабовидящих)
     const settingsScreen = document.createElement('div');
     settingsScreen.className = 'settings-screen';
     settingsScreen.innerHTML = `
-        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; color:#fff;">⚙️ Настройки</h2>
-            <button id="closeSettingsBtn" style="font-size:2.5rem; background:none; border:none; color:#fff; cursor:pointer;">&times;</button>
+        <div class="drawer-header">
+            <h3>⚙️ Настройки</h3>
+            <button id="closeSettingsBtn">&times;</button>
         </div>
-        
         <div class="setting-item">
-            <p style="color:#aaa; margin-bottom:10px;">Специальные возможности</p>
             <button id="mobileA11yBtn" class="a11y-main-btn">
                 ♿ Версия для слабовидящих: <span>ВЫКЛ</span>
             </button>
         </div>
-
-        <div class="setting-item" style="margin-top:30px;">
-            <p style="color:#aaa; margin-bottom:10px;">Внешний вид и язык</p>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <button class="sub-btn" onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
-                <button class="sub-btn" onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
-                <button class="sub-btn" onclick="location.href='/ru/'">🇷🇺 RU</button>
-                <button class="sub-btn" onclick="location.href='/en/'">🇺🇸 EN</button>
-            </div>
+        <div class="setting-grid">
+            <button onclick="if(window.setTheme) setTheme('dark')">🌙 Тёмная</button>
+            <button onclick="if(window.setTheme) setTheme('light')">☀️ Светлая</button>
+            <button onclick="location.href='/ru/'">🇷🇺 RU</button>
+            <button onclick="location.href='/en/'">🇺🇸 EN</button>
         </div>
     `;
     document.documentElement.appendChild(settingsScreen);
 
-    // Логика открытия/закрытия
-    const openBtn = document.getElementById('openSettingsBtn');
-    const closeBtn = document.getElementById('closeSettingsBtn');
+    // --- ЛОГИКА ---
+    const burgerBtn = document.getElementById('openBurgerBtn');
+    const closeBurger = document.getElementById('closeBurgerBtn');
+    const settingsBtn = document.getElementById('openSettingsBtn');
+    const closeSettings = document.getElementById('closeSettingsBtn');
+
+    // Открыть/закрыть бургер
+    burgerBtn.onclick = () => burgerMenu.classList.add('active');
+    closeBurger.onclick = () => burgerMenu.classList.remove('active');
+
+    // Открыть/закрыть настройки
+    settingsBtn.onclick = () => settingsScreen.classList.add('active');
+    closeSettings.onclick = () => settingsScreen.classList.remove('active');
+
+    // Кнопка слабовидящих (связь с твоим кодом)
     const a11yBtn = document.getElementById('mobileA11yBtn');
-
-    openBtn.onclick = () => settingsScreen.classList.add('active');
-    closeBtn.onclick = () => settingsScreen.classList.remove('active');
-
-    // ГЛАВНОЕ: Врубаем твой режим
     a11yBtn.onclick = function() {
         if (typeof window.setAccessibilityMode === 'function') {
-            const isNowActive = localStorage.getItem('accessibilityMode') === 'true';
-            const newState = !isNowActive;
-            
-            // Вызываем ТВОЮ функцию
-            window.setAccessibilityMode(newState);
-            
-            // Обновляем текст на кнопке
-            this.querySelector('span').innerText = newState ? 'ВКЛ' : 'ВЫКЛ';
-            this.classList.toggle('active', newState);
-            
-            // Если включили — закрываем настройки, чтобы увидеть панель управления (твою)
-            if (newState) {
-                setTimeout(() => settingsScreen.classList.remove('active'), 500);
-            }
-        } else {
-            alert('Братан, движок слабовидящих ещё не подвезли!');
+            const state = localStorage.getItem('accessibilityMode') !== 'true';
+            window.setAccessibilityMode(state);
+            this.querySelector('span').innerText = state ? 'ВКЛ' : 'ВЫКЛ';
+            this.classList.toggle('active', state);
+            if (state) setTimeout(() => settingsScreen.classList.remove('active'), 500);
         }
     };
 
-    // Проверка статуса при загрузке
     if (localStorage.getItem('accessibilityMode') === 'true') {
         a11yBtn.querySelector('span').innerText = 'ВКЛ';
         a11yBtn.classList.add('active');
