@@ -970,61 +970,60 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 (function() {
-  function createMobileBar() {
-    // 1. Убиваем старье, если оно есть
-    let oldBar = document.querySelector('.mobile-tabbar');
-    if (oldBar) oldBar.remove();
+  function initTabbar() {
+    // 1. Убиваем старье
+    const old = document.getElementById('force-mobile-bar');
+    if (old) old.remove();
 
-    // 2. Проверка на мобилку (до 768px)
-    if (window.innerWidth > 768) {
-      document.body.style.paddingBottom = '0';
-      return;
-    }
+    // 2. Только для мобил
+    if (window.innerWidth > 768) return;
 
-    // 3. Создаем таббар
+    // 3. Создаем элемент
     const bar = document.createElement('div');
-    bar.className = 'mobile-tabbar';
+    bar.id = 'force-mobile-bar';
 
-    // 4. ЖЕСТКИЕ СТИЛИ (чтобы точно фиксировался внизу экрана)
-    Object.assign(bar.style, {
-      position: 'fixed',
-      bottom: '0',
-      left: '0',
-      right: '0',
-      height: '60px',
-      display: 'flex',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      background: 'rgba(255, 255, 255, 0.9)', // Как у тебя было, стекло
-      backdropFilter: 'blur(20px)',
-      borderTop: '1px solid rgba(0,0,0,0.1)',
-      zIndex: '2147483647', // Максимальный z-index в браузере
-      paddingBottom: 'env(safe-area-inset-bottom)' // Отступ для айфонов
-    });
+    // 4. ЖЕСТОЧАЙШИЙ ИНЛАЙН-СТИЛЬ
+    const style = `
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 65px !important;
+      background: white !important;
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      z-index: 2147483647 !important;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
+      padding-bottom: env(safe-area-inset-bottom) !important;
+    `;
+    bar.style.cssText = style;
 
+    // 5. Контент (ссылки)
     const links = [
-      { name: 'Главная', href: '/ru/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' },
-      { name: 'Мемы', href: '/ru/memes/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>' },
-      { name: 'О нас', href: '/ru/about/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>' },
-      { name: 'Донат', href: '/ru/donate/', icon: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' }
+      { n: 'Главная', h: '/ru/', i: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
+      { n: 'Мемы', h: '/ru/memes/', i: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z' },
+      { n: 'О нас', h: '/ru/about/', i: 'M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z' }
     ];
 
-    bar.innerHTML = links.map(link => {
-      const isActive = window.location.pathname === link.href ? 'color: #3b82f6;' : 'color: #4b5563;';
-      return `
-        <a href="${link.href}" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; ${isActive} flex: 1;">
-          ${link.icon}
-          <span style="font-size: 10px; font-weight: 500;">${link.name}</span>
-        </a>
-      `;
-    }).join('');
+    bar.innerHTML = links.map(l => `
+      <a href="${l.h}" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#333;font-size:10px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="${l.i}"></path>
+        </svg>
+        <span>${l.n}</span>
+      </a>
+    `).join('');
 
-    // 5. Прячем в самый корень body, чтобы никакие контейнеры не мешали
-    document.body.insertAdjacentElement('beforeend', bar);
-    document.body.style.paddingBottom = '70px';
+    // 6. КРИТИЧЕСКИЙ МОМЕНТ: Вставляем прямо в документ, игнорируя всё
+    document.documentElement.appendChild(bar); 
+    
+    // Добавляем отступ самому body, чтобы контент не перекрывался
+    document.body.style.setProperty('padding-bottom', '80px', 'important');
   }
 
-  // Запуск
-  window.addEventListener('resize', createMobileBar);
-  createMobileBar();
+  window.addEventListener('load', initTabbar);
+  window.addEventListener('resize', initTabbar);
+  initTabbar();
 })();
