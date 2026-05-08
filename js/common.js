@@ -1060,3 +1060,44 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', handleResize);
   }
 })();
+
+// ========== ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ (на основе футера) ==========
+(function() {
+  function fixFooterOnMobile() {
+    const footer = document.querySelector('.footer');
+    if (!footer) return;
+
+    if (window.innerWidth <= 768) {
+      // Делаем футер фиксированным
+      footer.style.position = 'fixed';
+      footer.style.bottom = '0';
+      footer.style.left = '0';
+      footer.style.right = '0';
+      footer.style.zIndex = '1000';
+      footer.style.marginTop = '0';
+      // Добавляем отступ снизу для body, чтобы контент не перекрывался
+      document.body.style.paddingBottom = footer.offsetHeight + 'px';
+      
+      // Дополнительно: добавим фон и размытие как в Fonbet (опционально)
+      footer.style.background = 'var(--surface-glass, rgba(255,255,255,0.85))';
+      footer.style.backdropFilter = 'blur(20px)';
+      footer.style.borderTop = '1px solid var(--border, rgba(0,0,0,0.1))';
+    } else {
+      // Возвращаем футеру обычное поведение на десктопе
+      footer.style.position = '';
+      footer.style.bottom = '';
+      footer.style.left = '';
+      footer.style.right = '';
+      footer.style.zIndex = '';
+      footer.style.marginTop = '';
+      footer.style.background = '';
+      footer.style.backdropFilter = '';
+      footer.style.borderTop = '';
+      document.body.style.paddingBottom = '';
+    }
+  }
+
+  // Запускаем при загрузке и при изменении размера окна
+  window.addEventListener('resize', fixFooterOnMobile);
+  fixFooterOnMobile();
+})();
