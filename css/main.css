@@ -1349,3 +1349,205 @@ select {
   .footer-col {
     text-align: center;
   }
+  
+	  /* ========== ДОПОЛНИТЕЛЬНАЯ МОБИЛЬНАЯ АДАПТАЦИЯ (до 768px) ========== */
+	@media (max-width: 768px) {
+	  /* Увеличиваем отзывчивость касаний */
+	  button, 
+	  .dropdown-trigger, 
+	  .share-icon, 
+	  .slider-btn,
+	  .btn-primary,
+	  .btn-secondary,
+	  .faq-question,
+	  .category-card,
+	  .stat-card,
+	  .feature-card,
+	  .trend-card,
+	  .recent-card,
+	  .testimonial-card,
+	  .meme-card,
+	  .close-lightbox {
+		cursor: pointer;
+		touch-action: manipulation;
+	  }
+
+	  /* Делаем все кликабельные элементы выше (44px по рекомендациям Apple) */
+	  .nav-links a,
+	  .dropdown-trigger,
+	  .share-button,
+	  .share-icon,
+	  .slider-btn,
+	  .btn-primary,
+	  .btn-secondary,
+	  .close-lightbox {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	  }
+
+	  /* Убираем hover-эффекты на мобилках (оставляем активные состояния) */
+	  .meme-card:hover,
+	  .feature-card:hover,
+	  .stat-card:hover,
+	  .category-card:hover {
+		transform: none;
+	  }
+
+	  /* Оптимизация слайдера трендов для тач-скролла */
+	  .trending-slider {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scroll-snap-type: x mandatory;
+		padding-bottom: 0.5rem;
+	  }
+	  .slider-track {
+		display: flex;
+		gap: 1rem;
+		transform: none !important;
+		scroll-snap-type: x mandatory;
+	  }
+	  .trend-card {
+		scroll-snap-align: start;
+		flex-shrink: 0;
+		width: 260px;
+	  }
+	  .slider-btn {
+		display: none; /* скрываем стрелки, используем свайп */
+	  }
+
+	  /* Статистика – горизонтальный скролл */
+	  .stats-grid {
+		display: flex;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		gap: 1rem;
+		padding-bottom: 0.5rem;
+	  }
+	  .stat-card {
+		flex: 0 0 auto;
+		min-width: 110px;
+	  }
+
+	  /* Категории – горизонтальный скролл */
+	  .categories-grid {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		gap: 1rem;
+		padding-bottom: 0.5rem;
+	  }
+	  .category-card {
+		flex: 0 0 auto;
+		min-width: 100px;
+	  }
+
+	  /* Отзывы – горизонтальный скролл */
+	  .testimonials-grid {
+		display: flex;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		gap: 1rem;
+		padding-bottom: 0.5rem;
+	  }
+	  .testimonial-card {
+		flex: 0 0 auto;
+		width: 260px;
+		margin-bottom: 0;
+	  }
+
+	  /* Лайтбокс для мобил – увеличиваем кнопку закрытия */
+	  .close-lightbox {
+		top: 10px;
+		right: 15px;
+		font-size: 2rem;
+		background: rgba(0,0,0,0.5);
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		backdrop-filter: blur(10px);
+	  }
+
+	  /* Контролы плеера в лайтбоксе – удобные для тапа */
+	  .lightbox-controls button {
+		width: 44px;
+		height: 44px;
+		font-size: 1.6rem;
+	  }
+	  .lightbox-progress {
+		height: 6px;
+	  }
+	  .lightbox-volume-slider {
+		width: 80px;
+	  }
+
+	  /* Плавающая кнопка шаринга – крупнее */
+	  .share-button {
+		width: 56px;
+		height: 56px;
+	  }
+	  .share-icon {
+		width: 48px;
+		height: 48px;
+	  }
+	  .share-icon img {
+		width: 28px;
+		height: 28px;
+	  }
+
+	  /* Футер – увеличенные ссылки */
+	  .footer-col a {
+		padding: 6px 0;
+		display: inline-block;
+	  }
+
+	  /* Сетка свежих мемов – 2 колонки с нормальными отступами */
+	  .recent-grid {
+		gap: 0.8rem;
+	  }
+	  .recent-card {
+		font-size: 0.85rem;
+	  }
+
+	  /* Убираем фиксированную высоту у видео-обёрток */
+	  .video-wrapper {
+		aspect-ratio: 16/9;
+	  }
+
+	  /* Случайный мем – центрируем и даём отступы */
+	  .random-meme-card {
+		margin: 0 auto;
+		width: 100%;
+		max-width: 100%;
+	  }
+	  .random-meme-preview img,
+	  .random-meme-preview video {
+		max-height: 180px;
+	  }
+
+	  /* Герой-секция – уменьшаем отступы */
+	  .hero {
+		padding: 1rem 0;
+	  }
+	  .hero h1 {
+		font-size: 1.8rem;
+	  }
+	  .hero-buttons {
+		gap: 0.8rem;
+	  }
+	  .btn-primary, .btn-secondary {
+		padding: 0.6rem 1.2rem;
+		font-size: 0.9rem;
+	  }
+
+	  /* Блок "Как пополнить" – код не ломается */
+	  .howto-steps code {
+		word-break: break-word;
+	  }
+	}
