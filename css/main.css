@@ -1349,3 +1349,185 @@ select {
   .footer-col {
     text-align: center;
   }
+  
+  /* ========== MOBILE FIRST: ГАМБУРГЕР, НИЖНЯЯ ПАНЕЛЬ, МОДАЛЬНОЕ ОКНО ========== */
+
+/* Базовые настройки для мобильных устройств */
+@media (max-width: 768px) {
+  /* Гамбургер-кнопка */
+  .hamburger {
+    display: block;
+    width: 30px;
+    height: 24px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1010;
+    margin-right: 1rem;
+  }
+  .hamburger span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: var(--text-primary);
+    border-radius: 3px;
+    opacity: 1;
+    left: 0;
+    transition: 0.2s ease-in-out;
+  }
+  .hamburger span:nth-child(1) { top: 0; }
+  .hamburger span:nth-child(2) { top: 10px; }
+  .hamburger span:nth-child(3) { top: 20px; }
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg); top: 10px; }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg); top: 10px; }
+
+  /* Мобильное меню (выезжающее слева) */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: var(--surface-glass);
+    backdrop-filter: blur(16px);
+    z-index: 1000;
+    transition: left 0.3s ease;
+    padding: 70px 1.5rem 2rem;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .mobile-menu.open {
+    left: 0;
+  }
+  .mobile-menu a {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Скрываем десктопные ссылки в навигации */
+  .glass-nav .nav-links {
+    display: none;
+  }
+  /* Логотип и гамбургер на одной линии */
+  .glass-nav {
+    justify-content: space-between;
+  }
+
+  /* Нижняя панель навигации */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface-glass);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    z-index: 100;
+    box-sizing: border-box;
+  }
+  .bottom-nav button, .bottom-nav a {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    cursor: pointer;
+    flex: 1;
+    padding: 0.2rem 0;
+  }
+  .bottom-nav span {
+    font-size: 0.65rem;
+    margin-top: 4px;
+  }
+
+  /* Отступ для контента, чтобы не перекрывался нижней панелью */
+  body {
+    padding-bottom: 70px;
+  }
+}
+
+/* Десктопная версия: скрываем мобильные элементы */
+@media (min-width: 769px) {
+  .hamburger, .mobile-menu, .bottom-nav {
+    display: none;
+  }
+}
+
+/* Модальное окно настроек (полноэкранное) */
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.settings-overlay.active {
+  display: flex;
+}
+.settings-modal {
+  background: var(--surface);
+  border-radius: 2rem;
+  padding: 2rem;
+  width: 85%;
+  max-width: 380px;
+  text-align: center;
+  color: var(--text-primary);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+}
+.settings-modal h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+.setting-group {
+  margin-bottom: 1.8rem;
+}
+.setting-group label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+.theme-buttons, .lang-buttons {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.theme-buttons button, .lang-buttons button, .a11y-toggle {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.close-settings {
+  margin-top: 1rem;
+  background: #aaa;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  cursor: pointer;
+}
